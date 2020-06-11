@@ -40,8 +40,13 @@ t_ADD = r'\+'
 t_SUBTRACT = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
-t_EXP = r'eksp'
+# t_EXP = r'eksp'
 t_EQUAL = r'\='
+
+def t_EXP(t):
+    r'eksp'
+    return t
+
 def t_FLOAT(t):
     r'[-+]?\d+\.\d+'
     t.value = float(t.value)
@@ -87,12 +92,13 @@ def p_ka(p):
 
     print(p[1])
 
-def p_expression(p):
+def p_expression_binary(p):
     '''
     expression : expression ADD expression
                | expression SUBTRACT expression
                | expression MULTIPLY expression
                | expression DIVIDE expression
+               | expression EXP expression
     '''
 
     if p[2] == '+':
@@ -103,6 +109,8 @@ def p_expression(p):
         p[0] = p[1] * p[3]
     elif p[2] == '/':
         p[0] = p[1] / p[3]
+    elif p[2] == "eksp":
+        p[0] = p[1] ** p[3]
 
 def p_int_float(p):
     '''

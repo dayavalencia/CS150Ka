@@ -5,7 +5,6 @@ Unused terminals:
     CHAR
     CHARTYPE
     EQUAL
-    EXP
     FLOATTYPE
     IDENTIFIER
     INTTYPE
@@ -22,9 +21,10 @@ Rule 3     expression -> expression ADD expression
 Rule 4     expression -> expression SUBTRACT expression
 Rule 5     expression -> expression MULTIPLY expression
 Rule 6     expression -> expression DIVIDE expression
-Rule 7     expression -> INT
-Rule 8     expression -> FLOAT
-Rule 9     empty -> <empty>
+Rule 7     expression -> expression EXP expression
+Rule 8     expression -> INT
+Rule 9     expression -> FLOAT
+Rule 10    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -33,11 +33,11 @@ CHAR                 :
 CHARTYPE             : 
 DIVIDE               : 6
 EQUAL                : 
-EXP                  : 
-FLOAT                : 8
+EXP                  : 7
+FLOAT                : 9
 FLOATTYPE            : 
 IDENTIFIER           : 
-INT                  : 7
+INT                  : 8
 INTTYPE              : 
 MULTIPLY             : 5
 STRING               : 
@@ -49,7 +49,7 @@ error                :
 Nonterminals, with rules where they appear
 
 empty                : 2
-expression           : 1 3 3 4 4 5 5 6 6
+expression           : 1 3 3 4 4 5 5 6 6 7 7
 ka                   : 0
 
 Parsing method: LALR
@@ -63,13 +63,14 @@ state 0
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
     (6) expression -> . expression DIVIDE expression
-    (7) expression -> . INT
-    (8) expression -> . FLOAT
-    (9) empty -> .
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
+    (10) empty -> .
 
     INT             shift and go to state 4
     FLOAT           shift and go to state 5
-    $end            reduce using rule 9 (empty -> .)
+    $end            reduce using rule 10 (empty -> .)
 
     ka                             shift and go to state 1
     expression                     shift and go to state 2
@@ -88,12 +89,14 @@ state 2
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
     (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
 
     $end            reduce using rule 1 (ka -> expression .)
     ADD             shift and go to state 6
     SUBTRACT        shift and go to state 7
     MULTIPLY        shift and go to state 8
     DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
 
 
 state 3
@@ -105,24 +108,26 @@ state 3
 
 state 4
 
-    (7) expression -> INT .
+    (8) expression -> INT .
 
-    ADD             reduce using rule 7 (expression -> INT .)
-    SUBTRACT        reduce using rule 7 (expression -> INT .)
-    MULTIPLY        reduce using rule 7 (expression -> INT .)
-    DIVIDE          reduce using rule 7 (expression -> INT .)
-    $end            reduce using rule 7 (expression -> INT .)
+    ADD             reduce using rule 8 (expression -> INT .)
+    SUBTRACT        reduce using rule 8 (expression -> INT .)
+    MULTIPLY        reduce using rule 8 (expression -> INT .)
+    DIVIDE          reduce using rule 8 (expression -> INT .)
+    EXP             reduce using rule 8 (expression -> INT .)
+    $end            reduce using rule 8 (expression -> INT .)
 
 
 state 5
 
-    (8) expression -> FLOAT .
+    (9) expression -> FLOAT .
 
-    ADD             reduce using rule 8 (expression -> FLOAT .)
-    SUBTRACT        reduce using rule 8 (expression -> FLOAT .)
-    MULTIPLY        reduce using rule 8 (expression -> FLOAT .)
-    DIVIDE          reduce using rule 8 (expression -> FLOAT .)
-    $end            reduce using rule 8 (expression -> FLOAT .)
+    ADD             reduce using rule 9 (expression -> FLOAT .)
+    SUBTRACT        reduce using rule 9 (expression -> FLOAT .)
+    MULTIPLY        reduce using rule 9 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 9 (expression -> FLOAT .)
+    EXP             reduce using rule 9 (expression -> FLOAT .)
+    $end            reduce using rule 9 (expression -> FLOAT .)
 
 
 state 6
@@ -132,13 +137,14 @@ state 6
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
     (6) expression -> . expression DIVIDE expression
-    (7) expression -> . INT
-    (8) expression -> . FLOAT
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
 
     INT             shift and go to state 4
     FLOAT           shift and go to state 5
 
-    expression                     shift and go to state 10
+    expression                     shift and go to state 11
 
 state 7
 
@@ -147,13 +153,14 @@ state 7
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
     (6) expression -> . expression DIVIDE expression
-    (7) expression -> . INT
-    (8) expression -> . FLOAT
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
 
     INT             shift and go to state 4
     FLOAT           shift and go to state 5
 
-    expression                     shift and go to state 11
+    expression                     shift and go to state 12
 
 state 8
 
@@ -162,13 +169,14 @@ state 8
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
     (6) expression -> . expression DIVIDE expression
-    (7) expression -> . INT
-    (8) expression -> . FLOAT
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
 
     INT             shift and go to state 4
     FLOAT           shift and go to state 5
 
-    expression                     shift and go to state 12
+    expression                     shift and go to state 13
 
 state 9
 
@@ -177,125 +185,195 @@ state 9
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
     (6) expression -> . expression DIVIDE expression
-    (7) expression -> . INT
-    (8) expression -> . FLOAT
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
 
     INT             shift and go to state 4
     FLOAT           shift and go to state 5
 
-    expression                     shift and go to state 13
+    expression                     shift and go to state 14
 
 state 10
+
+    (7) expression -> expression EXP . expression
+    (3) expression -> . expression ADD expression
+    (4) expression -> . expression SUBTRACT expression
+    (5) expression -> . expression MULTIPLY expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression EXP expression
+    (8) expression -> . INT
+    (9) expression -> . FLOAT
+
+    INT             shift and go to state 4
+    FLOAT           shift and go to state 5
+
+    expression                     shift and go to state 15
+
+state 11
 
     (3) expression -> expression ADD expression .
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
     (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
 
   ! shift/reduce conflict for ADD resolved as shift
   ! shift/reduce conflict for SUBTRACT resolved as shift
   ! shift/reduce conflict for MULTIPLY resolved as shift
   ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for EXP resolved as shift
     $end            reduce using rule 3 (expression -> expression ADD expression .)
     ADD             shift and go to state 6
     SUBTRACT        shift and go to state 7
     MULTIPLY        shift and go to state 8
     DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
 
   ! ADD             [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! SUBTRACT        [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! MULTIPLY        [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! DIVIDE          [ reduce using rule 3 (expression -> expression ADD expression .) ]
+  ! EXP             [ reduce using rule 3 (expression -> expression ADD expression .) ]
 
 
-state 11
+state 12
 
     (4) expression -> expression SUBTRACT expression .
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
     (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
 
   ! shift/reduce conflict for ADD resolved as shift
   ! shift/reduce conflict for SUBTRACT resolved as shift
   ! shift/reduce conflict for MULTIPLY resolved as shift
   ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for EXP resolved as shift
     $end            reduce using rule 4 (expression -> expression SUBTRACT expression .)
     ADD             shift and go to state 6
     SUBTRACT        shift and go to state 7
     MULTIPLY        shift and go to state 8
     DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
 
   ! ADD             [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! SUBTRACT        [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! MULTIPLY        [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! DIVIDE          [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
+  ! EXP             [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
 
 
-state 12
+state 13
 
     (5) expression -> expression MULTIPLY expression .
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
     (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
 
   ! shift/reduce conflict for ADD resolved as shift
   ! shift/reduce conflict for SUBTRACT resolved as shift
   ! shift/reduce conflict for MULTIPLY resolved as shift
   ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for EXP resolved as shift
     $end            reduce using rule 5 (expression -> expression MULTIPLY expression .)
     ADD             shift and go to state 6
     SUBTRACT        shift and go to state 7
     MULTIPLY        shift and go to state 8
     DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
 
   ! ADD             [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
   ! SUBTRACT        [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
   ! MULTIPLY        [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
   ! DIVIDE          [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
+  ! EXP             [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
 
 
-state 13
+state 14
 
     (6) expression -> expression DIVIDE expression .
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
     (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
 
   ! shift/reduce conflict for ADD resolved as shift
   ! shift/reduce conflict for SUBTRACT resolved as shift
   ! shift/reduce conflict for MULTIPLY resolved as shift
   ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for EXP resolved as shift
     $end            reduce using rule 6 (expression -> expression DIVIDE expression .)
     ADD             shift and go to state 6
     SUBTRACT        shift and go to state 7
     MULTIPLY        shift and go to state 8
     DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
 
   ! ADD             [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
   ! SUBTRACT        [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
   ! MULTIPLY        [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
   ! DIVIDE          [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
+  ! EXP             [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
+
+
+state 15
+
+    (7) expression -> expression EXP expression .
+    (3) expression -> expression . ADD expression
+    (4) expression -> expression . SUBTRACT expression
+    (5) expression -> expression . MULTIPLY expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for SUBTRACT resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for EXP resolved as shift
+    $end            reduce using rule 7 (expression -> expression EXP expression .)
+    ADD             shift and go to state 6
+    SUBTRACT        shift and go to state 7
+    MULTIPLY        shift and go to state 8
+    DIVIDE          shift and go to state 9
+    EXP             shift and go to state 10
+
+  ! ADD             [ reduce using rule 7 (expression -> expression EXP expression .) ]
+  ! SUBTRACT        [ reduce using rule 7 (expression -> expression EXP expression .) ]
+  ! MULTIPLY        [ reduce using rule 7 (expression -> expression EXP expression .) ]
+  ! DIVIDE          [ reduce using rule 7 (expression -> expression EXP expression .) ]
+  ! EXP             [ reduce using rule 7 (expression -> expression EXP expression .) ]
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for ADD in state 10 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 10 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 10 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 10 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 11 resolved as shift
 WARNING: shift/reduce conflict for SUBTRACT in state 11 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 11 resolved as shift
 WARNING: shift/reduce conflict for DIVIDE in state 11 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 11 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 12 resolved as shift
 WARNING: shift/reduce conflict for SUBTRACT in state 12 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 12 resolved as shift
 WARNING: shift/reduce conflict for DIVIDE in state 12 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 12 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 13 resolved as shift
 WARNING: shift/reduce conflict for SUBTRACT in state 13 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 13 resolved as shift
 WARNING: shift/reduce conflict for DIVIDE in state 13 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 13 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 14 resolved as shift
+WARNING: shift/reduce conflict for SUBTRACT in state 14 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 14 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 14 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 14 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 15 resolved as shift
+WARNING: shift/reduce conflict for SUBTRACT in state 15 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 15 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 15 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 15 resolved as shift
