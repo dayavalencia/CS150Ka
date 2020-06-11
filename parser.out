@@ -2,15 +2,40 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    AND
+    BREAK
     CHAR
     CHARTYPE
+    COMMA
+    COMMENT
+    CONTINUE
+    ELSE
     EQUAL
+    EQUALCOMP
     FLOATTYPE
+    FOR
+    GREATER_THAN
+    GREATER_THAN_EQUAL
     IDENTIFIER
+    IF
+    INPUT
     INTTYPE
+    LBRACE
+    LESS_THAN
+    LESS_THAN_EQUAL
+    LPAREN
+    NOT
+    NOTEQUAL
+    OR
+    PRINT
+    RBRACE
+    RETURN
+    RPAREN
+    SEMICOLON
     STRING
     STRINGTYPE
     VOID
+    WHILE
 
 Grammar
 
@@ -29,21 +54,46 @@ Rule 10    empty -> <empty>
 Terminals, with rules where they appear
 
 ADD                  : 3
+AND                  : 
+BREAK                : 
 CHAR                 : 
 CHARTYPE             : 
+COMMA                : 
+COMMENT              : 
+CONTINUE             : 
 DIVIDE               : 6
+ELSE                 : 
 EQUAL                : 
+EQUALCOMP            : 
 EXP                  : 7
 FLOAT                : 9
 FLOATTYPE            : 
+FOR                  : 
+GREATER_THAN         : 
+GREATER_THAN_EQUAL   : 
 IDENTIFIER           : 
+IF                   : 
+INPUT                : 
 INT                  : 8
 INTTYPE              : 
+LBRACE               : 
+LESS_THAN            : 
+LESS_THAN_EQUAL      : 
+LPAREN               : 
 MULTIPLY             : 5
+NOT                  : 
+NOTEQUAL             : 
+OR                   : 
+PRINT                : 
+RBRACE               : 
+RETURN               : 
+RPAREN               : 
+SEMICOLON            : 
 STRING               : 
 STRINGTYPE           : 
 SUBTRACT             : 4
 VOID                 : 
+WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear

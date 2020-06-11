@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ADD CHAR CHARTYPE DIVIDE EQUAL EXP FLOAT FLOATTYPE IDENTIFIER INT INTTYPE MULTIPLY STRING STRINGTYPE SUBTRACT VOID\n    ka : expression\n       | empty\n    \n    expression : expression ADD expression\n               | expression SUBTRACT expression\n               | expression MULTIPLY expression\n               | expression DIVIDE expression\n               | expression EXP expression\n    \n    expression : INT\n               | FLOAT\n    \n    empty :\n    '
+_lr_signature = 'ADD AND BREAK CHAR CHARTYPE COMMA COMMENT CONTINUE DIVIDE ELSE EQUAL EQUALCOMP EXP FLOAT FLOATTYPE FOR GREATER_THAN GREATER_THAN_EQUAL IDENTIFIER IF INPUT INT INTTYPE LBRACE LESS_THAN LESS_THAN_EQUAL LPAREN MULTIPLY NOT NOTEQUAL OR PRINT RBRACE RETURN RPAREN SEMICOLON STRING STRINGTYPE SUBTRACT VOID WHILE\n    ka : expression\n       | empty\n    \n    expression : expression ADD expression\n               | expression SUBTRACT expression\n               | expression MULTIPLY expression\n               | expression DIVIDE expression\n               | expression EXP expression\n    \n    expression : INT\n               | FLOAT\n    \n    empty :\n    '
     
 _lr_action_items = {'INT':([0,6,7,8,9,10,],[4,4,4,4,4,4,]),'FLOAT':([0,6,7,8,9,10,],[5,5,5,5,5,5,]),'$end':([0,1,2,3,4,5,11,12,13,14,15,],[-10,0,-1,-2,-8,-9,-3,-4,-5,-6,-7,]),'ADD':([2,4,5,11,12,13,14,15,],[6,-8,-9,6,6,6,6,6,]),'SUBTRACT':([2,4,5,11,12,13,14,15,],[7,-8,-9,7,7,7,7,7,]),'MULTIPLY':([2,4,5,11,12,13,14,15,],[8,-8,-9,8,8,8,8,8,]),'DIVIDE':([2,4,5,11,12,13,14,15,],[9,-8,-9,9,9,9,9,9,]),'EXP':([2,4,5,11,12,13,14,15,],[10,-8,-9,10,10,10,10,10,]),}
 
@@ -27,14 +27,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> ka","S'",1,None,None,None),
-  ('ka -> expression','ka',1,'p_ka','ka.py',89),
-  ('ka -> empty','ka',1,'p_ka','ka.py',90),
-  ('expression -> expression ADD expression','expression',3,'p_expression_binary','ka.py',97),
-  ('expression -> expression SUBTRACT expression','expression',3,'p_expression_binary','ka.py',98),
-  ('expression -> expression MULTIPLY expression','expression',3,'p_expression_binary','ka.py',99),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binary','ka.py',100),
-  ('expression -> expression EXP expression','expression',3,'p_expression_binary','ka.py',101),
-  ('expression -> INT','expression',1,'p_int_float','ka.py',117),
-  ('expression -> FLOAT','expression',1,'p_int_float','ka.py',118),
-  ('empty -> <empty>','empty',0,'p_empty','ka.py',125),
+  ('ka -> expression','ka',1,'p_ka','ka.py',136),
+  ('ka -> empty','ka',1,'p_ka','ka.py',137),
+  ('expression -> expression ADD expression','expression',3,'p_expression_binary','ka.py',144),
+  ('expression -> expression SUBTRACT expression','expression',3,'p_expression_binary','ka.py',145),
+  ('expression -> expression MULTIPLY expression','expression',3,'p_expression_binary','ka.py',146),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binary','ka.py',147),
+  ('expression -> expression EXP expression','expression',3,'p_expression_binary','ka.py',148),
+  ('expression -> INT','expression',1,'p_int_float','ka.py',164),
+  ('expression -> FLOAT','expression',1,'p_int_float','ka.py',165),
+  ('empty -> <empty>','empty',0,'p_empty','ka.py',172),
 ]
