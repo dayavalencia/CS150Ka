@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ADD AND BREAK CHAR CHARTYPE COMMA COMMENT CONTINUE DIVIDE ELSE EQUAL EQUALCOMP EXP FLOAT FLOATTYPE FOR GREATER_THAN GREATER_THAN_EQUAL IDENTIFIER IF INPUT INT INTTYPE LBRACE LESS_THAN LESS_THAN_EQUAL LPAREN MULTIPLY NOT NOTEQUAL OR PRINT RBRACE RETURN RPAREN SEMICOLON STRING STRINGTYPE SUBTRACT VOID WHILE\n    ka : expression\n       | empty\n    \n    expression : expression ADD expression\n               | expression SUBTRACT expression\n               | expression MULTIPLY expression\n               | expression DIVIDE expression\n               | expression EXP expression\n    \n    expression : INT\n               | FLOAT\n    \n    empty :\n    '
+_lr_signature = 'ADD AND BREAK CHAR CHARTYPE COMMA COMMENT CONTINUE DIVIDE ELSE EQUAL EQUALCOMP EXP FLOAT FLOATTYPE FOR GREATER_THAN GREATER_THAN_EQUAL IDENTIFIER IF INPUT INT INTTYPE LBRACE LESS_THAN LESS_THAN_EQUAL LPAREN MULTIPLY NOT NOTEQUAL OR PRINT RBRACE RETURN RPAREN SEMICOLON STRING STRINGTYPE SUBTRACT VOID WHILE\n    ka : expression\n       | empty\n    \n    expression : expression ADD expression\n               | expression SUBTRACT expression\n               | expression MULTIPLY expression\n               | expression DIVIDE expression\n               | expression EXP expression\n    \n    expression : expression EQUALCOMP expression\n               | expression GREATER_THAN_EQUAL expression\n               | expression LESS_THAN_EQUAL expression\n               | expression GREATER_THAN expression\n               | expression LESS_THAN expression\n               | expression NOTEQUAL expression\n    \n    expression : NOT expression\n    \n    expression : expression AND expression\n               | expression OR expression\n    \n    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE\n    \n    expression : INT\n               | FLOAT\n    \n    empty :\n    '
     
-_lr_action_items = {'INT':([0,6,7,8,9,10,],[4,4,4,4,4,4,]),'FLOAT':([0,6,7,8,9,10,],[5,5,5,5,5,5,]),'$end':([0,1,2,3,4,5,11,12,13,14,15,],[-10,0,-1,-2,-8,-9,-3,-4,-5,-6,-7,]),'ADD':([2,4,5,11,12,13,14,15,],[6,-8,-9,6,6,6,6,6,]),'SUBTRACT':([2,4,5,11,12,13,14,15,],[7,-8,-9,7,7,7,7,7,]),'MULTIPLY':([2,4,5,11,12,13,14,15,],[8,-8,-9,8,8,8,8,8,]),'DIVIDE':([2,4,5,11,12,13,14,15,],[9,-8,-9,9,9,9,9,9,]),'EXP':([2,4,5,11,12,13,14,15,],[10,-8,-9,10,10,10,10,10,]),}
+_lr_action_items = {'NOT':([0,4,8,9,10,11,12,13,14,15,16,17,18,19,20,22,38,42,],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,]),'IF':([0,4,8,9,10,11,12,13,14,15,16,17,18,19,20,22,38,42,],[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,]),'INT':([0,4,8,9,10,11,12,13,14,15,16,17,18,19,20,22,38,42,],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,]),'FLOAT':([0,4,8,9,10,11,12,13,14,15,16,17,18,19,20,22,38,42,],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,]),'$end':([0,1,2,3,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,44,],[-20,0,-1,-2,-18,-19,-14,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-15,-16,-17,]),'ADD':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[8,-18,-19,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,-17,]),'SUBTRACT':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[9,-18,-19,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,-17,]),'MULTIPLY':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[10,-18,-19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,-17,]),'DIVIDE':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[11,-18,-19,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,-17,]),'EXP':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[12,-18,-19,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,-17,]),'EQUALCOMP':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[13,-18,-19,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,-17,]),'GREATER_THAN_EQUAL':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[14,-18,-19,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,-17,]),'LESS_THAN_EQUAL':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[15,-18,-19,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,-17,]),'GREATER_THAN':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[16,-18,-19,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,-17,]),'LESS_THAN':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[17,-18,-19,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,-17,]),'NOTEQUAL':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[18,-18,-19,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,-17,]),'AND':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[19,-18,-19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,-17,]),'OR':([2,6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,44,],[20,-18,-19,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,-17,]),'LPAREN':([5,],[22,]),'RPAREN':([6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,44,],[-18,-19,-14,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-15,-16,37,-17,]),'RBRACE':([6,7,21,23,24,25,26,27,28,29,30,31,32,33,34,35,39,43,44,],[-18,-19,-14,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-15,-16,40,44,-17,]),'LBRACE':([37,41,],[38,42,]),'ELSE':([40,],[41,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'ka':([0,],[1,]),'expression':([0,6,7,8,9,10,],[2,11,12,13,14,15,]),'empty':([0,],[3,]),}
+_lr_goto_items = {'ka':([0,],[1,]),'expression':([0,4,8,9,10,11,12,13,14,15,16,17,18,19,20,22,38,42,],[2,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,39,43,]),'empty':([0,],[3,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -34,7 +34,17 @@ _lr_productions = [
   ('expression -> expression MULTIPLY expression','expression',3,'p_expression_binary','ka.py',146),
   ('expression -> expression DIVIDE expression','expression',3,'p_expression_binary','ka.py',147),
   ('expression -> expression EXP expression','expression',3,'p_expression_binary','ka.py',148),
-  ('expression -> INT','expression',1,'p_int_float','ka.py',164),
-  ('expression -> FLOAT','expression',1,'p_int_float','ka.py',165),
-  ('empty -> <empty>','empty',0,'p_empty','ka.py',172),
+  ('expression -> expression EQUALCOMP expression','expression',3,'p_expression_binary_compare','ka.py',164),
+  ('expression -> expression GREATER_THAN_EQUAL expression','expression',3,'p_expression_binary_compare','ka.py',165),
+  ('expression -> expression LESS_THAN_EQUAL expression','expression',3,'p_expression_binary_compare','ka.py',166),
+  ('expression -> expression GREATER_THAN expression','expression',3,'p_expression_binary_compare','ka.py',167),
+  ('expression -> expression LESS_THAN expression','expression',3,'p_expression_binary_compare','ka.py',168),
+  ('expression -> expression NOTEQUAL expression','expression',3,'p_expression_binary_compare','ka.py',169),
+  ('expression -> NOT expression','expression',2,'p_expression_unary','ka.py',187),
+  ('expression -> expression AND expression','expression',3,'p_expression_and_or','ka.py',194),
+  ('expression -> expression OR expression','expression',3,'p_expression_and_or','ka.py',195),
+  ('expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE','expression',11,'p_expression_if_else','ka.py',206),
+  ('expression -> INT','expression',1,'p_int_float','ka.py',217),
+  ('expression -> FLOAT','expression',1,'p_int_float','ka.py',218),
+  ('empty -> <empty>','empty',0,'p_empty','ka.py',225),
 ]

@@ -64,8 +64,8 @@ t_FLOATTYPE = r'lutang'
 t_STRINGTYPE = r'hanay'
 t_PRINT = r'ilimbag'
 t_INPUT = r'ipasok'
-t_IF = r'kung'
-t_ELSE = r'kunghindi'
+# t_IF = r'kung'
+# t_ELSE = r'kunghindi'
 t_WHILE = r'habang'
 t_FOR = r'parasa'
 t_BREAK = r'itigil'
@@ -92,6 +92,14 @@ t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
 
+def t_IF(t):
+    r'kung'
+    return t
+
+def t_ELSE(t):
+    r'kunghindi'
+    return t
+
 def t_EXP(t):
     r'eksp'
     return t
@@ -100,10 +108,12 @@ def t_FLOAT(t):
     r'[-+]?\d+\.\d+'
     t.value = float(t.value)
     return t
+
 def t_INT(t):
     r'[-+]?\d+'
     t.value = int(t.value)
     return t
+    
 def t_newlinte(t):  # track line number
     r'\n+'
     t.lexer.lineno += len(t.value)
@@ -159,6 +169,59 @@ def p_expression_binary(p):
     elif p[2] == "eksp":
         p[0] = p[1] ** p[3]
 
+def p_expression_binary_compare(p):
+    '''
+    expression : expression EQUALCOMP expression
+               | expression GREATER_THAN_EQUAL expression
+               | expression LESS_THAN_EQUAL expression
+               | expression GREATER_THAN expression
+               | expression LESS_THAN expression
+               | expression NOTEQUAL expression
+    '''
+
+    if p[2] == "==":
+      p[0] = p[1] == p[3]
+    elif p[2] == ">=":
+      p[0] = p[1] >= p[3]
+    elif p[2] == "<=":
+      p[0] = p[1] <= p[3]
+    elif p[2] == ">":
+      p[0] = p[1] > p[3]
+    elif p[2] == "<":
+      p[0] = p[1] < p[3]
+    elif p[2] == "!=":
+      p[0] = p[1] != p[3]
+
+def p_expression_unary(p):
+    '''
+    expression : NOT expression
+    '''
+
+    p[0] = not (p[2])
+
+def p_expression_and_or(p):
+    # wot
+    '''
+    expression : expression AND expression
+               | expression OR expression
+    '''
+
+    if p[2] == "&&":
+      p[0] = p[1] and p[3]
+    elif p[2] == "||":
+      p[0] = p[1] or p[3]
+
+def p_expression_if_else(p):
+    '''
+    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    '''
+
+    if p[3]:
+      p[0] = p[6]
+    else:
+      p[0] = p[10]
+
+
 def p_int_float(p):
     '''
     expression : INT
@@ -173,6 +236,9 @@ def p_empty(p):
     '''
 
     p[0] = None
+
+def p_error(t):
+    print("Syntax error at '%s'" % t.value)
 
 parser = yacc.yacc()
 
