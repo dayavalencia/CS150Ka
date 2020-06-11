@@ -4,9 +4,9 @@ import sys
 
 #_________get code content_________#
 #TODO: replace hardcoded file by using sysarguments
-fcode = open("tester.txt", "r")
-contents = fcode.read()
-fcode.close()
+# fcode = open("tester.txt", "r")
+# contents = fcode.read()
+# fcode.close()
 
 
 #_________TOKEN DEFINITIONS_________#
@@ -68,9 +68,62 @@ def find_column(input, token):
 
 #_________BUILD LEXER_________#
 lexer = lex.lex()
-lexer.input(contents)
+# lexer.input(contents)
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     # print(tok)
+
+
+#_________PARSER_________#
+# resolve warnings
+
+def p_ka(p):
+    '''
+    ka : expression
+       | empty
+    '''
+
+    print(p[1])
+
+def p_expression(p):
+    '''
+    expression : expression ADD expression
+               | expression SUBTRACT expression
+               | expression MULTIPLY expression
+               | expression DIVIDE expression
+    '''
+
+    if p[2] == '+':
+        p[0] = p[1] + p[3]
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
+    elif p[2] == '*':
+        p[0] = p[1] * p[3]
+    elif p[2] == '/':
+        p[0] = p[1] / p[3]
+
+def p_int_float(p):
+    '''
+    expression : INT
+               | FLOAT
+    '''
+
+    p[0] = p[1]
+
+def p_empty(p):
+    '''
+    empty :
+    '''
+
+    p[0] = None
+
+parser = yacc.yacc()
+
 while True:
-    tok = lexer.token()
-    if not tok:
+    try:
+        s = input('ka> ')
+    except EOFError:
         break
-    # print(tok)
+    parser.parse(s)
