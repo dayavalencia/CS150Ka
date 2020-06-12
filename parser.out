@@ -41,10 +41,12 @@ Rule 13    expression -> expression NOTEQUAL expression
 Rule 14    expression -> NOT expression
 Rule 15    expression -> expression AND expression
 Rule 16    expression -> expression OR expression
-Rule 17    expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-Rule 18    expression -> INT
-Rule 19    expression -> FLOAT
-Rule 20    empty -> <empty>
+Rule 17    expression -> INT
+Rule 18    expression -> FLOAT
+Rule 19    expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE
+Rule 20    expression -> IF expression LBRACE expression RBRACE
+Rule 21    expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+Rule 22    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -57,32 +59,32 @@ COMMA                :
 COMMENT              : 
 CONTINUE             : 
 DIVIDE               : 6
-ELSE                 : 17
+ELSE                 : 21
 EQUAL                : 
 EQUALCOMP            : 8
 EXP                  : 7
-FLOAT                : 19
+FLOAT                : 18
 FLOATTYPE            : 
 FOR                  : 
 GREATER_THAN         : 11
 GREATER_THAN_EQUAL   : 9
 IDENTIFIER           : 
-IF                   : 17
+IF                   : 19 20 21
 INPUT                : 
-INT                  : 18
+INT                  : 17
 INTTYPE              : 
-LBRACE               : 17 17
+LBRACE               : 19 20 21 21
 LESS_THAN            : 12
 LESS_THAN_EQUAL      : 10
-LPAREN               : 17
+LPAREN               : 19 21
 MULTIPLY             : 5
 NOT                  : 14
 NOTEQUAL             : 13
 OR                   : 16
 PRINT                : 
-RBRACE               : 17 17
+RBRACE               : 19 20 21 21
 RETURN               : 
-RPAREN               : 17
+RPAREN               : 19 21
 SEMICOLON            : 
 STRING               : 
 STRINGTYPE           : 
@@ -94,7 +96,7 @@ error                :
 Nonterminals, with rules where they appear
 
 empty                : 2
-expression           : 1 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 15 15 16 16 17 17 17
+expression           : 1 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 15 15 16 16 19 19 20 20 21 21 21
 ka                   : 0
 
 Parsing method: LALR
@@ -118,16 +120,18 @@ state 0
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
-    (20) empty -> .
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    (22) empty -> .
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
-    $end            reduce using rule 20 (empty -> .)
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
+    $end            reduce using rule 22 (empty -> .)
 
     ka                             shift and go to state 1
     expression                     shift and go to state 2
@@ -196,67 +200,97 @@ state 4
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
     expression                     shift and go to state 21
 
 state 5
 
-    (17) expression -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    (17) expression -> INT .
 
-    LPAREN          shift and go to state 22
+    ADD             reduce using rule 17 (expression -> INT .)
+    SUBTRACT        reduce using rule 17 (expression -> INT .)
+    MULTIPLY        reduce using rule 17 (expression -> INT .)
+    DIVIDE          reduce using rule 17 (expression -> INT .)
+    EXP             reduce using rule 17 (expression -> INT .)
+    EQUALCOMP       reduce using rule 17 (expression -> INT .)
+    GREATER_THAN_EQUAL reduce using rule 17 (expression -> INT .)
+    LESS_THAN_EQUAL reduce using rule 17 (expression -> INT .)
+    GREATER_THAN    reduce using rule 17 (expression -> INT .)
+    LESS_THAN       reduce using rule 17 (expression -> INT .)
+    NOTEQUAL        reduce using rule 17 (expression -> INT .)
+    AND             reduce using rule 17 (expression -> INT .)
+    OR              reduce using rule 17 (expression -> INT .)
+    $end            reduce using rule 17 (expression -> INT .)
+    LBRACE          reduce using rule 17 (expression -> INT .)
+    RPAREN          reduce using rule 17 (expression -> INT .)
+    RBRACE          reduce using rule 17 (expression -> INT .)
 
 
 state 6
 
-    (18) expression -> INT .
+    (18) expression -> FLOAT .
 
-    ADD             reduce using rule 18 (expression -> INT .)
-    SUBTRACT        reduce using rule 18 (expression -> INT .)
-    MULTIPLY        reduce using rule 18 (expression -> INT .)
-    DIVIDE          reduce using rule 18 (expression -> INT .)
-    EXP             reduce using rule 18 (expression -> INT .)
-    EQUALCOMP       reduce using rule 18 (expression -> INT .)
-    GREATER_THAN_EQUAL reduce using rule 18 (expression -> INT .)
-    LESS_THAN_EQUAL reduce using rule 18 (expression -> INT .)
-    GREATER_THAN    reduce using rule 18 (expression -> INT .)
-    LESS_THAN       reduce using rule 18 (expression -> INT .)
-    NOTEQUAL        reduce using rule 18 (expression -> INT .)
-    AND             reduce using rule 18 (expression -> INT .)
-    OR              reduce using rule 18 (expression -> INT .)
-    $end            reduce using rule 18 (expression -> INT .)
-    RPAREN          reduce using rule 18 (expression -> INT .)
-    RBRACE          reduce using rule 18 (expression -> INT .)
+    ADD             reduce using rule 18 (expression -> FLOAT .)
+    SUBTRACT        reduce using rule 18 (expression -> FLOAT .)
+    MULTIPLY        reduce using rule 18 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 18 (expression -> FLOAT .)
+    EXP             reduce using rule 18 (expression -> FLOAT .)
+    EQUALCOMP       reduce using rule 18 (expression -> FLOAT .)
+    GREATER_THAN_EQUAL reduce using rule 18 (expression -> FLOAT .)
+    LESS_THAN_EQUAL reduce using rule 18 (expression -> FLOAT .)
+    GREATER_THAN    reduce using rule 18 (expression -> FLOAT .)
+    LESS_THAN       reduce using rule 18 (expression -> FLOAT .)
+    NOTEQUAL        reduce using rule 18 (expression -> FLOAT .)
+    AND             reduce using rule 18 (expression -> FLOAT .)
+    OR              reduce using rule 18 (expression -> FLOAT .)
+    $end            reduce using rule 18 (expression -> FLOAT .)
+    LBRACE          reduce using rule 18 (expression -> FLOAT .)
+    RPAREN          reduce using rule 18 (expression -> FLOAT .)
+    RBRACE          reduce using rule 18 (expression -> FLOAT .)
 
 
 state 7
 
-    (19) expression -> FLOAT .
+    (19) expression -> IF . LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> IF . expression LBRACE expression RBRACE
+    (21) expression -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    (3) expression -> . expression ADD expression
+    (4) expression -> . expression SUBTRACT expression
+    (5) expression -> . expression MULTIPLY expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression EXP expression
+    (8) expression -> . expression EQUALCOMP expression
+    (9) expression -> . expression GREATER_THAN_EQUAL expression
+    (10) expression -> . expression LESS_THAN_EQUAL expression
+    (11) expression -> . expression GREATER_THAN expression
+    (12) expression -> . expression LESS_THAN expression
+    (13) expression -> . expression NOTEQUAL expression
+    (14) expression -> . NOT expression
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
-    ADD             reduce using rule 19 (expression -> FLOAT .)
-    SUBTRACT        reduce using rule 19 (expression -> FLOAT .)
-    MULTIPLY        reduce using rule 19 (expression -> FLOAT .)
-    DIVIDE          reduce using rule 19 (expression -> FLOAT .)
-    EXP             reduce using rule 19 (expression -> FLOAT .)
-    EQUALCOMP       reduce using rule 19 (expression -> FLOAT .)
-    GREATER_THAN_EQUAL reduce using rule 19 (expression -> FLOAT .)
-    LESS_THAN_EQUAL reduce using rule 19 (expression -> FLOAT .)
-    GREATER_THAN    reduce using rule 19 (expression -> FLOAT .)
-    LESS_THAN       reduce using rule 19 (expression -> FLOAT .)
-    NOTEQUAL        reduce using rule 19 (expression -> FLOAT .)
-    AND             reduce using rule 19 (expression -> FLOAT .)
-    OR              reduce using rule 19 (expression -> FLOAT .)
-    $end            reduce using rule 19 (expression -> FLOAT .)
-    RPAREN          reduce using rule 19 (expression -> FLOAT .)
-    RBRACE          reduce using rule 19 (expression -> FLOAT .)
+    LPAREN          shift and go to state 22
+    NOT             shift and go to state 4
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
+    expression                     shift and go to state 23
 
 state 8
 
@@ -275,16 +309,18 @@ state 8
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 23
+    expression                     shift and go to state 24
 
 state 9
 
@@ -303,16 +339,18 @@ state 9
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 24
+    expression                     shift and go to state 25
 
 state 10
 
@@ -331,16 +369,18 @@ state 10
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 25
+    expression                     shift and go to state 26
 
 state 11
 
@@ -359,16 +399,18 @@ state 11
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 26
+    expression                     shift and go to state 27
 
 state 12
 
@@ -387,16 +429,18 @@ state 12
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 28
 
 state 13
 
@@ -415,16 +459,18 @@ state 13
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 28
+    expression                     shift and go to state 29
 
 state 14
 
@@ -443,16 +489,18 @@ state 14
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 29
+    expression                     shift and go to state 30
 
 state 15
 
@@ -471,16 +519,18 @@ state 15
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 30
+    expression                     shift and go to state 31
 
 state 16
 
@@ -499,16 +549,18 @@ state 16
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 31
+    expression                     shift and go to state 32
 
 state 17
 
@@ -527,16 +579,18 @@ state 17
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 32
+    expression                     shift and go to state 33
 
 state 18
 
@@ -555,16 +609,18 @@ state 18
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 33
+    expression                     shift and go to state 34
 
 state 19
 
@@ -583,16 +639,18 @@ state 19
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 34
+    expression                     shift and go to state 35
 
 state 20
 
@@ -611,16 +669,18 @@ state 20
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 35
+    expression                     shift and go to state 36
 
 state 21
 
@@ -653,6 +713,7 @@ state 21
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
     $end            reduce using rule 14 (expression -> NOT expression .)
+    LBRACE          reduce using rule 14 (expression -> NOT expression .)
     RPAREN          reduce using rule 14 (expression -> NOT expression .)
     RBRACE          reduce using rule 14 (expression -> NOT expression .)
     ADD             shift and go to state 8
@@ -686,7 +747,8 @@ state 21
 
 state 22
 
-    (17) expression -> IF LPAREN . expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    (19) expression -> IF LPAREN . expression RPAREN LBRACE expression RBRACE
+    (21) expression -> IF LPAREN . expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
     (3) expression -> . expression ADD expression
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
@@ -701,18 +763,53 @@ state 22
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 36
+    expression                     shift and go to state 37
 
 state 23
+
+    (20) expression -> IF expression . LBRACE expression RBRACE
+    (3) expression -> expression . ADD expression
+    (4) expression -> expression . SUBTRACT expression
+    (5) expression -> expression . MULTIPLY expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
+    (8) expression -> expression . EQUALCOMP expression
+    (9) expression -> expression . GREATER_THAN_EQUAL expression
+    (10) expression -> expression . LESS_THAN_EQUAL expression
+    (11) expression -> expression . GREATER_THAN expression
+    (12) expression -> expression . LESS_THAN expression
+    (13) expression -> expression . NOTEQUAL expression
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+
+    LBRACE          shift and go to state 38
+    ADD             shift and go to state 8
+    SUBTRACT        shift and go to state 9
+    MULTIPLY        shift and go to state 10
+    DIVIDE          shift and go to state 11
+    EXP             shift and go to state 12
+    EQUALCOMP       shift and go to state 13
+    GREATER_THAN_EQUAL shift and go to state 14
+    LESS_THAN_EQUAL shift and go to state 15
+    GREATER_THAN    shift and go to state 16
+    LESS_THAN       shift and go to state 17
+    NOTEQUAL        shift and go to state 18
+    AND             shift and go to state 19
+    OR              shift and go to state 20
+
+
+state 24
 
     (3) expression -> expression ADD expression .
     (3) expression -> expression . ADD expression
@@ -729,52 +826,40 @@ state 23
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    ADD             reduce using rule 3 (expression -> expression ADD expression .)
+    SUBTRACT        reduce using rule 3 (expression -> expression ADD expression .)
+    EQUALCOMP       reduce using rule 3 (expression -> expression ADD expression .)
+    GREATER_THAN_EQUAL reduce using rule 3 (expression -> expression ADD expression .)
+    LESS_THAN_EQUAL reduce using rule 3 (expression -> expression ADD expression .)
+    GREATER_THAN    reduce using rule 3 (expression -> expression ADD expression .)
+    LESS_THAN       reduce using rule 3 (expression -> expression ADD expression .)
+    NOTEQUAL        reduce using rule 3 (expression -> expression ADD expression .)
+    AND             reduce using rule 3 (expression -> expression ADD expression .)
+    OR              reduce using rule 3 (expression -> expression ADD expression .)
     $end            reduce using rule 3 (expression -> expression ADD expression .)
+    LBRACE          reduce using rule 3 (expression -> expression ADD expression .)
     RPAREN          reduce using rule 3 (expression -> expression ADD expression .)
     RBRACE          reduce using rule 3 (expression -> expression ADD expression .)
-    ADD             shift and go to state 8
-    SUBTRACT        shift and go to state 9
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
-  ! ADD             [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! SUBTRACT        [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! MULTIPLY        [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! DIVIDE          [ reduce using rule 3 (expression -> expression ADD expression .) ]
   ! EXP             [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! EQUALCOMP       [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! GREATER_THAN    [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! LESS_THAN       [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! NOTEQUAL        [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! AND             [ reduce using rule 3 (expression -> expression ADD expression .) ]
-  ! OR              [ reduce using rule 3 (expression -> expression ADD expression .) ]
+  ! ADD             [ shift and go to state 8 ]
+  ! SUBTRACT        [ shift and go to state 9 ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 24
+state 25
 
     (4) expression -> expression SUBTRACT expression .
     (3) expression -> expression . ADD expression
@@ -791,52 +876,40 @@ state 24
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    ADD             reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    SUBTRACT        reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    EQUALCOMP       reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    GREATER_THAN_EQUAL reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    LESS_THAN_EQUAL reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    GREATER_THAN    reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    LESS_THAN       reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    NOTEQUAL        reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    AND             reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    OR              reduce using rule 4 (expression -> expression SUBTRACT expression .)
     $end            reduce using rule 4 (expression -> expression SUBTRACT expression .)
+    LBRACE          reduce using rule 4 (expression -> expression SUBTRACT expression .)
     RPAREN          reduce using rule 4 (expression -> expression SUBTRACT expression .)
     RBRACE          reduce using rule 4 (expression -> expression SUBTRACT expression .)
-    ADD             shift and go to state 8
-    SUBTRACT        shift and go to state 9
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
-  ! ADD             [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! SUBTRACT        [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! MULTIPLY        [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! DIVIDE          [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
   ! EXP             [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! EQUALCOMP       [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! GREATER_THAN    [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! LESS_THAN       [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! NOTEQUAL        [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! AND             [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
-  ! OR              [ reduce using rule 4 (expression -> expression SUBTRACT expression .) ]
+  ! ADD             [ shift and go to state 8 ]
+  ! SUBTRACT        [ shift and go to state 9 ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 25
+state 26
 
     (5) expression -> expression MULTIPLY expression .
     (3) expression -> expression . ADD expression
@@ -853,52 +926,40 @@ state 25
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    ADD             reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    SUBTRACT        reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    MULTIPLY        reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    DIVIDE          reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    EXP             reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    EQUALCOMP       reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    GREATER_THAN_EQUAL reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    LESS_THAN_EQUAL reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    GREATER_THAN    reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    LESS_THAN       reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    NOTEQUAL        reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    AND             reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    OR              reduce using rule 5 (expression -> expression MULTIPLY expression .)
     $end            reduce using rule 5 (expression -> expression MULTIPLY expression .)
+    LBRACE          reduce using rule 5 (expression -> expression MULTIPLY expression .)
     RPAREN          reduce using rule 5 (expression -> expression MULTIPLY expression .)
     RBRACE          reduce using rule 5 (expression -> expression MULTIPLY expression .)
-    ADD             shift and go to state 8
-    SUBTRACT        shift and go to state 9
-    MULTIPLY        shift and go to state 10
-    DIVIDE          shift and go to state 11
-    EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
-  ! ADD             [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! SUBTRACT        [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! MULTIPLY        [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! DIVIDE          [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! EXP             [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! EQUALCOMP       [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! GREATER_THAN    [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! LESS_THAN       [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! NOTEQUAL        [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! AND             [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
-  ! OR              [ reduce using rule 5 (expression -> expression MULTIPLY expression .) ]
+  ! ADD             [ shift and go to state 8 ]
+  ! SUBTRACT        [ shift and go to state 9 ]
+  ! MULTIPLY        [ shift and go to state 10 ]
+  ! DIVIDE          [ shift and go to state 11 ]
+  ! EXP             [ shift and go to state 12 ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 26
+state 27
 
     (6) expression -> expression DIVIDE expression .
     (3) expression -> expression . ADD expression
@@ -915,52 +976,40 @@ state 26
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    ADD             reduce using rule 6 (expression -> expression DIVIDE expression .)
+    SUBTRACT        reduce using rule 6 (expression -> expression DIVIDE expression .)
+    MULTIPLY        reduce using rule 6 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 6 (expression -> expression DIVIDE expression .)
+    EXP             reduce using rule 6 (expression -> expression DIVIDE expression .)
+    EQUALCOMP       reduce using rule 6 (expression -> expression DIVIDE expression .)
+    GREATER_THAN_EQUAL reduce using rule 6 (expression -> expression DIVIDE expression .)
+    LESS_THAN_EQUAL reduce using rule 6 (expression -> expression DIVIDE expression .)
+    GREATER_THAN    reduce using rule 6 (expression -> expression DIVIDE expression .)
+    LESS_THAN       reduce using rule 6 (expression -> expression DIVIDE expression .)
+    NOTEQUAL        reduce using rule 6 (expression -> expression DIVIDE expression .)
+    AND             reduce using rule 6 (expression -> expression DIVIDE expression .)
+    OR              reduce using rule 6 (expression -> expression DIVIDE expression .)
     $end            reduce using rule 6 (expression -> expression DIVIDE expression .)
+    LBRACE          reduce using rule 6 (expression -> expression DIVIDE expression .)
     RPAREN          reduce using rule 6 (expression -> expression DIVIDE expression .)
     RBRACE          reduce using rule 6 (expression -> expression DIVIDE expression .)
-    ADD             shift and go to state 8
-    SUBTRACT        shift and go to state 9
-    MULTIPLY        shift and go to state 10
-    DIVIDE          shift and go to state 11
-    EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
-  ! ADD             [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! SUBTRACT        [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! MULTIPLY        [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! DIVIDE          [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! EXP             [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! EQUALCOMP       [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! GREATER_THAN    [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! LESS_THAN       [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! NOTEQUAL        [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! AND             [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
-  ! OR              [ reduce using rule 6 (expression -> expression DIVIDE expression .) ]
+  ! ADD             [ shift and go to state 8 ]
+  ! SUBTRACT        [ shift and go to state 9 ]
+  ! MULTIPLY        [ shift and go to state 10 ]
+  ! DIVIDE          [ shift and go to state 11 ]
+  ! EXP             [ shift and go to state 12 ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 27
+state 28
 
     (7) expression -> expression EXP expression .
     (3) expression -> expression . ADD expression
@@ -977,52 +1026,40 @@ state 27
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    ADD             reduce using rule 7 (expression -> expression EXP expression .)
+    SUBTRACT        reduce using rule 7 (expression -> expression EXP expression .)
+    MULTIPLY        reduce using rule 7 (expression -> expression EXP expression .)
+    DIVIDE          reduce using rule 7 (expression -> expression EXP expression .)
+    EXP             reduce using rule 7 (expression -> expression EXP expression .)
+    EQUALCOMP       reduce using rule 7 (expression -> expression EXP expression .)
+    GREATER_THAN_EQUAL reduce using rule 7 (expression -> expression EXP expression .)
+    LESS_THAN_EQUAL reduce using rule 7 (expression -> expression EXP expression .)
+    GREATER_THAN    reduce using rule 7 (expression -> expression EXP expression .)
+    LESS_THAN       reduce using rule 7 (expression -> expression EXP expression .)
+    NOTEQUAL        reduce using rule 7 (expression -> expression EXP expression .)
+    AND             reduce using rule 7 (expression -> expression EXP expression .)
+    OR              reduce using rule 7 (expression -> expression EXP expression .)
     $end            reduce using rule 7 (expression -> expression EXP expression .)
+    LBRACE          reduce using rule 7 (expression -> expression EXP expression .)
     RPAREN          reduce using rule 7 (expression -> expression EXP expression .)
     RBRACE          reduce using rule 7 (expression -> expression EXP expression .)
-    ADD             shift and go to state 8
-    SUBTRACT        shift and go to state 9
-    MULTIPLY        shift and go to state 10
-    DIVIDE          shift and go to state 11
-    EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
-  ! ADD             [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! SUBTRACT        [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! MULTIPLY        [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! DIVIDE          [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! EXP             [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! EQUALCOMP       [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! GREATER_THAN    [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! LESS_THAN       [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! NOTEQUAL        [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! AND             [ reduce using rule 7 (expression -> expression EXP expression .) ]
-  ! OR              [ reduce using rule 7 (expression -> expression EXP expression .) ]
+  ! ADD             [ shift and go to state 8 ]
+  ! SUBTRACT        [ shift and go to state 9 ]
+  ! MULTIPLY        [ shift and go to state 10 ]
+  ! DIVIDE          [ shift and go to state 11 ]
+  ! EXP             [ shift and go to state 12 ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 28
+state 29
 
     (8) expression -> expression EQUALCOMP expression .
     (3) expression -> expression . ADD expression
@@ -1039,20 +1076,16 @@ state 28
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    GREATER_THAN_EQUAL reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    LESS_THAN_EQUAL reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    GREATER_THAN    reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    LESS_THAN       reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    NOTEQUAL        reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    AND             reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    OR              reduce using rule 8 (expression -> expression EQUALCOMP expression .)
     $end            reduce using rule 8 (expression -> expression EQUALCOMP expression .)
+    LBRACE          reduce using rule 8 (expression -> expression EQUALCOMP expression .)
     RPAREN          reduce using rule 8 (expression -> expression EQUALCOMP expression .)
     RBRACE          reduce using rule 8 (expression -> expression EQUALCOMP expression .)
     ADD             shift and go to state 8
@@ -1060,31 +1093,23 @@ state 28
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
   ! SUBTRACT        [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
   ! MULTIPLY        [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
   ! DIVIDE          [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
   ! EXP             [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! EQUALCOMP       [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! GREATER_THAN    [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! LESS_THAN       [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! NOTEQUAL        [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! AND             [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
-  ! OR              [ reduce using rule 8 (expression -> expression EQUALCOMP expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 29
+state 30
 
     (9) expression -> expression GREATER_THAN_EQUAL expression .
     (3) expression -> expression . ADD expression
@@ -1101,20 +1126,16 @@ state 29
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    GREATER_THAN_EQUAL reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LESS_THAN_EQUAL reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    GREATER_THAN    reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LESS_THAN       reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    NOTEQUAL        reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    AND             reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    OR              reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
     $end            reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
+    LBRACE          reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
     RPAREN          reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
     RBRACE          reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .)
     ADD             shift and go to state 8
@@ -1122,31 +1143,23 @@ state 29
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
   ! SUBTRACT        [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
   ! MULTIPLY        [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
   ! DIVIDE          [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
   ! EXP             [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! EQUALCOMP       [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! GREATER_THAN    [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! LESS_THAN       [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! NOTEQUAL        [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! AND             [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
-  ! OR              [ reduce using rule 9 (expression -> expression GREATER_THAN_EQUAL expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 30
+state 31
 
     (10) expression -> expression LESS_THAN_EQUAL expression .
     (3) expression -> expression . ADD expression
@@ -1163,20 +1176,16 @@ state 30
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    GREATER_THAN_EQUAL reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    LESS_THAN_EQUAL reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    GREATER_THAN    reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    LESS_THAN       reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    NOTEQUAL        reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    AND             reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    OR              reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
     $end            reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
+    LBRACE          reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
     RPAREN          reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
     RBRACE          reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .)
     ADD             shift and go to state 8
@@ -1184,31 +1193,23 @@ state 30
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
   ! SUBTRACT        [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
   ! MULTIPLY        [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
   ! DIVIDE          [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
   ! EXP             [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! EQUALCOMP       [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! GREATER_THAN    [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! LESS_THAN       [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! NOTEQUAL        [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! AND             [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
-  ! OR              [ reduce using rule 10 (expression -> expression LESS_THAN_EQUAL expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 31
+state 32
 
     (11) expression -> expression GREATER_THAN expression .
     (3) expression -> expression . ADD expression
@@ -1225,20 +1226,16 @@ state 31
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    GREATER_THAN_EQUAL reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    LESS_THAN_EQUAL reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    GREATER_THAN    reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    LESS_THAN       reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    NOTEQUAL        reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    AND             reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    OR              reduce using rule 11 (expression -> expression GREATER_THAN expression .)
     $end            reduce using rule 11 (expression -> expression GREATER_THAN expression .)
+    LBRACE          reduce using rule 11 (expression -> expression GREATER_THAN expression .)
     RPAREN          reduce using rule 11 (expression -> expression GREATER_THAN expression .)
     RBRACE          reduce using rule 11 (expression -> expression GREATER_THAN expression .)
     ADD             shift and go to state 8
@@ -1246,31 +1243,23 @@ state 31
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
   ! SUBTRACT        [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
   ! MULTIPLY        [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
   ! DIVIDE          [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
   ! EXP             [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! EQUALCOMP       [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! GREATER_THAN    [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! LESS_THAN       [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! NOTEQUAL        [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! AND             [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
-  ! OR              [ reduce using rule 11 (expression -> expression GREATER_THAN expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 32
+state 33
 
     (12) expression -> expression LESS_THAN expression .
     (3) expression -> expression . ADD expression
@@ -1287,20 +1276,16 @@ state 32
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    GREATER_THAN_EQUAL reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    LESS_THAN_EQUAL reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    GREATER_THAN    reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    LESS_THAN       reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    NOTEQUAL        reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    AND             reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    OR              reduce using rule 12 (expression -> expression LESS_THAN expression .)
     $end            reduce using rule 12 (expression -> expression LESS_THAN expression .)
+    LBRACE          reduce using rule 12 (expression -> expression LESS_THAN expression .)
     RPAREN          reduce using rule 12 (expression -> expression LESS_THAN expression .)
     RBRACE          reduce using rule 12 (expression -> expression LESS_THAN expression .)
     ADD             shift and go to state 8
@@ -1308,31 +1293,23 @@ state 32
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
   ! SUBTRACT        [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
   ! MULTIPLY        [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
   ! DIVIDE          [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
   ! EXP             [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! EQUALCOMP       [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! GREATER_THAN    [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! LESS_THAN       [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! NOTEQUAL        [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! AND             [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
-  ! OR              [ reduce using rule 12 (expression -> expression LESS_THAN expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 33
+state 34
 
     (13) expression -> expression NOTEQUAL expression .
     (3) expression -> expression . ADD expression
@@ -1349,20 +1326,16 @@ state 33
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-  ! shift/reduce conflict for ADD resolved as shift
-  ! shift/reduce conflict for SUBTRACT resolved as shift
-  ! shift/reduce conflict for MULTIPLY resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for EXP resolved as shift
-  ! shift/reduce conflict for EQUALCOMP resolved as shift
-  ! shift/reduce conflict for GREATER_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for LESS_THAN_EQUAL resolved as shift
-  ! shift/reduce conflict for GREATER_THAN resolved as shift
-  ! shift/reduce conflict for LESS_THAN resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
+    EQUALCOMP       reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    GREATER_THAN_EQUAL reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    LESS_THAN_EQUAL reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    GREATER_THAN    reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    LESS_THAN       reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    NOTEQUAL        reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    AND             reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    OR              reduce using rule 13 (expression -> expression NOTEQUAL expression .)
     $end            reduce using rule 13 (expression -> expression NOTEQUAL expression .)
+    LBRACE          reduce using rule 13 (expression -> expression NOTEQUAL expression .)
     RPAREN          reduce using rule 13 (expression -> expression NOTEQUAL expression .)
     RBRACE          reduce using rule 13 (expression -> expression NOTEQUAL expression .)
     ADD             shift and go to state 8
@@ -1370,31 +1343,23 @@ state 33
     MULTIPLY        shift and go to state 10
     DIVIDE          shift and go to state 11
     EXP             shift and go to state 12
-    EQUALCOMP       shift and go to state 13
-    GREATER_THAN_EQUAL shift and go to state 14
-    LESS_THAN_EQUAL shift and go to state 15
-    GREATER_THAN    shift and go to state 16
-    LESS_THAN       shift and go to state 17
-    NOTEQUAL        shift and go to state 18
-    AND             shift and go to state 19
-    OR              shift and go to state 20
 
   ! ADD             [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
   ! SUBTRACT        [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
   ! MULTIPLY        [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
   ! DIVIDE          [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
   ! EXP             [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! EQUALCOMP       [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! GREATER_THAN_EQUAL [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! LESS_THAN_EQUAL [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! GREATER_THAN    [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! LESS_THAN       [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! NOTEQUAL        [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! AND             [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
-  ! OR              [ reduce using rule 13 (expression -> expression NOTEQUAL expression .) ]
+  ! EQUALCOMP       [ shift and go to state 13 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 14 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 15 ]
+  ! GREATER_THAN    [ shift and go to state 16 ]
+  ! LESS_THAN       [ shift and go to state 17 ]
+  ! NOTEQUAL        [ shift and go to state 18 ]
+  ! AND             [ shift and go to state 19 ]
+  ! OR              [ shift and go to state 20 ]
 
 
-state 34
+state 35
 
     (15) expression -> expression AND expression .
     (3) expression -> expression . ADD expression
@@ -1425,6 +1390,7 @@ state 34
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
     $end            reduce using rule 15 (expression -> expression AND expression .)
+    LBRACE          reduce using rule 15 (expression -> expression AND expression .)
     RPAREN          reduce using rule 15 (expression -> expression AND expression .)
     RBRACE          reduce using rule 15 (expression -> expression AND expression .)
     ADD             shift and go to state 8
@@ -1456,7 +1422,7 @@ state 34
   ! OR              [ reduce using rule 15 (expression -> expression AND expression .) ]
 
 
-state 35
+state 36
 
     (16) expression -> expression OR expression .
     (3) expression -> expression . ADD expression
@@ -1487,6 +1453,7 @@ state 35
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
     $end            reduce using rule 16 (expression -> expression OR expression .)
+    LBRACE          reduce using rule 16 (expression -> expression OR expression .)
     RPAREN          reduce using rule 16 (expression -> expression OR expression .)
     RBRACE          reduce using rule 16 (expression -> expression OR expression .)
     ADD             shift and go to state 8
@@ -1518,9 +1485,10 @@ state 35
   ! OR              [ reduce using rule 16 (expression -> expression OR expression .) ]
 
 
-state 36
+state 37
 
-    (17) expression -> IF LPAREN expression . RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    (19) expression -> IF LPAREN expression . RPAREN LBRACE expression RBRACE
+    (21) expression -> IF LPAREN expression . RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
@@ -1535,7 +1503,7 @@ state 36
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-    RPAREN          shift and go to state 37
+    RPAREN          shift and go to state 39
     ADD             shift and go to state 8
     SUBTRACT        shift and go to state 9
     MULTIPLY        shift and go to state 10
@@ -1549,18 +1517,11 @@ state 36
     NOTEQUAL        shift and go to state 18
     AND             shift and go to state 19
     OR              shift and go to state 20
-
-
-state 37
-
-    (17) expression -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-
-    LBRACE          shift and go to state 38
 
 
 state 38
 
-    (17) expression -> IF LPAREN expression RPAREN LBRACE . expression RBRACE ELSE LBRACE expression RBRACE
+    (20) expression -> IF expression LBRACE . expression RBRACE
     (3) expression -> . expression ADD expression
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
@@ -1575,20 +1536,30 @@ state 38
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
-    expression                     shift and go to state 39
+    expression                     shift and go to state 40
 
 state 39
 
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE LBRACE expression RBRACE
+    (19) expression -> IF LPAREN expression RPAREN . LBRACE expression RBRACE
+    (21) expression -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+
+    LBRACE          shift and go to state 41
+
+
+state 40
+
+    (20) expression -> IF expression LBRACE expression . RBRACE
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
@@ -1603,7 +1574,7 @@ state 39
     (15) expression -> expression . AND expression
     (16) expression -> expression . OR expression
 
-    RBRACE          shift and go to state 40
+    RBRACE          shift and go to state 42
     ADD             shift and go to state 8
     SUBTRACT        shift and go to state 9
     MULTIPLY        shift and go to state 10
@@ -1619,23 +1590,10 @@ state 39
     OR              shift and go to state 20
 
 
-state 40
-
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE LBRACE expression RBRACE
-
-    ELSE            shift and go to state 41
-
-
 state 41
 
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE . LBRACE expression RBRACE
-
-    LBRACE          shift and go to state 42
-
-
-state 42
-
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE . expression RBRACE
+    (19) expression -> IF LPAREN expression RPAREN LBRACE . expression RBRACE
+    (21) expression -> IF LPAREN expression RPAREN LBRACE . expression RBRACE ELSE LBRACE expression RBRACE
     (3) expression -> . expression ADD expression
     (4) expression -> . expression SUBTRACT expression
     (5) expression -> . expression MULTIPLY expression
@@ -1650,20 +1608,46 @@ state 42
     (14) expression -> . NOT expression
     (15) expression -> . expression AND expression
     (16) expression -> . expression OR expression
-    (17) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    (18) expression -> . INT
-    (19) expression -> . FLOAT
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
 
     NOT             shift and go to state 4
-    IF              shift and go to state 5
-    INT             shift and go to state 6
-    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
 
     expression                     shift and go to state 43
 
+state 42
+
+    (20) expression -> IF expression LBRACE expression RBRACE .
+
+    ADD             reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    SUBTRACT        reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    MULTIPLY        reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    DIVIDE          reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    EXP             reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    EQUALCOMP       reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    GREATER_THAN_EQUAL reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    LESS_THAN_EQUAL reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    GREATER_THAN    reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    LESS_THAN       reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    NOTEQUAL        reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    AND             reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    OR              reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    $end            reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    LBRACE          reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    RPAREN          reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+    RBRACE          reduce using rule 20 (expression -> IF expression LBRACE expression RBRACE .)
+
+
 state 43
 
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression . RBRACE
+    (19) expression -> IF LPAREN expression RPAREN LBRACE expression . RBRACE
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE LBRACE expression RBRACE
     (3) expression -> expression . ADD expression
     (4) expression -> expression . SUBTRACT expression
     (5) expression -> expression . MULTIPLY expression
@@ -1696,24 +1680,120 @@ state 43
 
 state 44
 
-    (17) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .
+    (19) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE LBRACE expression RBRACE
 
-    ADD             reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    SUBTRACT        reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    MULTIPLY        reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    DIVIDE          reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    EXP             reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    EQUALCOMP       reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    GREATER_THAN_EQUAL reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    LESS_THAN_EQUAL reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    GREATER_THAN    reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    LESS_THAN       reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    NOTEQUAL        reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    AND             reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    OR              reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    $end            reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    RPAREN          reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
-    RBRACE          reduce using rule 17 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    ADD             reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    SUBTRACT        reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    MULTIPLY        reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    DIVIDE          reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    EXP             reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    EQUALCOMP       reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    GREATER_THAN_EQUAL reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    LESS_THAN_EQUAL reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    GREATER_THAN    reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    LESS_THAN       reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    NOTEQUAL        reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    AND             reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    OR              reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    $end            reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    LBRACE          reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    RPAREN          reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    RBRACE          reduce using rule 19 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE .)
+    ELSE            shift and go to state 45
+
+
+state 45
+
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE . LBRACE expression RBRACE
+
+    LBRACE          shift and go to state 46
+
+
+state 46
+
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE . expression RBRACE
+    (3) expression -> . expression ADD expression
+    (4) expression -> . expression SUBTRACT expression
+    (5) expression -> . expression MULTIPLY expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression EXP expression
+    (8) expression -> . expression EQUALCOMP expression
+    (9) expression -> . expression GREATER_THAN_EQUAL expression
+    (10) expression -> . expression LESS_THAN_EQUAL expression
+    (11) expression -> . expression GREATER_THAN expression
+    (12) expression -> . expression LESS_THAN expression
+    (13) expression -> . expression NOTEQUAL expression
+    (14) expression -> . NOT expression
+    (15) expression -> . expression AND expression
+    (16) expression -> . expression OR expression
+    (17) expression -> . INT
+    (18) expression -> . FLOAT
+    (19) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE
+    (20) expression -> . IF expression LBRACE expression RBRACE
+    (21) expression -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+
+    NOT             shift and go to state 4
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    IF              shift and go to state 7
+
+    expression                     shift and go to state 47
+
+state 47
+
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression . RBRACE
+    (3) expression -> expression . ADD expression
+    (4) expression -> expression . SUBTRACT expression
+    (5) expression -> expression . MULTIPLY expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . EXP expression
+    (8) expression -> expression . EQUALCOMP expression
+    (9) expression -> expression . GREATER_THAN_EQUAL expression
+    (10) expression -> expression . LESS_THAN_EQUAL expression
+    (11) expression -> expression . GREATER_THAN expression
+    (12) expression -> expression . LESS_THAN expression
+    (13) expression -> expression . NOTEQUAL expression
+    (15) expression -> expression . AND expression
+    (16) expression -> expression . OR expression
+
+    RBRACE          shift and go to state 48
+    ADD             shift and go to state 8
+    SUBTRACT        shift and go to state 9
+    MULTIPLY        shift and go to state 10
+    DIVIDE          shift and go to state 11
+    EXP             shift and go to state 12
+    EQUALCOMP       shift and go to state 13
+    GREATER_THAN_EQUAL shift and go to state 14
+    LESS_THAN_EQUAL shift and go to state 15
+    GREATER_THAN    shift and go to state 16
+    LESS_THAN       shift and go to state 17
+    NOTEQUAL        shift and go to state 18
+    AND             shift and go to state 19
+    OR              shift and go to state 20
+
+
+state 48
+
+    (21) expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .
+
+    ADD             reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    SUBTRACT        reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    MULTIPLY        reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    DIVIDE          reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    EXP             reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    EQUALCOMP       reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    GREATER_THAN_EQUAL reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    LESS_THAN_EQUAL reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    GREATER_THAN    reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    LESS_THAN       reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    NOTEQUAL        reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    AND             reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    OR              reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    $end            reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    LBRACE          reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    RPAREN          reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
+    RBRACE          reduce using rule 21 (expression -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE .)
 
 WARNING: 
 WARNING: Conflicts:
@@ -1731,162 +1811,6 @@ WARNING: shift/reduce conflict for LESS_THAN in state 21 resolved as shift
 WARNING: shift/reduce conflict for NOTEQUAL in state 21 resolved as shift
 WARNING: shift/reduce conflict for AND in state 21 resolved as shift
 WARNING: shift/reduce conflict for OR in state 21 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 23 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 23 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 23 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 23 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 23 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 23 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 23 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 23 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 23 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 23 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 23 resolved as shift
-WARNING: shift/reduce conflict for AND in state 23 resolved as shift
-WARNING: shift/reduce conflict for OR in state 23 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 24 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 24 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 24 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 24 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 24 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 24 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 24 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 24 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 24 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 24 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 24 resolved as shift
-WARNING: shift/reduce conflict for AND in state 24 resolved as shift
-WARNING: shift/reduce conflict for OR in state 24 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 25 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 25 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 25 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 25 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 25 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 25 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 25 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 25 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 25 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 25 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 25 resolved as shift
-WARNING: shift/reduce conflict for AND in state 25 resolved as shift
-WARNING: shift/reduce conflict for OR in state 25 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 26 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 26 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 26 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 26 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 26 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 26 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 26 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 26 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 26 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 26 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 26 resolved as shift
-WARNING: shift/reduce conflict for AND in state 26 resolved as shift
-WARNING: shift/reduce conflict for OR in state 26 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 27 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 27 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 27 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 27 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 27 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 27 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 27 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 27 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 27 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 27 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 27 resolved as shift
-WARNING: shift/reduce conflict for AND in state 27 resolved as shift
-WARNING: shift/reduce conflict for OR in state 27 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 28 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 28 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 28 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 28 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 28 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 28 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 28 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 28 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 28 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 28 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 28 resolved as shift
-WARNING: shift/reduce conflict for AND in state 28 resolved as shift
-WARNING: shift/reduce conflict for OR in state 28 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 29 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 29 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 29 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 29 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 29 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 29 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 29 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 29 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 29 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 29 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 29 resolved as shift
-WARNING: shift/reduce conflict for AND in state 29 resolved as shift
-WARNING: shift/reduce conflict for OR in state 29 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 30 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 30 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 30 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 30 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 30 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 30 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 30 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 30 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 30 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 30 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 30 resolved as shift
-WARNING: shift/reduce conflict for AND in state 30 resolved as shift
-WARNING: shift/reduce conflict for OR in state 30 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 31 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 31 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 31 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 31 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 31 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 31 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 31 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 31 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 31 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 31 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 31 resolved as shift
-WARNING: shift/reduce conflict for AND in state 31 resolved as shift
-WARNING: shift/reduce conflict for OR in state 31 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 32 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 32 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 32 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 32 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 32 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 32 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 32 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 32 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 32 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 32 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 32 resolved as shift
-WARNING: shift/reduce conflict for AND in state 32 resolved as shift
-WARNING: shift/reduce conflict for OR in state 32 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 33 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 33 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 33 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 33 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 33 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 33 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 33 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 33 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 33 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 33 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 33 resolved as shift
-WARNING: shift/reduce conflict for AND in state 33 resolved as shift
-WARNING: shift/reduce conflict for OR in state 33 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 34 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 34 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 34 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 34 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 34 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 34 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 34 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 34 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 34 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 34 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 34 resolved as shift
-WARNING: shift/reduce conflict for AND in state 34 resolved as shift
-WARNING: shift/reduce conflict for OR in state 34 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 35 resolved as shift
 WARNING: shift/reduce conflict for SUBTRACT in state 35 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 35 resolved as shift
@@ -1900,3 +1824,16 @@ WARNING: shift/reduce conflict for LESS_THAN in state 35 resolved as shift
 WARNING: shift/reduce conflict for NOTEQUAL in state 35 resolved as shift
 WARNING: shift/reduce conflict for AND in state 35 resolved as shift
 WARNING: shift/reduce conflict for OR in state 35 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 36 resolved as shift
+WARNING: shift/reduce conflict for SUBTRACT in state 36 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 36 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 36 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 36 resolved as shift
+WARNING: shift/reduce conflict for EQUALCOMP in state 36 resolved as shift
+WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 36 resolved as shift
+WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 36 resolved as shift
+WARNING: shift/reduce conflict for GREATER_THAN in state 36 resolved as shift
+WARNING: shift/reduce conflict for LESS_THAN in state 36 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 36 resolved as shift
+WARNING: shift/reduce conflict for AND in state 36 resolved as shift
+WARNING: shift/reduce conflict for OR in state 36 resolved as shift

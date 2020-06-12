@@ -92,12 +92,12 @@ t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
 
-def t_IF(t):
-    r'kung'
-    return t
-
 def t_ELSE(t):
     r'kunghindi'
+    return t
+    
+def t_IF(t):
+    r'kung'
     return t
 
 def t_EXP(t):
@@ -140,6 +140,11 @@ lexer = lex.lex()
 
 #_________PARSER_________#
 # resolve warnings
+precedence = (
+    ('left', 'EQUALCOMP', 'NOTEQUAL', 'GREATER_THAN_EQUAL', 'LESS_THAN_EQUAL', 'GREATER_THAN', 'LESS_THAN'),
+    ('left','ADD','SUBTRACT'),
+    ('left','EXP', 'MULTIPLY','DIVIDE'),
+  )
 
 def p_ka(p):
     '''
@@ -168,6 +173,8 @@ def p_expression_binary(p):
         p[0] = p[1] / p[3]
     elif p[2] == "eksp":
         p[0] = p[1] ** p[3]
+    
+    print((p[2], p[1], p[3]))
 
 def p_expression_binary_compare(p):
     '''
@@ -192,6 +199,8 @@ def p_expression_binary_compare(p):
     elif p[2] == "!=":
       p[0] = p[1] != p[3]
 
+    print((p[2], p[1], p[3]))
+
 def p_expression_unary(p):
     '''
     expression : NOT expression
@@ -200,7 +209,6 @@ def p_expression_unary(p):
     p[0] = not (p[2])
 
 def p_expression_and_or(p):
-    # wot
     '''
     expression : expression AND expression
                | expression OR expression
@@ -211,17 +219,6 @@ def p_expression_and_or(p):
     elif p[2] == "||":
       p[0] = p[1] or p[3]
 
-def p_expression_if_else(p):
-    '''
-    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
-    '''
-
-    if p[3]:
-      p[0] = p[6]
-    else:
-      p[0] = p[10]
-
-
 def p_int_float(p):
     '''
     expression : INT
@@ -229,6 +226,27 @@ def p_int_float(p):
     '''
 
     p[0] = p[1]
+
+def p_expression_if(p):
+    '''
+    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE
+               | IF expression LBRACE expression RBRACE
+    '''
+
+    if p[3] and p[2] == '(':
+      p[0] = p[6]
+    elif p[2]:
+      p[0] = p[4]
+
+def p_expression_if_else(p):
+    '''
+    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    '''
+
+    if p[3] and p[2] == '(':
+      p[0] = p[6]
+    else:
+      p[0] = p[10]
 
 def p_empty(p):
     '''
