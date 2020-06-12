@@ -95,7 +95,7 @@ t_COMMA = r'\,'
 def t_ELSE(t):
     r'kunghindi'
     return t
-    
+
 def t_IF(t):
     r'kung'
     return t
@@ -163,18 +163,18 @@ def p_expression_binary(p):
                | expression EXP expression
     '''
 
-    if p[2] == '+':
-        p[0] = p[1] + p[3]
-    elif p[2] == '-':
-        p[0] = p[1] - p[3]
-    elif p[2] == '*':
-        p[0] = p[1] * p[3]
-    elif p[2] == '/':
-        p[0] = p[1] / p[3]
-    elif p[2] == "eksp":
-        p[0] = p[1] ** p[3]
+    # if p[2] == '+':
+    #     p[0] = p[1] + p[3]
+    # elif p[2] == '-':
+    #     p[0] = p[1] - p[3]
+    # elif p[2] == '*':
+    #     p[0] = p[1] * p[3]
+    # elif p[2] == '/':
+    #     p[0] = p[1] / p[3]
+    # elif p[2] == "eksp":
+    #     p[0] = p[1] ** p[3]
     
-    print((p[2], p[1], p[3]))
+    p[0] = (p[2], p[1], p[3])
 
 def p_expression_binary_compare(p):
     '''
@@ -186,27 +186,28 @@ def p_expression_binary_compare(p):
                | expression NOTEQUAL expression
     '''
 
-    if p[2] == "==":
-      p[0] = p[1] == p[3]
-    elif p[2] == ">=":
-      p[0] = p[1] >= p[3]
-    elif p[2] == "<=":
-      p[0] = p[1] <= p[3]
-    elif p[2] == ">":
-      p[0] = p[1] > p[3]
-    elif p[2] == "<":
-      p[0] = p[1] < p[3]
-    elif p[2] == "!=":
-      p[0] = p[1] != p[3]
+    # if p[2] == "==":
+    #   p[0] = p[1] == p[3]
+    # elif p[2] == ">=":
+    #   p[0] = p[1] >= p[3]
+    # elif p[2] == "<=":
+    #   p[0] = p[1] <= p[3]
+    # elif p[2] == ">":
+    #   p[0] = p[1] > p[3]
+    # elif p[2] == "<":
+    #   p[0] = p[1] < p[3]
+    # elif p[2] == "!=":
+    #   p[0] = p[1] != p[3]
 
-    print((p[2], p[1], p[3]))
+    p[0] = (p[2], p[1], p[3])
 
 def p_expression_unary(p):
     '''
     expression : NOT expression
     '''
 
-    p[0] = not (p[2])
+    # p[0] = not (p[2])
+    p[0] = (p[1], [2])
 
 def p_expression_and_or(p):
     '''
