@@ -140,6 +140,8 @@ lexer = lex.lex()
 
 #_________PARSER_________#
 # resolve warnings
+# differentiate statements, booleans, expressions
+
 precedence = (
     ('left', 'EQUALCOMP', 'NOTEQUAL', 'GREATER_THAN_EQUAL', 'LESS_THAN_EQUAL', 'GREATER_THAN', 'LESS_THAN'),
     ('left','ADD','SUBTRACT'),
@@ -215,10 +217,11 @@ def p_expression_and_or(p):
                | expression OR expression
     '''
 
-    if p[2] == "&&":
-      p[0] = p[1] and p[3]
-    elif p[2] == "||":
-      p[0] = p[1] or p[3]
+    # if p[2] == "&&":
+    #   p[0] = p[1] and p[3]
+    # elif p[2] == "||":
+    #   p[0] = p[1] or p[3]
+    p[0] = (p[2], p[1], p[3])
 
 def p_int_float(p):
     '''
@@ -231,23 +234,23 @@ def p_int_float(p):
 def p_expression_if(p):
     '''
     expression : IF LPAREN expression RPAREN LBRACE expression RBRACE
-               | IF expression LBRACE expression RBRACE
     '''
 
-    if p[3] and p[2] == '(':
-      p[0] = p[6]
-    elif p[2]:
-      p[0] = p[4]
+    if p[3]:
+      # p[0] = p[6]
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 
 def p_expression_if_else(p):
     '''
     expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
     '''
 
-    if p[3] and p[2] == '(':
-      p[0] = p[6]
-    else:
-      p[0] = p[10]
+    # if p[3] and p[2] == '(':
+    #   p[0] = p[6]
+    # else:
+    #   p[0] = p[10]
+
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
 
 def p_empty(p):
     '''
