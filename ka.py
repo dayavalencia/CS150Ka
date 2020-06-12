@@ -148,13 +148,23 @@ precedence = (
     ('left','EXP', 'MULTIPLY','DIVIDE'),
   )
 
+names = {}
+
 def p_ka(p):
     '''
     ka : expression
+       | assign
        | empty
     '''
 
     print(p[1])
+
+def p_assign(p):
+    '''
+    assign : IDENTIFIER EQUAL expression
+    '''
+
+    p[0] = ('=', p[1], p[3])
 
 def p_expression_binary(p):
     '''
@@ -251,6 +261,13 @@ def p_expression_if_else(p):
     #   p[0] = p[10]
 
     p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
+
+def p_expression_var(p):
+    '''
+    expression : IDENTIFIER
+    '''
+
+    p[0] = ("var", p[1])
 
 def p_empty(p):
     '''
