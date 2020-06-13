@@ -183,7 +183,7 @@ def p_ka(p):
     '''
 
     if p[1] != None:
-      print(p[1])
+      print(translate(p[1]))
 
 def p_assign(p):
     '''
@@ -336,9 +336,27 @@ def p_empty(p):
 
 parser = yacc.yacc()
 
+#____________TRANSLATE___________#
+def translate(p):
+    f = open("output.txt","w")
+
+    if type(p) == tuple:
+        #if_statement
+        if len(p) == 7:
+            print('if ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + 
+            translate(p[5]) + '\n' 
+            + p[6])
+        if len(p) == 3:
+            return (str(p[1]) + str(p[0]) + str(p[2]))
+    elif type(p) == int:
+        return str(p)
+    
+    
+    return p
+
 while True:
     try:
         s = input('ka> ')
     except EOFError:
         break
-    parser.parse(s)
+    print(parser.parse(s))
