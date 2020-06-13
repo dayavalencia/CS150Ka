@@ -58,10 +58,7 @@ t_IDENTIFIER = r'[a-zA-Z_]\w*'
 t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
 t_VOID = r'kawalan'
-t_PRINT = r'ilimbag'
 t_INPUT = r'ipasok'
-t_WHILE = r'habang'
-t_FOR = r'parasa'
 t_BREAK = r'itigil'
 t_CONTINUE = r'ituloy'
 t_RETURN = r'ibalik'
@@ -85,6 +82,18 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
+
+def t_FOR(t):
+    r'parasa'
+    return t
+
+def t_WHILE(t):
+    r'habang'
+    return t
+
+def t_PRINT(t):
+    r'ilimbag'
+    return t
 
 def t_INTTYPE(t):
     r'bilang'
@@ -167,6 +176,8 @@ def p_ka(p):
        | assign ka
        | if_statement ka
        | if_else_statement ka
+       | while_statement ka
+       | for_statement ka
        | print ka
        | empty
     '''
@@ -177,6 +188,8 @@ def p_ka(p):
 def p_assign(p):
     '''
     assign : INTTYPE IDENTIFIER EQUAL INT
+           | INTTYPE IDENTIFIER EQUAL expression
+           | FLOATTYPE IDENTIFIER EQUAL expression
            | CHARTYPE IDENTIFIER EQUAL CHAR
            | FLOATTYPE IDENTIFIER EQUAL FLOAT
            | STRINGTYPE IDENTIFIER EQUAL STRING
@@ -186,10 +199,10 @@ def p_assign(p):
 
 def p_print(p):
   '''
-  print : PRINT expression
+  print : PRINT LPAREN expression RPAREN
   '''
   
-  p[0] = (p[1], p[2])
+  p[0] = (p[1], p[3])
 
 def p_expression_binary(p):
     '''
@@ -290,6 +303,20 @@ def p_expression_if_else(p):
     else:
       p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]) + p[9]
 
+def p_while_statement(p):
+    '''
+    while_statement : WHILE LPAREN expression RPAREN LBRACE expression RBRACE
+    '''
+
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+
+def p_for_statement(p):
+    '''
+    for_statement : FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    '''
+
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+
 def p_expression_var(p):
     '''
     expression : IDENTIFIER
@@ -304,8 +331,8 @@ def p_empty(p):
 
     p[0] = None
 
-def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+# def p_error(t):
+#     print("Syntax error at '%s'" % t.value)
 
 parser = yacc.yacc()
 
