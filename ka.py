@@ -58,14 +58,8 @@ t_IDENTIFIER = r'[a-zA-Z_]\w*'
 t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
 t_VOID = r'kawalan'
-t_INTTYPE = r'bilang'
-t_CHARTYPE = r'titik'
-t_FLOATTYPE = r'lutang'
-t_STRINGTYPE = r'hanay'
 t_PRINT = r'ilimbag'
 t_INPUT = r'ipasok'
-# t_IF = r'kung'
-# t_ELSE = r'kunghindi'
 t_WHILE = r'habang'
 t_FOR = r'parasa'
 t_BREAK = r'itigil'
@@ -91,6 +85,22 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
+
+def t_INTTYPE(t):
+    r'bilang'
+    return t
+
+def t_FLOATTYPE(t):
+    r'bilang'
+    return t
+
+def t_CHARTYPE(t):
+    r'titik'
+    return t
+
+def t_STRINGTYPE(t):
+    r'hanay'
+    return t
 
 def t_ELSE(t):
     r'kunghindi'
@@ -141,6 +151,7 @@ lexer = lex.lex()
 #_________PARSER_________#
 # resolve warnings
 # multiple expressions, assignments, statements?
+# LPAREN RPAREN if if-else? -- expressions
 
 precedence = (
     ('left', 'EQUALCOMP', 'NOTEQUAL', 'GREATER_THAN_EQUAL', 'LESS_THAN_EQUAL', 'GREATER_THAN', 'LESS_THAN'),
@@ -152,21 +163,33 @@ names = {}
 
 def p_ka(p):
     '''
-    ka : expression
-       | assign
-       | if_statement
-       | if_else_statement
+    ka : expression ka
+       | assign ka
+       | if_statement ka
+       | if_else_statement ka
+       | print ka
        | empty
     '''
 
-    print(p[1])
+    if p[1] != None:
+      print(p[1])
 
 def p_assign(p):
     '''
-    assign : IDENTIFIER EQUAL expression
+    assign : INTTYPE IDENTIFIER EQUAL INT
+           | CHARTYPE IDENTIFIER EQUAL CHAR
+           | FLOATTYPE IDENTIFIER EQUAL FLOAT
+           | STRINGTYPE IDENTIFIER EQUAL STRING
     '''
 
-    p[0] = ('=', p[1], p[3])
+    p[0] = ('=', p[2], p[4])
+
+def p_print(p):
+  '''
+  print : PRINT expression
+  '''
+  
+  p[0] = (p[1], p[2])
 
 def p_expression_binary(p):
     '''
