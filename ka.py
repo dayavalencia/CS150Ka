@@ -140,7 +140,7 @@ lexer = lex.lex()
 
 #_________PARSER_________#
 # resolve warnings
-# differentiate statements, booleans, expressions
+# multiple expressions, assignments, statements?
 
 precedence = (
     ('left', 'EQUALCOMP', 'NOTEQUAL', 'GREATER_THAN_EQUAL', 'LESS_THAN_EQUAL', 'GREATER_THAN', 'LESS_THAN'),
@@ -154,6 +154,8 @@ def p_ka(p):
     '''
     ka : expression
        | assign
+       | if_statement
+       | if_else_statement
        | empty
     '''
 
@@ -243,16 +245,16 @@ def p_int_float(p):
 
 def p_expression_if(p):
     '''
-    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE
+    if_statement : IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     '''
 
-    if p[3]:
-      # p[0] = p[6]
-      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 
 def p_expression_if_else(p):
     '''
-    expression : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE
+    if_else_statement : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
+                      | IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
+                      | IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
     '''
 
     # if p[3] and p[2] == '(':
@@ -260,7 +262,10 @@ def p_expression_if_else(p):
     # else:
     #   p[0] = p[10]
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
+    if len(p) == 13:
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
+    else:
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]) + p[9]
 
 def p_expression_var(p):
     '''
