@@ -38,7 +38,7 @@ tokens = [
     'OR',
     'AND',
     'PRINT',
-    'INPUT',
+    # 'INPUT',
     'IF',
     'ELSE',
     'WHILE',
@@ -57,8 +57,7 @@ t_COMMENT = r'\#.*'
 t_IDENTIFIER = r'[a-zA-Z_]\w*'
 t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
-t_INPUT = r'ipasok'
-t_RETURN = r'ibalik'
+# t_INPUT = r'ipasok'
 t_ADD = r'\+'
 t_SUBTRACT = r'\-'
 t_MULTIPLY = r'\*'
@@ -79,6 +78,10 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
+
+def t_RETURN(t):
+    r'ibalik'
+    return t
 
 def t_BREAK(t):
     r'itigil'
@@ -186,11 +189,13 @@ def p_ka(p):
     ka : expression SEMICOLON ka
        | assign SEMICOLON ka
        | print SEMICOLON ka
+       | return SEMICOLON ka
        | if_statement ka
        | if_else_statement ka
        | while_statement ka
        | for_statement ka
        | function_statement ka
+       | comment ka
        | empty
     '''
 
@@ -218,6 +223,13 @@ def p_legal(p):
     elif len(p) == 3 and p[2] == None:
       p[0] = (p[1],)
 
+def p_comment(p):
+    '''
+    comment : COMMENT
+    '''
+
+    p[0] = p[1]
+
 def p_assign(p):
     '''
     assign : INTTYPE IDENTIFIER EQUAL INT
@@ -236,6 +248,14 @@ def p_print(p):
   '''
   
   p[0] = (p[1], p[3])
+
+def p_return(p):
+  '''
+  return : RETURN expression
+         | RETURN IDENTIFIER
+  '''
+  
+  p[0] = (p[1], p[2])
 
 def p_expression_binary(p):
     '''
@@ -404,8 +424,8 @@ def p_empty(p):
 
     p[0] = None
 
-# def p_error(t):
-#     print("Syntax error at '%s'" % t.value)
+def p_error(t):
+    print("Syntax error at '%s'" % t.value)
 
 parser = yacc.yacc()
 
