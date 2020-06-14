@@ -347,9 +347,9 @@ def p_function_input(p):
     '''
 
     if len(p) > 2:
-      p[0] = p[1] + (p[2],) + p[3]
+      p[0] = (p[1],) + (p[2],) + p[3]
     else:
-      p[0] = p[1]
+      p[0] = (p[1],)
 
 def p_expression_var(p):
     '''
@@ -370,7 +370,7 @@ def p_empty(p):
 
 parser = yacc.yacc()
 
-while True:
+while True: 
     try:
         s = input('ka> ')
     except EOFError:
