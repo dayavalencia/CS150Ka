@@ -38,7 +38,7 @@ tokens = [
     'OR',
     'AND',
     'PRINT',
-    'INPUT',
+    # 'INPUT',
     'IF',
     'ELSE',
     'WHILE',
@@ -57,11 +57,7 @@ t_COMMENT = r'\#.*'
 t_IDENTIFIER = r'[a-zA-Z_]\w*'
 t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
-t_VOID = r'kawalan'
-t_INPUT = r'ipasok'
-t_BREAK = r'itigil'
-t_CONTINUE = r'ituloy'
-t_RETURN = r'ibalik'
+# t_INPUT = r'ipasok'
 t_ADD = r'\+'
 t_SUBTRACT = r'\-'
 t_MULTIPLY = r'\*'
@@ -83,6 +79,18 @@ t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
 
+def t_RETURN(t):
+    r'ibalik'
+    return t
+
+def t_BREAK(t):
+    r'itigil'
+    return t
+
+def t_CONTINUE(t):
+    r'ituloy'
+    return t
+
 def t_FOR(t):
     r'parasa'
     return t
@@ -93,6 +101,10 @@ def t_WHILE(t):
 
 def t_PRINT(t):
     r'ilimbag'
+    return t
+
+def t_VOID(t):
+    r'kawalan'
     return t
 
 def t_INTTYPE(t):
@@ -174,19 +186,49 @@ names = {}
 
 def p_ka(p):
     '''
-    ka : expression ka
-       | assign ka
+    ka : expression SEMICOLON ka
+       | assign SEMICOLON ka
+       | print SEMICOLON ka
+       | return SEMICOLON ka
        | if_statement ka
        | if_else_statement ka
        | while_statement ka
        | for_statement ka
        | function_statement ka
-       | print ka
+       | comment ka
        | empty
     '''
 
     if p[1] != None:
       print(translate(p[1]))
+
+def p_legal(p):
+    '''
+    legal : expression SEMICOLON legal
+       | assign SEMICOLON legal
+       | print SEMICOLON legal
+       | if_statement legal
+       | if_else_statement legal
+       | while_statement legal
+       | for_statement legal
+       | empty
+    '''
+
+    if len(p) == 4 and p[3] != None:
+      p[0] = (p[1],) + p[3]
+    elif len(p) == 4 and p[3] == None:
+      p[0] = (p[1],)
+    elif len(p) == 3 and p[2] != None:
+      p[0] = (p[1],) + p[2]
+    elif len(p) == 3 and p[2] == None:
+      p[0] = (p[1],)
+
+def p_comment(p):
+    '''
+    comment : COMMENT
+    '''
+
+    p[0] = p[1]
 
 def p_assign(p):
     '''
@@ -206,6 +248,14 @@ def p_print(p):
   '''
   
   p[0] = (p[1], p[3])
+
+def p_return(p):
+  '''
+  return : RETURN expression
+         | RETURN IDENTIFIER
+  '''
+  
+  p[0] = (p[1], p[2])
 
 def p_expression_binary(p):
     '''
@@ -282,18 +332,26 @@ def p_int_float(p):
 
     p[0] = p[1]
 
-def p_expression_if(p):
+def p_continue_break(p):
     '''
-    if_statement : IF LPAREN expression RPAREN LBRACE expression RBRACE empty
+    expression : CONTINUE
+               | BREAK
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+    p[0] = p[1]
+
+def p_expression_if(p):
+    '''
+    if_statement : IF LPAREN expression RPAREN LBRACE legal RBRACE
+    '''
+
+    p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7],)
 
 def p_expression_if_else(p):
     '''
-    if_else_statement : IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
-                      | IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
-                      | IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
+    if_else_statement : IF LPAREN expression RPAREN LBRACE legal RBRACE ELSE LBRACE legal RBRACE
+                      | IF LPAREN expression RPAREN LBRACE legal RBRACE ELSE if_else_statement
+                      | IF LPAREN expression RPAREN LBRACE legal RBRACE ELSE if_statement
     '''
 
     # if p[3] and p[2] == '(':
@@ -301,24 +359,24 @@ def p_expression_if_else(p):
     # else:
     #   p[0] = p[10]
 
-    if len(p) == 13:
-      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
+    if len(p) == 12:
+      p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7], p[8], p[9]) + p[10] + (p[11],)
     else:
-      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]) + p[9]
+      p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] +(p[7], p[8]) + p[9]
 
 def p_while_statement(p):
     '''
-    while_statement : WHILE LPAREN expression RPAREN LBRACE expression RBRACE
+    while_statement : WHILE LPAREN expression RPAREN LBRACE legal RBRACE
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+    p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7],)
 
 def p_for_statement(p):
     '''
-    for_statement : FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    for_statement : FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE legal RBRACE
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]) + p[10] + (p[11],)
 
 def p_types(p):
     '''
@@ -329,16 +387,17 @@ def p_types(p):
     '''
 
     p[0] = p[1], p[2]
+
 def p_function(p):
     '''
-    function_statement : type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
-                       | VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    function_statement : type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE
+                       | VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE
     '''
 
     if len(p) == 8:
-      p[0] = p[1] + (p[2],) + p[3] + (p[4], p[5], p[6], p[7])
+      p[0] = p[1] + (p[2],) + p[3] + (p[4], p[5]) + p[6] + (p[7],)
     else:
-      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8])
+      p[0] = (p[1], p[2], p[3]) + p[4] + (p[5], p[6]) + p[7] + (p[8],)
 
 def p_function_input(p):
     '''
@@ -347,9 +406,9 @@ def p_function_input(p):
     '''
 
     if len(p) > 2:
-      p[0] = p[1] + (p[2],) + p[3]
+      p[0] = (p[1],) + (p[2],) + p[3]
     else:
-      p[0] = p[1]
+      p[0] = (p[1],)
 
 def p_expression_var(p):
     '''
@@ -365,8 +424,8 @@ def p_empty(p):
 
     p[0] = None
 
-# def p_error(t):
-#     print("Syntax error at '%s'" % t.value)
+def p_error(t):
+    print("Syntax error at '%s'" % t.value)
 
 parser = yacc.yacc()
 
@@ -409,7 +468,7 @@ def translate(p):
         return str(p)
     return p
 
-while True:
+while True: 
     try:
         s = input('ka> ')
     except EOFError:
