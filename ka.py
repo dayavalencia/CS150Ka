@@ -372,7 +372,11 @@ parser = yacc.yacc()
 
 #____________TRANSLATE___________#
 def translate(p):
-    f = open("output.txt","w")
+    #f = open("output.txt","w")
+    #missing
+    print((1,3) + (3,4))
+    print(type((1,3) + (3,4)))
+    print(len((1,3) + (3,4)))
 
     if type(p) == tuple:
         #for_if_statement_and_its_constituents
@@ -383,18 +387,24 @@ def translate(p):
             if p[0] == 'parasa':
                 pstring += 'for '
         #while_if_statement
-        if len(p) == 7:
+        elif len(p) == 7:
             pstring = ''
             if p[0] == 'kung':
                 pstring += 'if ' 
             if p[0] == 'habang':
                 pstring += 'while '
-            
             pstring += p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
             print(pstring)
-
-        if len(p) == 3:
-            return (str(p[1]) + str(p[0]) + str(p[2]))
+        elif len(p) == 3:
+            if p[2] == 'eksp':
+                return (p[1] + '**' + p[3])
+            else:
+                return (str(p[1]) + str(p[0]) + str(p[2]))
+        elif len(p) == 2:
+            if p[1] == 'ilimbag':
+               return ('printf(' + translate(p[3]) + ')')
+            else:
+                return(str(p[0]) + str(p[1]))                
     elif type(p) == int:
         return str(p)
     return p
