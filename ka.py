@@ -341,17 +341,28 @@ def translate(p):
     f = open("output.txt","w")
 
     if type(p) == tuple:
-        #if_statement
+        #for_if_statement_and_its_constituents
+        if len(p) == 11:
+            if p[0] == 'kung':
+                pstring = 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else' + p[8] + translate(p) + p[10]
+                print(pstring)
+            if p[0] == 'parasa':
+                pstring += 'for '
+        #while_if_statement
         if len(p) == 7:
-            print('if ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + 
-            translate(p[5]) + '\n' 
-            + p[6])
+            pstring = ''
+            if p[0] == 'kung':
+                pstring += 'if ' 
+            if p[0] == 'habang':
+                pstring += 'while '
+            
+            pstring += p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            print(pstring)
+
         if len(p) == 3:
             return (str(p[1]) + str(p[0]) + str(p[2]))
     elif type(p) == int:
         return str(p)
-    
-    
     return p
 
 while True:
