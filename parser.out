@@ -9,14 +9,14 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> ka
-Rule 1     ka -> expression ka
-Rule 2     ka -> assign ka
-Rule 3     ka -> if_statement ka
-Rule 4     ka -> if_else_statement ka
-Rule 5     ka -> while_statement ka
-Rule 6     ka -> for_statement ka
-Rule 7     ka -> function_statement ka
-Rule 8     ka -> print ka
+Rule 1     ka -> expression SEMICOLON ka
+Rule 2     ka -> assign SEMICOLON ka
+Rule 3     ka -> print SEMICOLON ka
+Rule 4     ka -> if_statement ka
+Rule 5     ka -> if_else_statement ka
+Rule 6     ka -> while_statement ka
+Rule 7     ka -> for_statement ka
+Rule 8     ka -> function_statement ka
 Rule 9     ka -> empty
 Rule 10    assign -> INTTYPE IDENTIFIER EQUAL INT
 Rule 11    assign -> INTTYPE IDENTIFIER EQUAL expression
@@ -97,7 +97,7 @@ PRINT                : 16
 RBRACE               : 35 36 36 37 38 39 40 45 46
 RETURN               : 
 RPAREN               : 16 35 36 37 38 39 40 45 46
-SEMICOLON            : 40 40
+SEMICOLON            : 1 2 3 40 40
 STRING               : 15
 STRINGTYPE           : 15 44
 SUBTRACT             : 18
@@ -110,29 +110,29 @@ Nonterminals, with rules where they appear
 assign               : 2 40 40
 empty                : 9 35 36
 expression           : 1 11 12 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 29 29 30 30 35 35 36 36 36 37 37 38 38 39 39 40 40 45 46
-for_statement        : 6
+for_statement        : 7
 function_input       : 45 46 47
-function_statement   : 7
-if_else_statement    : 4 37
-if_statement         : 3 38
+function_statement   : 8
+if_else_statement    : 5 37
+if_statement         : 4 38
 ka                   : 1 2 3 4 5 6 7 8 0
-print                : 8
+print                : 3
 type_identifier      : 45 47 48
-while_statement      : 5
+while_statement      : 6
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -159,6 +159,7 @@ state 0
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -167,7 +168,6 @@ state 0
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -184,24 +184,24 @@ state 0
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
     ka                             shift and go to state 1
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 1
 
@@ -211,7 +211,7 @@ state 1
 
 state 2
 
-    (1) ka -> expression . ka
+    (1) ka -> expression . SEMICOLON ka
     (17) expression -> expression . ADD expression
     (18) expression -> expression . SUBTRACT expression
     (19) expression -> expression . MULTIPLY expression
@@ -225,55 +225,8 @@ state 2
     (27) expression -> expression . NOTEQUAL expression
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
-    (9) ka -> . empty
-    (17) expression -> . expression ADD expression
-    (18) expression -> . expression SUBTRACT expression
-    (19) expression -> . expression MULTIPLY expression
-    (20) expression -> . expression DIVIDE expression
-    (21) expression -> . expression EXP expression
-    (22) expression -> . expression EQUALCOMP expression
-    (23) expression -> . expression GREATER_THAN_EQUAL expression
-    (24) expression -> . expression LESS_THAN_EQUAL expression
-    (25) expression -> . expression GREATER_THAN expression
-    (26) expression -> . expression LESS_THAN expression
-    (27) expression -> . expression NOTEQUAL expression
-    (28) expression -> . NOT expression
-    (29) expression -> . expression AND expression
-    (30) expression -> . expression OR expression
-    (31) expression -> . INT
-    (32) expression -> . FLOAT
-    (33) expression -> . CONTINUE
-    (34) expression -> . BREAK
-    (49) expression -> . IDENTIFIER
-    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
-    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
-    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
-    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
-    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
-    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
-    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
-    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
-    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
-    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
-    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
-    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
-    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
-    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
-    (50) empty -> .
-    (41) type_identifier -> . INTTYPE IDENTIFIER
-    (42) type_identifier -> . CHARTYPE IDENTIFIER
-    (43) type_identifier -> . FLOATTYPE IDENTIFIER
-    (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
+    SEMICOLON       shift and go to state 27
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -287,208 +240,33 @@ state 2
     NOTEQUAL        shift and go to state 38
     AND             shift and go to state 39
     OR              shift and go to state 40
-    NOT             shift and go to state 11
-    INT             shift and go to state 12
-    FLOAT           shift and go to state 13
-    CONTINUE        shift and go to state 14
-    BREAK           shift and go to state 15
-    IDENTIFIER      shift and go to state 16
-    INTTYPE         shift and go to state 17
-    FLOATTYPE       shift and go to state 18
-    CHARTYPE        shift and go to state 19
-    STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
-    $end            reduce using rule 50 (empty -> .)
 
-    expression                     shift and go to state 2
-    ka                             shift and go to state 27
-    assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
-    empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
 
 state 3
 
-    (2) ka -> assign . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
-    (9) ka -> . empty
-    (17) expression -> . expression ADD expression
-    (18) expression -> . expression SUBTRACT expression
-    (19) expression -> . expression MULTIPLY expression
-    (20) expression -> . expression DIVIDE expression
-    (21) expression -> . expression EXP expression
-    (22) expression -> . expression EQUALCOMP expression
-    (23) expression -> . expression GREATER_THAN_EQUAL expression
-    (24) expression -> . expression LESS_THAN_EQUAL expression
-    (25) expression -> . expression GREATER_THAN expression
-    (26) expression -> . expression LESS_THAN expression
-    (27) expression -> . expression NOTEQUAL expression
-    (28) expression -> . NOT expression
-    (29) expression -> . expression AND expression
-    (30) expression -> . expression OR expression
-    (31) expression -> . INT
-    (32) expression -> . FLOAT
-    (33) expression -> . CONTINUE
-    (34) expression -> . BREAK
-    (49) expression -> . IDENTIFIER
-    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
-    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
-    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
-    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
-    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
-    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
-    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
-    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
-    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
-    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
-    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
-    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
-    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
-    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
-    (50) empty -> .
-    (41) type_identifier -> . INTTYPE IDENTIFIER
-    (42) type_identifier -> . CHARTYPE IDENTIFIER
-    (43) type_identifier -> . FLOATTYPE IDENTIFIER
-    (44) type_identifier -> . STRINGTYPE IDENTIFIER
+    (2) ka -> assign . SEMICOLON ka
 
-    NOT             shift and go to state 11
-    INT             shift and go to state 12
-    FLOAT           shift and go to state 13
-    CONTINUE        shift and go to state 14
-    BREAK           shift and go to state 15
-    IDENTIFIER      shift and go to state 16
-    INTTYPE         shift and go to state 17
-    FLOATTYPE       shift and go to state 18
-    CHARTYPE        shift and go to state 19
-    STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
-    $end            reduce using rule 50 (empty -> .)
+    SEMICOLON       shift and go to state 41
 
-    assign                         shift and go to state 3
-    ka                             shift and go to state 41
-    expression                     shift and go to state 2
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
-    empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
 
 state 4
 
-    (3) ka -> if_statement . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
-    (9) ka -> . empty
-    (17) expression -> . expression ADD expression
-    (18) expression -> . expression SUBTRACT expression
-    (19) expression -> . expression MULTIPLY expression
-    (20) expression -> . expression DIVIDE expression
-    (21) expression -> . expression EXP expression
-    (22) expression -> . expression EQUALCOMP expression
-    (23) expression -> . expression GREATER_THAN_EQUAL expression
-    (24) expression -> . expression LESS_THAN_EQUAL expression
-    (25) expression -> . expression GREATER_THAN expression
-    (26) expression -> . expression LESS_THAN expression
-    (27) expression -> . expression NOTEQUAL expression
-    (28) expression -> . NOT expression
-    (29) expression -> . expression AND expression
-    (30) expression -> . expression OR expression
-    (31) expression -> . INT
-    (32) expression -> . FLOAT
-    (33) expression -> . CONTINUE
-    (34) expression -> . BREAK
-    (49) expression -> . IDENTIFIER
-    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
-    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
-    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
-    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
-    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
-    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
-    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
-    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
-    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
-    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
-    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
-    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
-    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
-    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
-    (50) empty -> .
-    (41) type_identifier -> . INTTYPE IDENTIFIER
-    (42) type_identifier -> . CHARTYPE IDENTIFIER
-    (43) type_identifier -> . FLOATTYPE IDENTIFIER
-    (44) type_identifier -> . STRINGTYPE IDENTIFIER
+    (3) ka -> print . SEMICOLON ka
 
-    NOT             shift and go to state 11
-    INT             shift and go to state 12
-    FLOAT           shift and go to state 13
-    CONTINUE        shift and go to state 14
-    BREAK           shift and go to state 15
-    IDENTIFIER      shift and go to state 16
-    INTTYPE         shift and go to state 17
-    FLOATTYPE       shift and go to state 18
-    CHARTYPE        shift and go to state 19
-    STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
-    $end            reduce using rule 50 (empty -> .)
+    SEMICOLON       shift and go to state 42
 
-    if_statement                   shift and go to state 4
-    ka                             shift and go to state 42
-    expression                     shift and go to state 2
-    assign                         shift and go to state 3
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
-    empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
 
 state 5
 
-    (4) ka -> if_else_statement . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (4) ka -> if_statement . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -515,6 +293,7 @@ state 5
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -523,7 +302,6 @@ state 5
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -540,36 +318,36 @@ state 5
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
-    if_else_statement              shift and go to state 5
+    if_statement                   shift and go to state 5
     ka                             shift and go to state 43
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
+    print                          shift and go to state 4
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 6
 
-    (5) ka -> while_statement . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (5) ka -> if_else_statement . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -596,6 +374,7 @@ state 6
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -604,7 +383,6 @@ state 6
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -621,36 +399,36 @@ state 6
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
-    while_statement                shift and go to state 6
+    if_else_statement              shift and go to state 6
     ka                             shift and go to state 44
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 7
 
-    (6) ka -> for_statement . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (6) ka -> while_statement . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -677,6 +455,7 @@ state 7
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -685,7 +464,6 @@ state 7
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -702,36 +480,36 @@ state 7
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
-    for_statement                  shift and go to state 7
+    while_statement                shift and go to state 7
     ka                             shift and go to state 45
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    function_statement             shift and go to state 8
-    print                          shift and go to state 9
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 8
 
-    (7) ka -> function_statement . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (7) ka -> for_statement . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -758,6 +536,7 @@ state 8
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -766,7 +545,6 @@ state 8
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -783,36 +561,36 @@ state 8
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
-    function_statement             shift and go to state 8
+    for_statement                  shift and go to state 8
     ka                             shift and go to state 46
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    print                          shift and go to state 9
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    function_statement             shift and go to state 9
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 9
 
-    (8) ka -> print . ka
-    (1) ka -> . expression ka
-    (2) ka -> . assign ka
-    (3) ka -> . if_statement ka
-    (4) ka -> . if_else_statement ka
-    (5) ka -> . while_statement ka
-    (6) ka -> . for_statement ka
-    (7) ka -> . function_statement ka
-    (8) ka -> . print ka
+    (8) ka -> function_statement . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
     (9) ka -> . empty
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -839,6 +617,7 @@ state 9
     (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -847,7 +626,6 @@ state 9
     (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
     (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
-    (16) print -> . PRINT LPAREN expression RPAREN
     (50) empty -> .
     (41) type_identifier -> . INTTYPE IDENTIFIER
     (42) type_identifier -> . CHARTYPE IDENTIFIER
@@ -864,24 +642,24 @@ state 9
     FLOATTYPE       shift and go to state 18
     CHARTYPE        shift and go to state 19
     STRINGTYPE      shift and go to state 20
-    IF              shift and go to state 21
-    WHILE           shift and go to state 22
-    FOR             shift and go to state 23
-    VOID            shift and go to state 25
-    PRINT           shift and go to state 26
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
     $end            reduce using rule 50 (empty -> .)
 
-    print                          shift and go to state 9
+    function_statement             shift and go to state 9
     ka                             shift and go to state 47
     expression                     shift and go to state 2
     assign                         shift and go to state 3
-    if_statement                   shift and go to state 4
-    if_else_statement              shift and go to state 5
-    while_statement                shift and go to state 6
-    for_statement                  shift and go to state 7
-    function_statement             shift and go to state 8
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
     empty                          shift and go to state 10
-    type_identifier                shift and go to state 24
+    type_identifier                shift and go to state 25
 
 state 10
 
@@ -926,6 +704,7 @@ state 12
 
     (31) expression -> INT .
 
+    SEMICOLON       reduce using rule 31 (expression -> INT .)
     ADD             reduce using rule 31 (expression -> INT .)
     SUBTRACT        reduce using rule 31 (expression -> INT .)
     MULTIPLY        reduce using rule 31 (expression -> INT .)
@@ -939,24 +718,7 @@ state 12
     NOTEQUAL        reduce using rule 31 (expression -> INT .)
     AND             reduce using rule 31 (expression -> INT .)
     OR              reduce using rule 31 (expression -> INT .)
-    NOT             reduce using rule 31 (expression -> INT .)
-    INT             reduce using rule 31 (expression -> INT .)
-    FLOAT           reduce using rule 31 (expression -> INT .)
-    CONTINUE        reduce using rule 31 (expression -> INT .)
-    BREAK           reduce using rule 31 (expression -> INT .)
-    IDENTIFIER      reduce using rule 31 (expression -> INT .)
-    INTTYPE         reduce using rule 31 (expression -> INT .)
-    FLOATTYPE       reduce using rule 31 (expression -> INT .)
-    CHARTYPE        reduce using rule 31 (expression -> INT .)
-    STRINGTYPE      reduce using rule 31 (expression -> INT .)
-    IF              reduce using rule 31 (expression -> INT .)
-    WHILE           reduce using rule 31 (expression -> INT .)
-    FOR             reduce using rule 31 (expression -> INT .)
-    VOID            reduce using rule 31 (expression -> INT .)
-    PRINT           reduce using rule 31 (expression -> INT .)
-    $end            reduce using rule 31 (expression -> INT .)
     RPAREN          reduce using rule 31 (expression -> INT .)
-    SEMICOLON       reduce using rule 31 (expression -> INT .)
     RBRACE          reduce using rule 31 (expression -> INT .)
 
 
@@ -964,6 +726,7 @@ state 13
 
     (32) expression -> FLOAT .
 
+    SEMICOLON       reduce using rule 32 (expression -> FLOAT .)
     ADD             reduce using rule 32 (expression -> FLOAT .)
     SUBTRACT        reduce using rule 32 (expression -> FLOAT .)
     MULTIPLY        reduce using rule 32 (expression -> FLOAT .)
@@ -977,24 +740,7 @@ state 13
     NOTEQUAL        reduce using rule 32 (expression -> FLOAT .)
     AND             reduce using rule 32 (expression -> FLOAT .)
     OR              reduce using rule 32 (expression -> FLOAT .)
-    NOT             reduce using rule 32 (expression -> FLOAT .)
-    INT             reduce using rule 32 (expression -> FLOAT .)
-    FLOAT           reduce using rule 32 (expression -> FLOAT .)
-    CONTINUE        reduce using rule 32 (expression -> FLOAT .)
-    BREAK           reduce using rule 32 (expression -> FLOAT .)
-    IDENTIFIER      reduce using rule 32 (expression -> FLOAT .)
-    INTTYPE         reduce using rule 32 (expression -> FLOAT .)
-    FLOATTYPE       reduce using rule 32 (expression -> FLOAT .)
-    CHARTYPE        reduce using rule 32 (expression -> FLOAT .)
-    STRINGTYPE      reduce using rule 32 (expression -> FLOAT .)
-    IF              reduce using rule 32 (expression -> FLOAT .)
-    WHILE           reduce using rule 32 (expression -> FLOAT .)
-    FOR             reduce using rule 32 (expression -> FLOAT .)
-    VOID            reduce using rule 32 (expression -> FLOAT .)
-    PRINT           reduce using rule 32 (expression -> FLOAT .)
-    $end            reduce using rule 32 (expression -> FLOAT .)
     RPAREN          reduce using rule 32 (expression -> FLOAT .)
-    SEMICOLON       reduce using rule 32 (expression -> FLOAT .)
     RBRACE          reduce using rule 32 (expression -> FLOAT .)
 
 
@@ -1002,6 +748,7 @@ state 14
 
     (33) expression -> CONTINUE .
 
+    SEMICOLON       reduce using rule 33 (expression -> CONTINUE .)
     ADD             reduce using rule 33 (expression -> CONTINUE .)
     SUBTRACT        reduce using rule 33 (expression -> CONTINUE .)
     MULTIPLY        reduce using rule 33 (expression -> CONTINUE .)
@@ -1015,24 +762,7 @@ state 14
     NOTEQUAL        reduce using rule 33 (expression -> CONTINUE .)
     AND             reduce using rule 33 (expression -> CONTINUE .)
     OR              reduce using rule 33 (expression -> CONTINUE .)
-    NOT             reduce using rule 33 (expression -> CONTINUE .)
-    INT             reduce using rule 33 (expression -> CONTINUE .)
-    FLOAT           reduce using rule 33 (expression -> CONTINUE .)
-    CONTINUE        reduce using rule 33 (expression -> CONTINUE .)
-    BREAK           reduce using rule 33 (expression -> CONTINUE .)
-    IDENTIFIER      reduce using rule 33 (expression -> CONTINUE .)
-    INTTYPE         reduce using rule 33 (expression -> CONTINUE .)
-    FLOATTYPE       reduce using rule 33 (expression -> CONTINUE .)
-    CHARTYPE        reduce using rule 33 (expression -> CONTINUE .)
-    STRINGTYPE      reduce using rule 33 (expression -> CONTINUE .)
-    IF              reduce using rule 33 (expression -> CONTINUE .)
-    WHILE           reduce using rule 33 (expression -> CONTINUE .)
-    FOR             reduce using rule 33 (expression -> CONTINUE .)
-    VOID            reduce using rule 33 (expression -> CONTINUE .)
-    PRINT           reduce using rule 33 (expression -> CONTINUE .)
-    $end            reduce using rule 33 (expression -> CONTINUE .)
     RPAREN          reduce using rule 33 (expression -> CONTINUE .)
-    SEMICOLON       reduce using rule 33 (expression -> CONTINUE .)
     RBRACE          reduce using rule 33 (expression -> CONTINUE .)
 
 
@@ -1040,6 +770,7 @@ state 15
 
     (34) expression -> BREAK .
 
+    SEMICOLON       reduce using rule 34 (expression -> BREAK .)
     ADD             reduce using rule 34 (expression -> BREAK .)
     SUBTRACT        reduce using rule 34 (expression -> BREAK .)
     MULTIPLY        reduce using rule 34 (expression -> BREAK .)
@@ -1053,24 +784,7 @@ state 15
     NOTEQUAL        reduce using rule 34 (expression -> BREAK .)
     AND             reduce using rule 34 (expression -> BREAK .)
     OR              reduce using rule 34 (expression -> BREAK .)
-    NOT             reduce using rule 34 (expression -> BREAK .)
-    INT             reduce using rule 34 (expression -> BREAK .)
-    FLOAT           reduce using rule 34 (expression -> BREAK .)
-    CONTINUE        reduce using rule 34 (expression -> BREAK .)
-    BREAK           reduce using rule 34 (expression -> BREAK .)
-    IDENTIFIER      reduce using rule 34 (expression -> BREAK .)
-    INTTYPE         reduce using rule 34 (expression -> BREAK .)
-    FLOATTYPE       reduce using rule 34 (expression -> BREAK .)
-    CHARTYPE        reduce using rule 34 (expression -> BREAK .)
-    STRINGTYPE      reduce using rule 34 (expression -> BREAK .)
-    IF              reduce using rule 34 (expression -> BREAK .)
-    WHILE           reduce using rule 34 (expression -> BREAK .)
-    FOR             reduce using rule 34 (expression -> BREAK .)
-    VOID            reduce using rule 34 (expression -> BREAK .)
-    PRINT           reduce using rule 34 (expression -> BREAK .)
-    $end            reduce using rule 34 (expression -> BREAK .)
     RPAREN          reduce using rule 34 (expression -> BREAK .)
-    SEMICOLON       reduce using rule 34 (expression -> BREAK .)
     RBRACE          reduce using rule 34 (expression -> BREAK .)
 
 
@@ -1078,6 +792,7 @@ state 16
 
     (49) expression -> IDENTIFIER .
 
+    SEMICOLON       reduce using rule 49 (expression -> IDENTIFIER .)
     ADD             reduce using rule 49 (expression -> IDENTIFIER .)
     SUBTRACT        reduce using rule 49 (expression -> IDENTIFIER .)
     MULTIPLY        reduce using rule 49 (expression -> IDENTIFIER .)
@@ -1091,24 +806,7 @@ state 16
     NOTEQUAL        reduce using rule 49 (expression -> IDENTIFIER .)
     AND             reduce using rule 49 (expression -> IDENTIFIER .)
     OR              reduce using rule 49 (expression -> IDENTIFIER .)
-    NOT             reduce using rule 49 (expression -> IDENTIFIER .)
-    INT             reduce using rule 49 (expression -> IDENTIFIER .)
-    FLOAT           reduce using rule 49 (expression -> IDENTIFIER .)
-    CONTINUE        reduce using rule 49 (expression -> IDENTIFIER .)
-    BREAK           reduce using rule 49 (expression -> IDENTIFIER .)
-    IDENTIFIER      reduce using rule 49 (expression -> IDENTIFIER .)
-    INTTYPE         reduce using rule 49 (expression -> IDENTIFIER .)
-    FLOATTYPE       reduce using rule 49 (expression -> IDENTIFIER .)
-    CHARTYPE        reduce using rule 49 (expression -> IDENTIFIER .)
-    STRINGTYPE      reduce using rule 49 (expression -> IDENTIFIER .)
-    IF              reduce using rule 49 (expression -> IDENTIFIER .)
-    WHILE           reduce using rule 49 (expression -> IDENTIFIER .)
-    FOR             reduce using rule 49 (expression -> IDENTIFIER .)
-    VOID            reduce using rule 49 (expression -> IDENTIFIER .)
-    PRINT           reduce using rule 49 (expression -> IDENTIFIER .)
-    $end            reduce using rule 49 (expression -> IDENTIFIER .)
     RPAREN          reduce using rule 49 (expression -> IDENTIFIER .)
-    SEMICOLON       reduce using rule 49 (expression -> IDENTIFIER .)
     RBRACE          reduce using rule 49 (expression -> IDENTIFIER .)
 
 
@@ -1148,55 +846,129 @@ state 20
 
 state 21
 
-    (35) if_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE empty
-    (36) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
-    (37) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
-    (38) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
+    (16) print -> PRINT . LPAREN expression RPAREN
 
     LPAREN          shift and go to state 53
 
 
 state 22
 
-    (39) while_statement -> WHILE . LPAREN expression RPAREN LBRACE expression RBRACE
+    (35) if_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE empty
+    (36) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
+    (37) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
+    (38) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
 
     LPAREN          shift and go to state 54
 
 
 state 23
 
-    (40) for_statement -> FOR . LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    (39) while_statement -> WHILE . LPAREN expression RPAREN LBRACE expression RBRACE
 
     LPAREN          shift and go to state 55
 
 
 state 24
 
-    (45) function_statement -> type_identifier . LPAREN function_input RPAREN LBRACE expression RBRACE
+    (40) for_statement -> FOR . LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
 
     LPAREN          shift and go to state 56
 
 
 state 25
 
-    (46) function_statement -> VOID . IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    (45) function_statement -> type_identifier . LPAREN function_input RPAREN LBRACE expression RBRACE
 
-    IDENTIFIER      shift and go to state 57
+    LPAREN          shift and go to state 57
 
 
 state 26
 
-    (16) print -> PRINT . LPAREN expression RPAREN
+    (46) function_statement -> VOID . IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
 
-    LPAREN          shift and go to state 58
+    IDENTIFIER      shift and go to state 58
 
 
 state 27
 
-    (1) ka -> expression ka .
+    (1) ka -> expression SEMICOLON . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
+    (9) ka -> . empty
+    (17) expression -> . expression ADD expression
+    (18) expression -> . expression SUBTRACT expression
+    (19) expression -> . expression MULTIPLY expression
+    (20) expression -> . expression DIVIDE expression
+    (21) expression -> . expression EXP expression
+    (22) expression -> . expression EQUALCOMP expression
+    (23) expression -> . expression GREATER_THAN_EQUAL expression
+    (24) expression -> . expression LESS_THAN_EQUAL expression
+    (25) expression -> . expression GREATER_THAN expression
+    (26) expression -> . expression LESS_THAN expression
+    (27) expression -> . expression NOTEQUAL expression
+    (28) expression -> . NOT expression
+    (29) expression -> . expression AND expression
+    (30) expression -> . expression OR expression
+    (31) expression -> . INT
+    (32) expression -> . FLOAT
+    (33) expression -> . CONTINUE
+    (34) expression -> . BREAK
+    (49) expression -> . IDENTIFIER
+    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
+    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
+    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
+    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
+    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
+    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
+    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
+    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
+    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
+    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
+    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
+    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
+    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    (50) empty -> .
+    (41) type_identifier -> . INTTYPE IDENTIFIER
+    (42) type_identifier -> . CHARTYPE IDENTIFIER
+    (43) type_identifier -> . FLOATTYPE IDENTIFIER
+    (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    $end            reduce using rule 1 (ka -> expression ka .)
+    NOT             shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    CONTINUE        shift and go to state 14
+    BREAK           shift and go to state 15
+    IDENTIFIER      shift and go to state 16
+    INTTYPE         shift and go to state 17
+    FLOATTYPE       shift and go to state 18
+    CHARTYPE        shift and go to state 19
+    STRINGTYPE      shift and go to state 20
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
+    $end            reduce using rule 50 (empty -> .)
 
+    expression                     shift and go to state 2
+    ka                             shift and go to state 59
+    assign                         shift and go to state 3
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
+    empty                          shift and go to state 10
+    type_identifier                shift and go to state 25
 
 state 28
 
@@ -1228,7 +1000,7 @@ state 28
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 59
+    expression                     shift and go to state 60
 
 state 29
 
@@ -1260,7 +1032,7 @@ state 29
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 60
+    expression                     shift and go to state 61
 
 state 30
 
@@ -1292,7 +1064,7 @@ state 30
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 61
+    expression                     shift and go to state 62
 
 state 31
 
@@ -1324,7 +1096,7 @@ state 31
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 62
+    expression                     shift and go to state 63
 
 state 32
 
@@ -1356,7 +1128,7 @@ state 32
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 63
+    expression                     shift and go to state 64
 
 state 33
 
@@ -1388,7 +1160,7 @@ state 33
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 64
+    expression                     shift and go to state 65
 
 state 34
 
@@ -1420,7 +1192,7 @@ state 34
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 65
+    expression                     shift and go to state 66
 
 state 35
 
@@ -1452,7 +1224,7 @@ state 35
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 66
+    expression                     shift and go to state 67
 
 state 36
 
@@ -1484,7 +1256,7 @@ state 36
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 67
+    expression                     shift and go to state 68
 
 state 37
 
@@ -1516,7 +1288,7 @@ state 37
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 68
+    expression                     shift and go to state 69
 
 state 38
 
@@ -1548,7 +1320,7 @@ state 38
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 69
+    expression                     shift and go to state 70
 
 state 39
 
@@ -1580,7 +1352,7 @@ state 39
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 70
+    expression                     shift and go to state 71
 
 state 40
 
@@ -1612,55 +1384,203 @@ state 40
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 71
+    expression                     shift and go to state 72
 
 state 41
 
-    (2) ka -> assign ka .
+    (2) ka -> assign SEMICOLON . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
+    (9) ka -> . empty
+    (17) expression -> . expression ADD expression
+    (18) expression -> . expression SUBTRACT expression
+    (19) expression -> . expression MULTIPLY expression
+    (20) expression -> . expression DIVIDE expression
+    (21) expression -> . expression EXP expression
+    (22) expression -> . expression EQUALCOMP expression
+    (23) expression -> . expression GREATER_THAN_EQUAL expression
+    (24) expression -> . expression LESS_THAN_EQUAL expression
+    (25) expression -> . expression GREATER_THAN expression
+    (26) expression -> . expression LESS_THAN expression
+    (27) expression -> . expression NOTEQUAL expression
+    (28) expression -> . NOT expression
+    (29) expression -> . expression AND expression
+    (30) expression -> . expression OR expression
+    (31) expression -> . INT
+    (32) expression -> . FLOAT
+    (33) expression -> . CONTINUE
+    (34) expression -> . BREAK
+    (49) expression -> . IDENTIFIER
+    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
+    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
+    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
+    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
+    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
+    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
+    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
+    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
+    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
+    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
+    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
+    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
+    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    (50) empty -> .
+    (41) type_identifier -> . INTTYPE IDENTIFIER
+    (42) type_identifier -> . CHARTYPE IDENTIFIER
+    (43) type_identifier -> . FLOATTYPE IDENTIFIER
+    (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    $end            reduce using rule 2 (ka -> assign ka .)
+    NOT             shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    CONTINUE        shift and go to state 14
+    BREAK           shift and go to state 15
+    IDENTIFIER      shift and go to state 16
+    INTTYPE         shift and go to state 17
+    FLOATTYPE       shift and go to state 18
+    CHARTYPE        shift and go to state 19
+    STRINGTYPE      shift and go to state 20
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
+    $end            reduce using rule 50 (empty -> .)
 
+    assign                         shift and go to state 3
+    ka                             shift and go to state 73
+    expression                     shift and go to state 2
+    print                          shift and go to state 4
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
+    empty                          shift and go to state 10
+    type_identifier                shift and go to state 25
 
 state 42
 
-    (3) ka -> if_statement ka .
+    (3) ka -> print SEMICOLON . ka
+    (1) ka -> . expression SEMICOLON ka
+    (2) ka -> . assign SEMICOLON ka
+    (3) ka -> . print SEMICOLON ka
+    (4) ka -> . if_statement ka
+    (5) ka -> . if_else_statement ka
+    (6) ka -> . while_statement ka
+    (7) ka -> . for_statement ka
+    (8) ka -> . function_statement ka
+    (9) ka -> . empty
+    (17) expression -> . expression ADD expression
+    (18) expression -> . expression SUBTRACT expression
+    (19) expression -> . expression MULTIPLY expression
+    (20) expression -> . expression DIVIDE expression
+    (21) expression -> . expression EXP expression
+    (22) expression -> . expression EQUALCOMP expression
+    (23) expression -> . expression GREATER_THAN_EQUAL expression
+    (24) expression -> . expression LESS_THAN_EQUAL expression
+    (25) expression -> . expression GREATER_THAN expression
+    (26) expression -> . expression LESS_THAN expression
+    (27) expression -> . expression NOTEQUAL expression
+    (28) expression -> . NOT expression
+    (29) expression -> . expression AND expression
+    (30) expression -> . expression OR expression
+    (31) expression -> . INT
+    (32) expression -> . FLOAT
+    (33) expression -> . CONTINUE
+    (34) expression -> . BREAK
+    (49) expression -> . IDENTIFIER
+    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
+    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
+    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
+    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
+    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
+    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+    (16) print -> . PRINT LPAREN expression RPAREN
+    (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
+    (36) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
+    (37) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
+    (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
+    (39) while_statement -> . WHILE LPAREN expression RPAREN LBRACE expression RBRACE
+    (40) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
+    (45) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
+    (46) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    (50) empty -> .
+    (41) type_identifier -> . INTTYPE IDENTIFIER
+    (42) type_identifier -> . CHARTYPE IDENTIFIER
+    (43) type_identifier -> . FLOATTYPE IDENTIFIER
+    (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    $end            reduce using rule 3 (ka -> if_statement ka .)
+    NOT             shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    CONTINUE        shift and go to state 14
+    BREAK           shift and go to state 15
+    IDENTIFIER      shift and go to state 16
+    INTTYPE         shift and go to state 17
+    FLOATTYPE       shift and go to state 18
+    CHARTYPE        shift and go to state 19
+    STRINGTYPE      shift and go to state 20
+    PRINT           shift and go to state 21
+    IF              shift and go to state 22
+    WHILE           shift and go to state 23
+    FOR             shift and go to state 24
+    VOID            shift and go to state 26
+    $end            reduce using rule 50 (empty -> .)
 
+    print                          shift and go to state 4
+    ka                             shift and go to state 74
+    expression                     shift and go to state 2
+    assign                         shift and go to state 3
+    if_statement                   shift and go to state 5
+    if_else_statement              shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    function_statement             shift and go to state 9
+    empty                          shift and go to state 10
+    type_identifier                shift and go to state 25
 
 state 43
 
-    (4) ka -> if_else_statement ka .
+    (4) ka -> if_statement ka .
 
-    $end            reduce using rule 4 (ka -> if_else_statement ka .)
+    $end            reduce using rule 4 (ka -> if_statement ka .)
 
 
 state 44
 
-    (5) ka -> while_statement ka .
+    (5) ka -> if_else_statement ka .
 
-    $end            reduce using rule 5 (ka -> while_statement ka .)
+    $end            reduce using rule 5 (ka -> if_else_statement ka .)
 
 
 state 45
 
-    (6) ka -> for_statement ka .
+    (6) ka -> while_statement ka .
 
-    $end            reduce using rule 6 (ka -> for_statement ka .)
+    $end            reduce using rule 6 (ka -> while_statement ka .)
 
 
 state 46
 
-    (7) ka -> function_statement ka .
+    (7) ka -> for_statement ka .
 
-    $end            reduce using rule 7 (ka -> function_statement ka .)
+    $end            reduce using rule 7 (ka -> for_statement ka .)
 
 
 state 47
 
-    (8) ka -> print ka .
+    (8) ka -> function_statement ka .
 
-    $end            reduce using rule 8 (ka -> print ka .)
+    $end            reduce using rule 8 (ka -> function_statement ka .)
 
 
 state 48
@@ -1693,24 +1613,8 @@ state 48
   ! shift/reduce conflict for NOTEQUAL resolved as shift
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
-    NOT             reduce using rule 28 (expression -> NOT expression .)
-    INT             reduce using rule 28 (expression -> NOT expression .)
-    FLOAT           reduce using rule 28 (expression -> NOT expression .)
-    CONTINUE        reduce using rule 28 (expression -> NOT expression .)
-    BREAK           reduce using rule 28 (expression -> NOT expression .)
-    IDENTIFIER      reduce using rule 28 (expression -> NOT expression .)
-    INTTYPE         reduce using rule 28 (expression -> NOT expression .)
-    FLOATTYPE       reduce using rule 28 (expression -> NOT expression .)
-    CHARTYPE        reduce using rule 28 (expression -> NOT expression .)
-    STRINGTYPE      reduce using rule 28 (expression -> NOT expression .)
-    IF              reduce using rule 28 (expression -> NOT expression .)
-    WHILE           reduce using rule 28 (expression -> NOT expression .)
-    FOR             reduce using rule 28 (expression -> NOT expression .)
-    VOID            reduce using rule 28 (expression -> NOT expression .)
-    PRINT           reduce using rule 28 (expression -> NOT expression .)
-    $end            reduce using rule 28 (expression -> NOT expression .)
-    RPAREN          reduce using rule 28 (expression -> NOT expression .)
     SEMICOLON       reduce using rule 28 (expression -> NOT expression .)
+    RPAREN          reduce using rule 28 (expression -> NOT expression .)
     RBRACE          reduce using rule 28 (expression -> NOT expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -1747,7 +1651,7 @@ state 49
     (11) assign -> INTTYPE IDENTIFIER . EQUAL expression
     (41) type_identifier -> INTTYPE IDENTIFIER .
 
-    EQUAL           shift and go to state 72
+    EQUAL           shift and go to state 75
     LPAREN          reduce using rule 41 (type_identifier -> INTTYPE IDENTIFIER .)
 
 
@@ -1757,7 +1661,7 @@ state 50
     (14) assign -> FLOATTYPE IDENTIFIER . EQUAL FLOAT
     (43) type_identifier -> FLOATTYPE IDENTIFIER .
 
-    EQUAL           shift and go to state 73
+    EQUAL           shift and go to state 76
     LPAREN          reduce using rule 43 (type_identifier -> FLOATTYPE IDENTIFIER .)
 
 
@@ -1766,7 +1670,7 @@ state 51
     (13) assign -> CHARTYPE IDENTIFIER . EQUAL CHAR
     (42) type_identifier -> CHARTYPE IDENTIFIER .
 
-    EQUAL           shift and go to state 74
+    EQUAL           shift and go to state 77
     LPAREN          reduce using rule 42 (type_identifier -> CHARTYPE IDENTIFIER .)
 
 
@@ -1775,11 +1679,43 @@ state 52
     (15) assign -> STRINGTYPE IDENTIFIER . EQUAL STRING
     (44) type_identifier -> STRINGTYPE IDENTIFIER .
 
-    EQUAL           shift and go to state 75
+    EQUAL           shift and go to state 78
     LPAREN          reduce using rule 44 (type_identifier -> STRINGTYPE IDENTIFIER .)
 
 
 state 53
+
+    (16) print -> PRINT LPAREN . expression RPAREN
+    (17) expression -> . expression ADD expression
+    (18) expression -> . expression SUBTRACT expression
+    (19) expression -> . expression MULTIPLY expression
+    (20) expression -> . expression DIVIDE expression
+    (21) expression -> . expression EXP expression
+    (22) expression -> . expression EQUALCOMP expression
+    (23) expression -> . expression GREATER_THAN_EQUAL expression
+    (24) expression -> . expression LESS_THAN_EQUAL expression
+    (25) expression -> . expression GREATER_THAN expression
+    (26) expression -> . expression LESS_THAN expression
+    (27) expression -> . expression NOTEQUAL expression
+    (28) expression -> . NOT expression
+    (29) expression -> . expression AND expression
+    (30) expression -> . expression OR expression
+    (31) expression -> . INT
+    (32) expression -> . FLOAT
+    (33) expression -> . CONTINUE
+    (34) expression -> . BREAK
+    (49) expression -> . IDENTIFIER
+
+    NOT             shift and go to state 11
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 13
+    CONTINUE        shift and go to state 14
+    BREAK           shift and go to state 15
+    IDENTIFIER      shift and go to state 16
+
+    expression                     shift and go to state 79
+
+state 54
 
     (35) if_statement -> IF LPAREN . expression RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> IF LPAREN . expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
@@ -1812,9 +1748,9 @@ state 53
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 76
+    expression                     shift and go to state 80
 
-state 54
+state 55
 
     (39) while_statement -> WHILE LPAREN . expression RPAREN LBRACE expression RBRACE
     (17) expression -> . expression ADD expression
@@ -1844,9 +1780,9 @@ state 54
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 77
+    expression                     shift and go to state 81
 
-state 55
+state 56
 
     (40) for_statement -> FOR LPAREN . assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
@@ -1856,14 +1792,14 @@ state 55
     (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
     (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
 
-    INTTYPE         shift and go to state 79
-    FLOATTYPE       shift and go to state 80
-    CHARTYPE        shift and go to state 81
-    STRINGTYPE      shift and go to state 82
+    INTTYPE         shift and go to state 83
+    FLOATTYPE       shift and go to state 84
+    CHARTYPE        shift and go to state 85
+    STRINGTYPE      shift and go to state 86
 
-    assign                         shift and go to state 78
+    assign                         shift and go to state 82
 
-state 56
+state 57
 
     (45) function_statement -> type_identifier LPAREN . function_input RPAREN LBRACE expression RBRACE
     (47) function_input -> . type_identifier COMMA function_input
@@ -1873,54 +1809,29 @@ state 56
     (43) type_identifier -> . FLOATTYPE IDENTIFIER
     (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    INTTYPE         shift and go to state 85
-    CHARTYPE        shift and go to state 86
-    FLOATTYPE       shift and go to state 87
-    STRINGTYPE      shift and go to state 88
+    INTTYPE         shift and go to state 89
+    CHARTYPE        shift and go to state 90
+    FLOATTYPE       shift and go to state 91
+    STRINGTYPE      shift and go to state 92
 
-    type_identifier                shift and go to state 83
-    function_input                 shift and go to state 84
-
-state 57
-
-    (46) function_statement -> VOID IDENTIFIER . LPAREN function_input RPAREN LBRACE expression RBRACE
-
-    LPAREN          shift and go to state 89
-
+    type_identifier                shift and go to state 87
+    function_input                 shift and go to state 88
 
 state 58
 
-    (16) print -> PRINT LPAREN . expression RPAREN
-    (17) expression -> . expression ADD expression
-    (18) expression -> . expression SUBTRACT expression
-    (19) expression -> . expression MULTIPLY expression
-    (20) expression -> . expression DIVIDE expression
-    (21) expression -> . expression EXP expression
-    (22) expression -> . expression EQUALCOMP expression
-    (23) expression -> . expression GREATER_THAN_EQUAL expression
-    (24) expression -> . expression LESS_THAN_EQUAL expression
-    (25) expression -> . expression GREATER_THAN expression
-    (26) expression -> . expression LESS_THAN expression
-    (27) expression -> . expression NOTEQUAL expression
-    (28) expression -> . NOT expression
-    (29) expression -> . expression AND expression
-    (30) expression -> . expression OR expression
-    (31) expression -> . INT
-    (32) expression -> . FLOAT
-    (33) expression -> . CONTINUE
-    (34) expression -> . BREAK
-    (49) expression -> . IDENTIFIER
+    (46) function_statement -> VOID IDENTIFIER . LPAREN function_input RPAREN LBRACE expression RBRACE
 
-    NOT             shift and go to state 11
-    INT             shift and go to state 12
-    FLOAT           shift and go to state 13
-    CONTINUE        shift and go to state 14
-    BREAK           shift and go to state 15
-    IDENTIFIER      shift and go to state 16
+    LPAREN          shift and go to state 93
 
-    expression                     shift and go to state 90
 
 state 59
+
+    (1) ka -> expression SEMICOLON ka .
+
+    $end            reduce using rule 1 (ka -> expression SEMICOLON ka .)
+
+
+state 60
 
     (17) expression -> expression ADD expression .
     (17) expression -> expression . ADD expression
@@ -1937,6 +1848,7 @@ state 59
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 17 (expression -> expression ADD expression .)
     ADD             reduce using rule 17 (expression -> expression ADD expression .)
     SUBTRACT        reduce using rule 17 (expression -> expression ADD expression .)
     EQUALCOMP       reduce using rule 17 (expression -> expression ADD expression .)
@@ -1947,24 +1859,7 @@ state 59
     NOTEQUAL        reduce using rule 17 (expression -> expression ADD expression .)
     AND             reduce using rule 17 (expression -> expression ADD expression .)
     OR              reduce using rule 17 (expression -> expression ADD expression .)
-    NOT             reduce using rule 17 (expression -> expression ADD expression .)
-    INT             reduce using rule 17 (expression -> expression ADD expression .)
-    FLOAT           reduce using rule 17 (expression -> expression ADD expression .)
-    CONTINUE        reduce using rule 17 (expression -> expression ADD expression .)
-    BREAK           reduce using rule 17 (expression -> expression ADD expression .)
-    IDENTIFIER      reduce using rule 17 (expression -> expression ADD expression .)
-    INTTYPE         reduce using rule 17 (expression -> expression ADD expression .)
-    FLOATTYPE       reduce using rule 17 (expression -> expression ADD expression .)
-    CHARTYPE        reduce using rule 17 (expression -> expression ADD expression .)
-    STRINGTYPE      reduce using rule 17 (expression -> expression ADD expression .)
-    IF              reduce using rule 17 (expression -> expression ADD expression .)
-    WHILE           reduce using rule 17 (expression -> expression ADD expression .)
-    FOR             reduce using rule 17 (expression -> expression ADD expression .)
-    VOID            reduce using rule 17 (expression -> expression ADD expression .)
-    PRINT           reduce using rule 17 (expression -> expression ADD expression .)
-    $end            reduce using rule 17 (expression -> expression ADD expression .)
     RPAREN          reduce using rule 17 (expression -> expression ADD expression .)
-    SEMICOLON       reduce using rule 17 (expression -> expression ADD expression .)
     RBRACE          reduce using rule 17 (expression -> expression ADD expression .)
     MULTIPLY        shift and go to state 30
     DIVIDE          shift and go to state 31
@@ -1985,7 +1880,7 @@ state 59
   ! OR              [ shift and go to state 40 ]
 
 
-state 60
+state 61
 
     (18) expression -> expression SUBTRACT expression .
     (17) expression -> expression . ADD expression
@@ -2002,6 +1897,7 @@ state 60
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 18 (expression -> expression SUBTRACT expression .)
     ADD             reduce using rule 18 (expression -> expression SUBTRACT expression .)
     SUBTRACT        reduce using rule 18 (expression -> expression SUBTRACT expression .)
     EQUALCOMP       reduce using rule 18 (expression -> expression SUBTRACT expression .)
@@ -2012,24 +1908,7 @@ state 60
     NOTEQUAL        reduce using rule 18 (expression -> expression SUBTRACT expression .)
     AND             reduce using rule 18 (expression -> expression SUBTRACT expression .)
     OR              reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    NOT             reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    INT             reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    FLOAT           reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    CONTINUE        reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    BREAK           reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    IDENTIFIER      reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    INTTYPE         reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    FLOATTYPE       reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    CHARTYPE        reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    STRINGTYPE      reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    IF              reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    WHILE           reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    FOR             reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    VOID            reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    PRINT           reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    $end            reduce using rule 18 (expression -> expression SUBTRACT expression .)
     RPAREN          reduce using rule 18 (expression -> expression SUBTRACT expression .)
-    SEMICOLON       reduce using rule 18 (expression -> expression SUBTRACT expression .)
     RBRACE          reduce using rule 18 (expression -> expression SUBTRACT expression .)
     MULTIPLY        shift and go to state 30
     DIVIDE          shift and go to state 31
@@ -2050,7 +1929,7 @@ state 60
   ! OR              [ shift and go to state 40 ]
 
 
-state 61
+state 62
 
     (19) expression -> expression MULTIPLY expression .
     (17) expression -> expression . ADD expression
@@ -2067,6 +1946,7 @@ state 61
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 19 (expression -> expression MULTIPLY expression .)
     ADD             reduce using rule 19 (expression -> expression MULTIPLY expression .)
     SUBTRACT        reduce using rule 19 (expression -> expression MULTIPLY expression .)
     MULTIPLY        reduce using rule 19 (expression -> expression MULTIPLY expression .)
@@ -2080,90 +1960,8 @@ state 61
     NOTEQUAL        reduce using rule 19 (expression -> expression MULTIPLY expression .)
     AND             reduce using rule 19 (expression -> expression MULTIPLY expression .)
     OR              reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    NOT             reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    INT             reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    FLOAT           reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    CONTINUE        reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    BREAK           reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    IDENTIFIER      reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    INTTYPE         reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    FLOATTYPE       reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    CHARTYPE        reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    STRINGTYPE      reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    IF              reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    WHILE           reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    FOR             reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    VOID            reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    PRINT           reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    $end            reduce using rule 19 (expression -> expression MULTIPLY expression .)
     RPAREN          reduce using rule 19 (expression -> expression MULTIPLY expression .)
-    SEMICOLON       reduce using rule 19 (expression -> expression MULTIPLY expression .)
     RBRACE          reduce using rule 19 (expression -> expression MULTIPLY expression .)
-
-  ! ADD             [ shift and go to state 28 ]
-  ! SUBTRACT        [ shift and go to state 29 ]
-  ! MULTIPLY        [ shift and go to state 30 ]
-  ! DIVIDE          [ shift and go to state 31 ]
-  ! EXP             [ shift and go to state 32 ]
-  ! EQUALCOMP       [ shift and go to state 33 ]
-  ! GREATER_THAN_EQUAL [ shift and go to state 34 ]
-  ! LESS_THAN_EQUAL [ shift and go to state 35 ]
-  ! GREATER_THAN    [ shift and go to state 36 ]
-  ! LESS_THAN       [ shift and go to state 37 ]
-  ! NOTEQUAL        [ shift and go to state 38 ]
-  ! AND             [ shift and go to state 39 ]
-  ! OR              [ shift and go to state 40 ]
-
-
-state 62
-
-    (20) expression -> expression DIVIDE expression .
-    (17) expression -> expression . ADD expression
-    (18) expression -> expression . SUBTRACT expression
-    (19) expression -> expression . MULTIPLY expression
-    (20) expression -> expression . DIVIDE expression
-    (21) expression -> expression . EXP expression
-    (22) expression -> expression . EQUALCOMP expression
-    (23) expression -> expression . GREATER_THAN_EQUAL expression
-    (24) expression -> expression . LESS_THAN_EQUAL expression
-    (25) expression -> expression . GREATER_THAN expression
-    (26) expression -> expression . LESS_THAN expression
-    (27) expression -> expression . NOTEQUAL expression
-    (29) expression -> expression . AND expression
-    (30) expression -> expression . OR expression
-
-    ADD             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    SUBTRACT        reduce using rule 20 (expression -> expression DIVIDE expression .)
-    MULTIPLY        reduce using rule 20 (expression -> expression DIVIDE expression .)
-    DIVIDE          reduce using rule 20 (expression -> expression DIVIDE expression .)
-    EXP             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    EQUALCOMP       reduce using rule 20 (expression -> expression DIVIDE expression .)
-    GREATER_THAN_EQUAL reduce using rule 20 (expression -> expression DIVIDE expression .)
-    LESS_THAN_EQUAL reduce using rule 20 (expression -> expression DIVIDE expression .)
-    GREATER_THAN    reduce using rule 20 (expression -> expression DIVIDE expression .)
-    LESS_THAN       reduce using rule 20 (expression -> expression DIVIDE expression .)
-    NOTEQUAL        reduce using rule 20 (expression -> expression DIVIDE expression .)
-    AND             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    OR              reduce using rule 20 (expression -> expression DIVIDE expression .)
-    NOT             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    INT             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    FLOAT           reduce using rule 20 (expression -> expression DIVIDE expression .)
-    CONTINUE        reduce using rule 20 (expression -> expression DIVIDE expression .)
-    BREAK           reduce using rule 20 (expression -> expression DIVIDE expression .)
-    IDENTIFIER      reduce using rule 20 (expression -> expression DIVIDE expression .)
-    INTTYPE         reduce using rule 20 (expression -> expression DIVIDE expression .)
-    FLOATTYPE       reduce using rule 20 (expression -> expression DIVIDE expression .)
-    CHARTYPE        reduce using rule 20 (expression -> expression DIVIDE expression .)
-    STRINGTYPE      reduce using rule 20 (expression -> expression DIVIDE expression .)
-    IF              reduce using rule 20 (expression -> expression DIVIDE expression .)
-    WHILE           reduce using rule 20 (expression -> expression DIVIDE expression .)
-    FOR             reduce using rule 20 (expression -> expression DIVIDE expression .)
-    VOID            reduce using rule 20 (expression -> expression DIVIDE expression .)
-    PRINT           reduce using rule 20 (expression -> expression DIVIDE expression .)
-    $end            reduce using rule 20 (expression -> expression DIVIDE expression .)
-    RPAREN          reduce using rule 20 (expression -> expression DIVIDE expression .)
-    SEMICOLON       reduce using rule 20 (expression -> expression DIVIDE expression .)
-    RBRACE          reduce using rule 20 (expression -> expression DIVIDE expression .)
 
   ! ADD             [ shift and go to state 28 ]
   ! SUBTRACT        [ shift and go to state 29 ]
@@ -2182,7 +1980,7 @@ state 62
 
 state 63
 
-    (21) expression -> expression EXP expression .
+    (20) expression -> expression DIVIDE expression .
     (17) expression -> expression . ADD expression
     (18) expression -> expression . SUBTRACT expression
     (19) expression -> expression . MULTIPLY expression
@@ -2197,38 +1995,22 @@ state 63
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    ADD             reduce using rule 21 (expression -> expression EXP expression .)
-    SUBTRACT        reduce using rule 21 (expression -> expression EXP expression .)
-    MULTIPLY        reduce using rule 21 (expression -> expression EXP expression .)
-    DIVIDE          reduce using rule 21 (expression -> expression EXP expression .)
-    EXP             reduce using rule 21 (expression -> expression EXP expression .)
-    EQUALCOMP       reduce using rule 21 (expression -> expression EXP expression .)
-    GREATER_THAN_EQUAL reduce using rule 21 (expression -> expression EXP expression .)
-    LESS_THAN_EQUAL reduce using rule 21 (expression -> expression EXP expression .)
-    GREATER_THAN    reduce using rule 21 (expression -> expression EXP expression .)
-    LESS_THAN       reduce using rule 21 (expression -> expression EXP expression .)
-    NOTEQUAL        reduce using rule 21 (expression -> expression EXP expression .)
-    AND             reduce using rule 21 (expression -> expression EXP expression .)
-    OR              reduce using rule 21 (expression -> expression EXP expression .)
-    NOT             reduce using rule 21 (expression -> expression EXP expression .)
-    INT             reduce using rule 21 (expression -> expression EXP expression .)
-    FLOAT           reduce using rule 21 (expression -> expression EXP expression .)
-    CONTINUE        reduce using rule 21 (expression -> expression EXP expression .)
-    BREAK           reduce using rule 21 (expression -> expression EXP expression .)
-    IDENTIFIER      reduce using rule 21 (expression -> expression EXP expression .)
-    INTTYPE         reduce using rule 21 (expression -> expression EXP expression .)
-    FLOATTYPE       reduce using rule 21 (expression -> expression EXP expression .)
-    CHARTYPE        reduce using rule 21 (expression -> expression EXP expression .)
-    STRINGTYPE      reduce using rule 21 (expression -> expression EXP expression .)
-    IF              reduce using rule 21 (expression -> expression EXP expression .)
-    WHILE           reduce using rule 21 (expression -> expression EXP expression .)
-    FOR             reduce using rule 21 (expression -> expression EXP expression .)
-    VOID            reduce using rule 21 (expression -> expression EXP expression .)
-    PRINT           reduce using rule 21 (expression -> expression EXP expression .)
-    $end            reduce using rule 21 (expression -> expression EXP expression .)
-    RPAREN          reduce using rule 21 (expression -> expression EXP expression .)
-    SEMICOLON       reduce using rule 21 (expression -> expression EXP expression .)
-    RBRACE          reduce using rule 21 (expression -> expression EXP expression .)
+    SEMICOLON       reduce using rule 20 (expression -> expression DIVIDE expression .)
+    ADD             reduce using rule 20 (expression -> expression DIVIDE expression .)
+    SUBTRACT        reduce using rule 20 (expression -> expression DIVIDE expression .)
+    MULTIPLY        reduce using rule 20 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 20 (expression -> expression DIVIDE expression .)
+    EXP             reduce using rule 20 (expression -> expression DIVIDE expression .)
+    EQUALCOMP       reduce using rule 20 (expression -> expression DIVIDE expression .)
+    GREATER_THAN_EQUAL reduce using rule 20 (expression -> expression DIVIDE expression .)
+    LESS_THAN_EQUAL reduce using rule 20 (expression -> expression DIVIDE expression .)
+    GREATER_THAN    reduce using rule 20 (expression -> expression DIVIDE expression .)
+    LESS_THAN       reduce using rule 20 (expression -> expression DIVIDE expression .)
+    NOTEQUAL        reduce using rule 20 (expression -> expression DIVIDE expression .)
+    AND             reduce using rule 20 (expression -> expression DIVIDE expression .)
+    OR              reduce using rule 20 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 20 (expression -> expression DIVIDE expression .)
+    RBRACE          reduce using rule 20 (expression -> expression DIVIDE expression .)
 
   ! ADD             [ shift and go to state 28 ]
   ! SUBTRACT        [ shift and go to state 29 ]
@@ -2247,6 +2029,55 @@ state 63
 
 state 64
 
+    (21) expression -> expression EXP expression .
+    (17) expression -> expression . ADD expression
+    (18) expression -> expression . SUBTRACT expression
+    (19) expression -> expression . MULTIPLY expression
+    (20) expression -> expression . DIVIDE expression
+    (21) expression -> expression . EXP expression
+    (22) expression -> expression . EQUALCOMP expression
+    (23) expression -> expression . GREATER_THAN_EQUAL expression
+    (24) expression -> expression . LESS_THAN_EQUAL expression
+    (25) expression -> expression . GREATER_THAN expression
+    (26) expression -> expression . LESS_THAN expression
+    (27) expression -> expression . NOTEQUAL expression
+    (29) expression -> expression . AND expression
+    (30) expression -> expression . OR expression
+
+    SEMICOLON       reduce using rule 21 (expression -> expression EXP expression .)
+    ADD             reduce using rule 21 (expression -> expression EXP expression .)
+    SUBTRACT        reduce using rule 21 (expression -> expression EXP expression .)
+    MULTIPLY        reduce using rule 21 (expression -> expression EXP expression .)
+    DIVIDE          reduce using rule 21 (expression -> expression EXP expression .)
+    EXP             reduce using rule 21 (expression -> expression EXP expression .)
+    EQUALCOMP       reduce using rule 21 (expression -> expression EXP expression .)
+    GREATER_THAN_EQUAL reduce using rule 21 (expression -> expression EXP expression .)
+    LESS_THAN_EQUAL reduce using rule 21 (expression -> expression EXP expression .)
+    GREATER_THAN    reduce using rule 21 (expression -> expression EXP expression .)
+    LESS_THAN       reduce using rule 21 (expression -> expression EXP expression .)
+    NOTEQUAL        reduce using rule 21 (expression -> expression EXP expression .)
+    AND             reduce using rule 21 (expression -> expression EXP expression .)
+    OR              reduce using rule 21 (expression -> expression EXP expression .)
+    RPAREN          reduce using rule 21 (expression -> expression EXP expression .)
+    RBRACE          reduce using rule 21 (expression -> expression EXP expression .)
+
+  ! ADD             [ shift and go to state 28 ]
+  ! SUBTRACT        [ shift and go to state 29 ]
+  ! MULTIPLY        [ shift and go to state 30 ]
+  ! DIVIDE          [ shift and go to state 31 ]
+  ! EXP             [ shift and go to state 32 ]
+  ! EQUALCOMP       [ shift and go to state 33 ]
+  ! GREATER_THAN_EQUAL [ shift and go to state 34 ]
+  ! LESS_THAN_EQUAL [ shift and go to state 35 ]
+  ! GREATER_THAN    [ shift and go to state 36 ]
+  ! LESS_THAN       [ shift and go to state 37 ]
+  ! NOTEQUAL        [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 65
+
     (22) expression -> expression EQUALCOMP expression .
     (17) expression -> expression . ADD expression
     (18) expression -> expression . SUBTRACT expression
@@ -2262,6 +2093,7 @@ state 64
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     EQUALCOMP       reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     GREATER_THAN_EQUAL reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     LESS_THAN_EQUAL reduce using rule 22 (expression -> expression EQUALCOMP expression .)
@@ -2270,24 +2102,7 @@ state 64
     NOTEQUAL        reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     AND             reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     OR              reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    NOT             reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    INT             reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    FLOAT           reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    CONTINUE        reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    BREAK           reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    IDENTIFIER      reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    INTTYPE         reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    FLOATTYPE       reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    CHARTYPE        reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    STRINGTYPE      reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    IF              reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    WHILE           reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    FOR             reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    VOID            reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    PRINT           reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    $end            reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     RPAREN          reduce using rule 22 (expression -> expression EQUALCOMP expression .)
-    SEMICOLON       reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     RBRACE          reduce using rule 22 (expression -> expression EQUALCOMP expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2310,7 +2125,7 @@ state 64
   ! OR              [ shift and go to state 40 ]
 
 
-state 65
+state 66
 
     (23) expression -> expression GREATER_THAN_EQUAL expression .
     (17) expression -> expression . ADD expression
@@ -2327,6 +2142,7 @@ state 65
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     EQUALCOMP       reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     GREATER_THAN_EQUAL reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     LESS_THAN_EQUAL reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
@@ -2335,24 +2151,7 @@ state 65
     NOTEQUAL        reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     AND             reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     OR              reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    NOT             reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    INT             reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    FLOAT           reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    CONTINUE        reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    BREAK           reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    IDENTIFIER      reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    INTTYPE         reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    FLOATTYPE       reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    CHARTYPE        reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    STRINGTYPE      reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    IF              reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    WHILE           reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    FOR             reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    VOID            reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    PRINT           reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    $end            reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     RPAREN          reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
-    SEMICOLON       reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     RBRACE          reduce using rule 23 (expression -> expression GREATER_THAN_EQUAL expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2375,7 +2174,7 @@ state 65
   ! OR              [ shift and go to state 40 ]
 
 
-state 66
+state 67
 
     (24) expression -> expression LESS_THAN_EQUAL expression .
     (17) expression -> expression . ADD expression
@@ -2392,6 +2191,7 @@ state 66
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     EQUALCOMP       reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     GREATER_THAN_EQUAL reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     LESS_THAN_EQUAL reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
@@ -2400,24 +2200,7 @@ state 66
     NOTEQUAL        reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     AND             reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     OR              reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    NOT             reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    INT             reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    FLOAT           reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    CONTINUE        reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    BREAK           reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    IDENTIFIER      reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    INTTYPE         reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    FLOATTYPE       reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    CHARTYPE        reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    STRINGTYPE      reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    IF              reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    WHILE           reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    FOR             reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    VOID            reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    PRINT           reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    $end            reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     RPAREN          reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
-    SEMICOLON       reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     RBRACE          reduce using rule 24 (expression -> expression LESS_THAN_EQUAL expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2440,7 +2223,7 @@ state 66
   ! OR              [ shift and go to state 40 ]
 
 
-state 67
+state 68
 
     (25) expression -> expression GREATER_THAN expression .
     (17) expression -> expression . ADD expression
@@ -2457,6 +2240,7 @@ state 67
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     EQUALCOMP       reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     GREATER_THAN_EQUAL reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     LESS_THAN_EQUAL reduce using rule 25 (expression -> expression GREATER_THAN expression .)
@@ -2465,24 +2249,7 @@ state 67
     NOTEQUAL        reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     AND             reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     OR              reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    NOT             reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    INT             reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    FLOAT           reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    CONTINUE        reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    BREAK           reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    IDENTIFIER      reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    INTTYPE         reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    FLOATTYPE       reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    CHARTYPE        reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    STRINGTYPE      reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    IF              reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    WHILE           reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    FOR             reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    VOID            reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    PRINT           reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    $end            reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     RPAREN          reduce using rule 25 (expression -> expression GREATER_THAN expression .)
-    SEMICOLON       reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     RBRACE          reduce using rule 25 (expression -> expression GREATER_THAN expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2505,7 +2272,7 @@ state 67
   ! OR              [ shift and go to state 40 ]
 
 
-state 68
+state 69
 
     (26) expression -> expression LESS_THAN expression .
     (17) expression -> expression . ADD expression
@@ -2522,6 +2289,7 @@ state 68
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 26 (expression -> expression LESS_THAN expression .)
     EQUALCOMP       reduce using rule 26 (expression -> expression LESS_THAN expression .)
     GREATER_THAN_EQUAL reduce using rule 26 (expression -> expression LESS_THAN expression .)
     LESS_THAN_EQUAL reduce using rule 26 (expression -> expression LESS_THAN expression .)
@@ -2530,24 +2298,7 @@ state 68
     NOTEQUAL        reduce using rule 26 (expression -> expression LESS_THAN expression .)
     AND             reduce using rule 26 (expression -> expression LESS_THAN expression .)
     OR              reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    NOT             reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    INT             reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    FLOAT           reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    CONTINUE        reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    BREAK           reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    IDENTIFIER      reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    INTTYPE         reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    FLOATTYPE       reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    CHARTYPE        reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    STRINGTYPE      reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    IF              reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    WHILE           reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    FOR             reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    VOID            reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    PRINT           reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    $end            reduce using rule 26 (expression -> expression LESS_THAN expression .)
     RPAREN          reduce using rule 26 (expression -> expression LESS_THAN expression .)
-    SEMICOLON       reduce using rule 26 (expression -> expression LESS_THAN expression .)
     RBRACE          reduce using rule 26 (expression -> expression LESS_THAN expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2570,7 +2321,7 @@ state 68
   ! OR              [ shift and go to state 40 ]
 
 
-state 69
+state 70
 
     (27) expression -> expression NOTEQUAL expression .
     (17) expression -> expression . ADD expression
@@ -2587,6 +2338,7 @@ state 69
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
+    SEMICOLON       reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     EQUALCOMP       reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     GREATER_THAN_EQUAL reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     LESS_THAN_EQUAL reduce using rule 27 (expression -> expression NOTEQUAL expression .)
@@ -2595,24 +2347,7 @@ state 69
     NOTEQUAL        reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     AND             reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     OR              reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    NOT             reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    INT             reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    FLOAT           reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    CONTINUE        reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    BREAK           reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    IDENTIFIER      reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    INTTYPE         reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    FLOATTYPE       reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    CHARTYPE        reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    STRINGTYPE      reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    IF              reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    WHILE           reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    FOR             reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    VOID            reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    PRINT           reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    $end            reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     RPAREN          reduce using rule 27 (expression -> expression NOTEQUAL expression .)
-    SEMICOLON       reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     RBRACE          reduce using rule 27 (expression -> expression NOTEQUAL expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2635,7 +2370,7 @@ state 69
   ! OR              [ shift and go to state 40 ]
 
 
-state 70
+state 71
 
     (29) expression -> expression AND expression .
     (17) expression -> expression . ADD expression
@@ -2665,24 +2400,8 @@ state 70
   ! shift/reduce conflict for NOTEQUAL resolved as shift
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
-    NOT             reduce using rule 29 (expression -> expression AND expression .)
-    INT             reduce using rule 29 (expression -> expression AND expression .)
-    FLOAT           reduce using rule 29 (expression -> expression AND expression .)
-    CONTINUE        reduce using rule 29 (expression -> expression AND expression .)
-    BREAK           reduce using rule 29 (expression -> expression AND expression .)
-    IDENTIFIER      reduce using rule 29 (expression -> expression AND expression .)
-    INTTYPE         reduce using rule 29 (expression -> expression AND expression .)
-    FLOATTYPE       reduce using rule 29 (expression -> expression AND expression .)
-    CHARTYPE        reduce using rule 29 (expression -> expression AND expression .)
-    STRINGTYPE      reduce using rule 29 (expression -> expression AND expression .)
-    IF              reduce using rule 29 (expression -> expression AND expression .)
-    WHILE           reduce using rule 29 (expression -> expression AND expression .)
-    FOR             reduce using rule 29 (expression -> expression AND expression .)
-    VOID            reduce using rule 29 (expression -> expression AND expression .)
-    PRINT           reduce using rule 29 (expression -> expression AND expression .)
-    $end            reduce using rule 29 (expression -> expression AND expression .)
-    RPAREN          reduce using rule 29 (expression -> expression AND expression .)
     SEMICOLON       reduce using rule 29 (expression -> expression AND expression .)
+    RPAREN          reduce using rule 29 (expression -> expression AND expression .)
     RBRACE          reduce using rule 29 (expression -> expression AND expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2713,7 +2432,7 @@ state 70
   ! OR              [ reduce using rule 29 (expression -> expression AND expression .) ]
 
 
-state 71
+state 72
 
     (30) expression -> expression OR expression .
     (17) expression -> expression . ADD expression
@@ -2743,24 +2462,8 @@ state 71
   ! shift/reduce conflict for NOTEQUAL resolved as shift
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
-    NOT             reduce using rule 30 (expression -> expression OR expression .)
-    INT             reduce using rule 30 (expression -> expression OR expression .)
-    FLOAT           reduce using rule 30 (expression -> expression OR expression .)
-    CONTINUE        reduce using rule 30 (expression -> expression OR expression .)
-    BREAK           reduce using rule 30 (expression -> expression OR expression .)
-    IDENTIFIER      reduce using rule 30 (expression -> expression OR expression .)
-    INTTYPE         reduce using rule 30 (expression -> expression OR expression .)
-    FLOATTYPE       reduce using rule 30 (expression -> expression OR expression .)
-    CHARTYPE        reduce using rule 30 (expression -> expression OR expression .)
-    STRINGTYPE      reduce using rule 30 (expression -> expression OR expression .)
-    IF              reduce using rule 30 (expression -> expression OR expression .)
-    WHILE           reduce using rule 30 (expression -> expression OR expression .)
-    FOR             reduce using rule 30 (expression -> expression OR expression .)
-    VOID            reduce using rule 30 (expression -> expression OR expression .)
-    PRINT           reduce using rule 30 (expression -> expression OR expression .)
-    $end            reduce using rule 30 (expression -> expression OR expression .)
-    RPAREN          reduce using rule 30 (expression -> expression OR expression .)
     SEMICOLON       reduce using rule 30 (expression -> expression OR expression .)
+    RPAREN          reduce using rule 30 (expression -> expression OR expression .)
     RBRACE          reduce using rule 30 (expression -> expression OR expression .)
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
@@ -2791,7 +2494,21 @@ state 71
   ! OR              [ reduce using rule 30 (expression -> expression OR expression .) ]
 
 
-state 72
+state 73
+
+    (2) ka -> assign SEMICOLON ka .
+
+    $end            reduce using rule 2 (ka -> assign SEMICOLON ka .)
+
+
+state 74
+
+    (3) ka -> print SEMICOLON ka .
+
+    $end            reduce using rule 3 (ka -> print SEMICOLON ka .)
+
+
+state 75
 
     (10) assign -> INTTYPE IDENTIFIER EQUAL . INT
     (11) assign -> INTTYPE IDENTIFIER EQUAL . expression
@@ -2815,16 +2532,16 @@ state 72
     (34) expression -> . BREAK
     (49) expression -> . IDENTIFIER
 
-    INT             shift and go to state 91
+    INT             shift and go to state 94
     NOT             shift and go to state 11
     FLOAT           shift and go to state 13
     CONTINUE        shift and go to state 14
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 92
+    expression                     shift and go to state 95
 
-state 73
+state 76
 
     (12) assign -> FLOATTYPE IDENTIFIER EQUAL . expression
     (14) assign -> FLOATTYPE IDENTIFIER EQUAL . FLOAT
@@ -2848,30 +2565,63 @@ state 73
     (34) expression -> . BREAK
     (49) expression -> . IDENTIFIER
 
-    FLOAT           shift and go to state 94
+    FLOAT           shift and go to state 97
     NOT             shift and go to state 11
     INT             shift and go to state 12
     CONTINUE        shift and go to state 14
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 93
+    expression                     shift and go to state 96
 
-state 74
+state 77
 
     (13) assign -> CHARTYPE IDENTIFIER EQUAL . CHAR
 
-    CHAR            shift and go to state 95
+    CHAR            shift and go to state 98
 
 
-state 75
+state 78
 
     (15) assign -> STRINGTYPE IDENTIFIER EQUAL . STRING
 
-    STRING          shift and go to state 96
+    STRING          shift and go to state 99
 
 
-state 76
+state 79
+
+    (16) print -> PRINT LPAREN expression . RPAREN
+    (17) expression -> expression . ADD expression
+    (18) expression -> expression . SUBTRACT expression
+    (19) expression -> expression . MULTIPLY expression
+    (20) expression -> expression . DIVIDE expression
+    (21) expression -> expression . EXP expression
+    (22) expression -> expression . EQUALCOMP expression
+    (23) expression -> expression . GREATER_THAN_EQUAL expression
+    (24) expression -> expression . LESS_THAN_EQUAL expression
+    (25) expression -> expression . GREATER_THAN expression
+    (26) expression -> expression . LESS_THAN expression
+    (27) expression -> expression . NOTEQUAL expression
+    (29) expression -> expression . AND expression
+    (30) expression -> expression . OR expression
+
+    RPAREN          shift and go to state 100
+    ADD             shift and go to state 28
+    SUBTRACT        shift and go to state 29
+    MULTIPLY        shift and go to state 30
+    DIVIDE          shift and go to state 31
+    EXP             shift and go to state 32
+    EQUALCOMP       shift and go to state 33
+    GREATER_THAN_EQUAL shift and go to state 34
+    LESS_THAN_EQUAL shift and go to state 35
+    GREATER_THAN    shift and go to state 36
+    LESS_THAN       shift and go to state 37
+    NOTEQUAL        shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+
+
+state 80
 
     (35) if_statement -> IF LPAREN expression . RPAREN LBRACE expression RBRACE empty
     (36) if_else_statement -> IF LPAREN expression . RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
@@ -2891,7 +2641,7 @@ state 76
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RPAREN          shift and go to state 97
+    RPAREN          shift and go to state 101
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -2907,7 +2657,7 @@ state 76
     OR              shift and go to state 40
 
 
-state 77
+state 81
 
     (39) while_statement -> WHILE LPAREN expression . RPAREN LBRACE expression RBRACE
     (17) expression -> expression . ADD expression
@@ -2924,7 +2674,7 @@ state 77
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RPAREN          shift and go to state 98
+    RPAREN          shift and go to state 102
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -2940,88 +2690,88 @@ state 77
     OR              shift and go to state 40
 
 
-state 78
+state 82
 
     (40) for_statement -> FOR LPAREN assign . SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE
 
-    SEMICOLON       shift and go to state 99
-
-
-state 79
-
-    (10) assign -> INTTYPE . IDENTIFIER EQUAL INT
-    (11) assign -> INTTYPE . IDENTIFIER EQUAL expression
-
-    IDENTIFIER      shift and go to state 100
-
-
-state 80
-
-    (12) assign -> FLOATTYPE . IDENTIFIER EQUAL expression
-    (14) assign -> FLOATTYPE . IDENTIFIER EQUAL FLOAT
-
-    IDENTIFIER      shift and go to state 101
-
-
-state 81
-
-    (13) assign -> CHARTYPE . IDENTIFIER EQUAL CHAR
-
-    IDENTIFIER      shift and go to state 102
-
-
-state 82
-
-    (15) assign -> STRINGTYPE . IDENTIFIER EQUAL STRING
-
-    IDENTIFIER      shift and go to state 103
+    SEMICOLON       shift and go to state 103
 
 
 state 83
 
-    (47) function_input -> type_identifier . COMMA function_input
-    (48) function_input -> type_identifier .
+    (10) assign -> INTTYPE . IDENTIFIER EQUAL INT
+    (11) assign -> INTTYPE . IDENTIFIER EQUAL expression
 
-    COMMA           shift and go to state 104
-    RPAREN          reduce using rule 48 (function_input -> type_identifier .)
+    IDENTIFIER      shift and go to state 104
 
 
 state 84
 
-    (45) function_statement -> type_identifier LPAREN function_input . RPAREN LBRACE expression RBRACE
+    (12) assign -> FLOATTYPE . IDENTIFIER EQUAL expression
+    (14) assign -> FLOATTYPE . IDENTIFIER EQUAL FLOAT
 
-    RPAREN          shift and go to state 105
+    IDENTIFIER      shift and go to state 105
 
 
 state 85
 
-    (41) type_identifier -> INTTYPE . IDENTIFIER
+    (13) assign -> CHARTYPE . IDENTIFIER EQUAL CHAR
 
     IDENTIFIER      shift and go to state 106
 
 
 state 86
 
-    (42) type_identifier -> CHARTYPE . IDENTIFIER
+    (15) assign -> STRINGTYPE . IDENTIFIER EQUAL STRING
 
     IDENTIFIER      shift and go to state 107
 
 
 state 87
 
-    (43) type_identifier -> FLOATTYPE . IDENTIFIER
+    (47) function_input -> type_identifier . COMMA function_input
+    (48) function_input -> type_identifier .
 
-    IDENTIFIER      shift and go to state 108
+    COMMA           shift and go to state 108
+    RPAREN          reduce using rule 48 (function_input -> type_identifier .)
 
 
 state 88
 
-    (44) type_identifier -> STRINGTYPE . IDENTIFIER
+    (45) function_statement -> type_identifier LPAREN function_input . RPAREN LBRACE expression RBRACE
 
-    IDENTIFIER      shift and go to state 109
+    RPAREN          shift and go to state 109
 
 
 state 89
+
+    (41) type_identifier -> INTTYPE . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 110
+
+
+state 90
+
+    (42) type_identifier -> CHARTYPE . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 111
+
+
+state 91
+
+    (43) type_identifier -> FLOATTYPE . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 112
+
+
+state 92
+
+    (44) type_identifier -> STRINGTYPE . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 113
+
+
+state 93
 
     (46) function_statement -> VOID IDENTIFIER LPAREN . function_input RPAREN LBRACE expression RBRACE
     (47) function_input -> . type_identifier COMMA function_input
@@ -3031,86 +2781,21 @@ state 89
     (43) type_identifier -> . FLOATTYPE IDENTIFIER
     (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    INTTYPE         shift and go to state 85
-    CHARTYPE        shift and go to state 86
-    FLOATTYPE       shift and go to state 87
-    STRINGTYPE      shift and go to state 88
+    INTTYPE         shift and go to state 89
+    CHARTYPE        shift and go to state 90
+    FLOATTYPE       shift and go to state 91
+    STRINGTYPE      shift and go to state 92
 
-    function_input                 shift and go to state 110
-    type_identifier                shift and go to state 83
+    function_input                 shift and go to state 114
+    type_identifier                shift and go to state 87
 
-state 90
-
-    (16) print -> PRINT LPAREN expression . RPAREN
-    (17) expression -> expression . ADD expression
-    (18) expression -> expression . SUBTRACT expression
-    (19) expression -> expression . MULTIPLY expression
-    (20) expression -> expression . DIVIDE expression
-    (21) expression -> expression . EXP expression
-    (22) expression -> expression . EQUALCOMP expression
-    (23) expression -> expression . GREATER_THAN_EQUAL expression
-    (24) expression -> expression . LESS_THAN_EQUAL expression
-    (25) expression -> expression . GREATER_THAN expression
-    (26) expression -> expression . LESS_THAN expression
-    (27) expression -> expression . NOTEQUAL expression
-    (29) expression -> expression . AND expression
-    (30) expression -> expression . OR expression
-
-    RPAREN          shift and go to state 111
-    ADD             shift and go to state 28
-    SUBTRACT        shift and go to state 29
-    MULTIPLY        shift and go to state 30
-    DIVIDE          shift and go to state 31
-    EXP             shift and go to state 32
-    EQUALCOMP       shift and go to state 33
-    GREATER_THAN_EQUAL shift and go to state 34
-    LESS_THAN_EQUAL shift and go to state 35
-    GREATER_THAN    shift and go to state 36
-    LESS_THAN       shift and go to state 37
-    NOTEQUAL        shift and go to state 38
-    AND             shift and go to state 39
-    OR              shift and go to state 40
-
-
-state 91
+state 94
 
     (10) assign -> INTTYPE IDENTIFIER EQUAL INT .
     (31) expression -> INT .
 
-  ! reduce/reduce conflict for NOT resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for INT resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for FLOAT resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for CONTINUE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for BREAK resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for IDENTIFIER resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for INTTYPE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for FLOATTYPE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for CHARTYPE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for STRINGTYPE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for IF resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for WHILE resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for FOR resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for VOID resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for PRINT resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-  ! reduce/reduce conflict for $end resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
   ! reduce/reduce conflict for SEMICOLON resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
   ! reduce/reduce conflict for RPAREN resolved using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    NOT             reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    INT             reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    FLOAT           reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    CONTINUE        reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    BREAK           reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    IDENTIFIER      reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    INTTYPE         reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    FLOATTYPE       reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    CHARTYPE        reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    STRINGTYPE      reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    IF              reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    WHILE           reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    FOR             reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    VOID            reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    PRINT           reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
-    $end            reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
     SEMICOLON       reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
     RPAREN          reduce using rule 10 (assign -> INTTYPE IDENTIFIER EQUAL INT .)
     ADD             reduce using rule 31 (expression -> INT .)
@@ -3127,27 +2812,11 @@ state 91
     AND             reduce using rule 31 (expression -> INT .)
     OR              reduce using rule 31 (expression -> INT .)
 
-  ! NOT             [ reduce using rule 31 (expression -> INT .) ]
-  ! INT             [ reduce using rule 31 (expression -> INT .) ]
-  ! FLOAT           [ reduce using rule 31 (expression -> INT .) ]
-  ! CONTINUE        [ reduce using rule 31 (expression -> INT .) ]
-  ! BREAK           [ reduce using rule 31 (expression -> INT .) ]
-  ! IDENTIFIER      [ reduce using rule 31 (expression -> INT .) ]
-  ! INTTYPE         [ reduce using rule 31 (expression -> INT .) ]
-  ! FLOATTYPE       [ reduce using rule 31 (expression -> INT .) ]
-  ! CHARTYPE        [ reduce using rule 31 (expression -> INT .) ]
-  ! STRINGTYPE      [ reduce using rule 31 (expression -> INT .) ]
-  ! IF              [ reduce using rule 31 (expression -> INT .) ]
-  ! WHILE           [ reduce using rule 31 (expression -> INT .) ]
-  ! FOR             [ reduce using rule 31 (expression -> INT .) ]
-  ! VOID            [ reduce using rule 31 (expression -> INT .) ]
-  ! PRINT           [ reduce using rule 31 (expression -> INT .) ]
-  ! $end            [ reduce using rule 31 (expression -> INT .) ]
   ! SEMICOLON       [ reduce using rule 31 (expression -> INT .) ]
   ! RPAREN          [ reduce using rule 31 (expression -> INT .) ]
 
 
-state 92
+state 95
 
     (11) assign -> INTTYPE IDENTIFIER EQUAL expression .
     (17) expression -> expression . ADD expression
@@ -3164,22 +2833,6 @@ state 92
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    NOT             reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    INT             reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    FLOAT           reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    CONTINUE        reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    BREAK           reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    IDENTIFIER      reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    INTTYPE         reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    FLOATTYPE       reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    CHARTYPE        reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    STRINGTYPE      reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    IF              reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    WHILE           reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    FOR             reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    VOID            reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    PRINT           reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
-    $end            reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
     SEMICOLON       reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
     RPAREN          reduce using rule 11 (assign -> INTTYPE IDENTIFIER EQUAL expression .)
     ADD             shift and go to state 28
@@ -3197,7 +2850,7 @@ state 92
     OR              shift and go to state 40
 
 
-state 93
+state 96
 
     (12) assign -> FLOATTYPE IDENTIFIER EQUAL expression .
     (17) expression -> expression . ADD expression
@@ -3214,22 +2867,6 @@ state 93
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    NOT             reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    INT             reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    FLOAT           reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    CONTINUE        reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    BREAK           reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    IDENTIFIER      reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    INTTYPE         reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    FLOATTYPE       reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    CHARTYPE        reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    STRINGTYPE      reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    IF              reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    WHILE           reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    FOR             reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    VOID            reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    PRINT           reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
-    $end            reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
     SEMICOLON       reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
     RPAREN          reduce using rule 12 (assign -> FLOATTYPE IDENTIFIER EQUAL expression .)
     ADD             shift and go to state 28
@@ -3247,45 +2884,13 @@ state 93
     OR              shift and go to state 40
 
 
-state 94
+state 97
 
     (14) assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .
     (32) expression -> FLOAT .
 
-  ! reduce/reduce conflict for NOT resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for INT resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for FLOAT resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for CONTINUE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for BREAK resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for IDENTIFIER resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for INTTYPE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for FLOATTYPE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for CHARTYPE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for STRINGTYPE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for IF resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for WHILE resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for FOR resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for VOID resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for PRINT resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-  ! reduce/reduce conflict for $end resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
   ! reduce/reduce conflict for SEMICOLON resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
   ! reduce/reduce conflict for RPAREN resolved using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    NOT             reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    INT             reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    FLOAT           reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    CONTINUE        reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    BREAK           reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    IDENTIFIER      reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    INTTYPE         reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    FLOATTYPE       reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    CHARTYPE        reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    STRINGTYPE      reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    IF              reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    WHILE           reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    FOR             reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    VOID            reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    PRINT           reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
-    $end            reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
     SEMICOLON       reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
     RPAREN          reduce using rule 14 (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT .)
     ADD             reduce using rule 32 (expression -> FLOAT .)
@@ -3302,92 +2907,51 @@ state 94
     AND             reduce using rule 32 (expression -> FLOAT .)
     OR              reduce using rule 32 (expression -> FLOAT .)
 
-  ! NOT             [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! INT             [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! FLOAT           [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! CONTINUE        [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! BREAK           [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! IDENTIFIER      [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! INTTYPE         [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! FLOATTYPE       [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! CHARTYPE        [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! STRINGTYPE      [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! IF              [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! WHILE           [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! FOR             [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! VOID            [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! PRINT           [ reduce using rule 32 (expression -> FLOAT .) ]
-  ! $end            [ reduce using rule 32 (expression -> FLOAT .) ]
   ! SEMICOLON       [ reduce using rule 32 (expression -> FLOAT .) ]
   ! RPAREN          [ reduce using rule 32 (expression -> FLOAT .) ]
 
 
-state 95
+state 98
 
     (13) assign -> CHARTYPE IDENTIFIER EQUAL CHAR .
 
-    NOT             reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    INT             reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    FLOAT           reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    CONTINUE        reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    BREAK           reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    IDENTIFIER      reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    INTTYPE         reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    FLOATTYPE       reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    CHARTYPE        reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    STRINGTYPE      reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    IF              reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    WHILE           reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    FOR             reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    VOID            reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    PRINT           reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
-    $end            reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
     SEMICOLON       reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
     RPAREN          reduce using rule 13 (assign -> CHARTYPE IDENTIFIER EQUAL CHAR .)
 
 
-state 96
+state 99
 
     (15) assign -> STRINGTYPE IDENTIFIER EQUAL STRING .
 
-    NOT             reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    INT             reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    FLOAT           reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    CONTINUE        reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    BREAK           reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    IDENTIFIER      reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    INTTYPE         reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    FLOATTYPE       reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    CHARTYPE        reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    STRINGTYPE      reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    IF              reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    WHILE           reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    FOR             reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    VOID            reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    PRINT           reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
-    $end            reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
     SEMICOLON       reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
     RPAREN          reduce using rule 15 (assign -> STRINGTYPE IDENTIFIER EQUAL STRING .)
 
 
-state 97
+state 100
+
+    (16) print -> PRINT LPAREN expression RPAREN .
+
+    SEMICOLON       reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
+
+
+state 101
 
     (35) if_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE empty
     (36) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE if_else_statement
     (38) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE if_statement
 
-    LBRACE          shift and go to state 112
+    LBRACE          shift and go to state 115
 
 
-state 98
+state 102
 
     (39) while_statement -> WHILE LPAREN expression RPAREN . LBRACE expression RBRACE
 
-    LBRACE          shift and go to state 113
+    LBRACE          shift and go to state 116
 
 
-state 99
+state 103
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON . expression SEMICOLON assign RPAREN LBRACE expression RBRACE
     (17) expression -> . expression ADD expression
@@ -3417,39 +2981,39 @@ state 99
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 114
+    expression                     shift and go to state 117
 
-state 100
+state 104
 
     (10) assign -> INTTYPE IDENTIFIER . EQUAL INT
     (11) assign -> INTTYPE IDENTIFIER . EQUAL expression
 
-    EQUAL           shift and go to state 72
+    EQUAL           shift and go to state 75
 
 
-state 101
+state 105
 
     (12) assign -> FLOATTYPE IDENTIFIER . EQUAL expression
     (14) assign -> FLOATTYPE IDENTIFIER . EQUAL FLOAT
 
-    EQUAL           shift and go to state 73
+    EQUAL           shift and go to state 76
 
 
-state 102
+state 106
 
     (13) assign -> CHARTYPE IDENTIFIER . EQUAL CHAR
 
-    EQUAL           shift and go to state 74
+    EQUAL           shift and go to state 77
 
 
-state 103
+state 107
 
     (15) assign -> STRINGTYPE IDENTIFIER . EQUAL STRING
 
-    EQUAL           shift and go to state 75
+    EQUAL           shift and go to state 78
 
 
-state 104
+state 108
 
     (47) function_input -> type_identifier COMMA . function_input
     (47) function_input -> . type_identifier COMMA function_input
@@ -3459,22 +3023,22 @@ state 104
     (43) type_identifier -> . FLOATTYPE IDENTIFIER
     (44) type_identifier -> . STRINGTYPE IDENTIFIER
 
-    INTTYPE         shift and go to state 85
-    CHARTYPE        shift and go to state 86
-    FLOATTYPE       shift and go to state 87
-    STRINGTYPE      shift and go to state 88
+    INTTYPE         shift and go to state 89
+    CHARTYPE        shift and go to state 90
+    FLOATTYPE       shift and go to state 91
+    STRINGTYPE      shift and go to state 92
 
-    type_identifier                shift and go to state 83
-    function_input                 shift and go to state 115
+    type_identifier                shift and go to state 87
+    function_input                 shift and go to state 118
 
-state 105
+state 109
 
     (45) function_statement -> type_identifier LPAREN function_input RPAREN . LBRACE expression RBRACE
 
-    LBRACE          shift and go to state 116
+    LBRACE          shift and go to state 119
 
 
-state 106
+state 110
 
     (41) type_identifier -> INTTYPE IDENTIFIER .
 
@@ -3482,7 +3046,7 @@ state 106
     RPAREN          reduce using rule 41 (type_identifier -> INTTYPE IDENTIFIER .)
 
 
-state 107
+state 111
 
     (42) type_identifier -> CHARTYPE IDENTIFIER .
 
@@ -3490,7 +3054,7 @@ state 107
     RPAREN          reduce using rule 42 (type_identifier -> CHARTYPE IDENTIFIER .)
 
 
-state 108
+state 112
 
     (43) type_identifier -> FLOATTYPE IDENTIFIER .
 
@@ -3498,7 +3062,7 @@ state 108
     RPAREN          reduce using rule 43 (type_identifier -> FLOATTYPE IDENTIFIER .)
 
 
-state 109
+state 113
 
     (44) type_identifier -> STRINGTYPE IDENTIFIER .
 
@@ -3506,36 +3070,14 @@ state 109
     RPAREN          reduce using rule 44 (type_identifier -> STRINGTYPE IDENTIFIER .)
 
 
-state 110
+state 114
 
     (46) function_statement -> VOID IDENTIFIER LPAREN function_input . RPAREN LBRACE expression RBRACE
 
-    RPAREN          shift and go to state 117
+    RPAREN          shift and go to state 120
 
 
-state 111
-
-    (16) print -> PRINT LPAREN expression RPAREN .
-
-    NOT             reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    INT             reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    FLOAT           reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    CONTINUE        reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    BREAK           reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    IDENTIFIER      reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    INTTYPE         reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    FLOATTYPE       reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    CHARTYPE        reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    STRINGTYPE      reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    IF              reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    WHILE           reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    FOR             reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    VOID            reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    PRINT           reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-    $end            reduce using rule 16 (print -> PRINT LPAREN expression RPAREN .)
-
-
-state 112
+state 115
 
     (35) if_statement -> IF LPAREN expression RPAREN LBRACE . expression RBRACE empty
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE . expression RBRACE ELSE LBRACE expression RBRACE empty
@@ -3568,9 +3110,9 @@ state 112
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 118
+    expression                     shift and go to state 121
 
-state 113
+state 116
 
     (39) while_statement -> WHILE LPAREN expression RPAREN LBRACE . expression RBRACE
     (17) expression -> . expression ADD expression
@@ -3600,9 +3142,9 @@ state 113
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 119
+    expression                     shift and go to state 122
 
-state 114
+state 117
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression . SEMICOLON assign RPAREN LBRACE expression RBRACE
     (17) expression -> expression . ADD expression
@@ -3619,7 +3161,7 @@ state 114
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    SEMICOLON       shift and go to state 120
+    SEMICOLON       shift and go to state 123
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -3635,14 +3177,14 @@ state 114
     OR              shift and go to state 40
 
 
-state 115
+state 118
 
     (47) function_input -> type_identifier COMMA function_input .
 
     RPAREN          reduce using rule 47 (function_input -> type_identifier COMMA function_input .)
 
 
-state 116
+state 119
 
     (45) function_statement -> type_identifier LPAREN function_input RPAREN LBRACE . expression RBRACE
     (17) expression -> . expression ADD expression
@@ -3672,104 +3214,21 @@ state 116
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 121
+    expression                     shift and go to state 124
 
-state 117
+state 120
 
     (46) function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN . LBRACE expression RBRACE
 
-    LBRACE          shift and go to state 122
+    LBRACE          shift and go to state 125
 
 
-state 118
+state 121
 
     (35) if_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE empty
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE if_else_statement
     (38) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE if_statement
-    (17) expression -> expression . ADD expression
-    (18) expression -> expression . SUBTRACT expression
-    (19) expression -> expression . MULTIPLY expression
-    (20) expression -> expression . DIVIDE expression
-    (21) expression -> expression . EXP expression
-    (22) expression -> expression . EQUALCOMP expression
-    (23) expression -> expression . GREATER_THAN_EQUAL expression
-    (24) expression -> expression . LESS_THAN_EQUAL expression
-    (25) expression -> expression . GREATER_THAN expression
-    (26) expression -> expression . LESS_THAN expression
-    (27) expression -> expression . NOTEQUAL expression
-    (29) expression -> expression . AND expression
-    (30) expression -> expression . OR expression
-
-    RBRACE          shift and go to state 123
-    ADD             shift and go to state 28
-    SUBTRACT        shift and go to state 29
-    MULTIPLY        shift and go to state 30
-    DIVIDE          shift and go to state 31
-    EXP             shift and go to state 32
-    EQUALCOMP       shift and go to state 33
-    GREATER_THAN_EQUAL shift and go to state 34
-    LESS_THAN_EQUAL shift and go to state 35
-    GREATER_THAN    shift and go to state 36
-    LESS_THAN       shift and go to state 37
-    NOTEQUAL        shift and go to state 38
-    AND             shift and go to state 39
-    OR              shift and go to state 40
-
-
-state 119
-
-    (39) while_statement -> WHILE LPAREN expression RPAREN LBRACE expression . RBRACE
-    (17) expression -> expression . ADD expression
-    (18) expression -> expression . SUBTRACT expression
-    (19) expression -> expression . MULTIPLY expression
-    (20) expression -> expression . DIVIDE expression
-    (21) expression -> expression . EXP expression
-    (22) expression -> expression . EQUALCOMP expression
-    (23) expression -> expression . GREATER_THAN_EQUAL expression
-    (24) expression -> expression . LESS_THAN_EQUAL expression
-    (25) expression -> expression . GREATER_THAN expression
-    (26) expression -> expression . LESS_THAN expression
-    (27) expression -> expression . NOTEQUAL expression
-    (29) expression -> expression . AND expression
-    (30) expression -> expression . OR expression
-
-    RBRACE          shift and go to state 124
-    ADD             shift and go to state 28
-    SUBTRACT        shift and go to state 29
-    MULTIPLY        shift and go to state 30
-    DIVIDE          shift and go to state 31
-    EXP             shift and go to state 32
-    EQUALCOMP       shift and go to state 33
-    GREATER_THAN_EQUAL shift and go to state 34
-    LESS_THAN_EQUAL shift and go to state 35
-    GREATER_THAN    shift and go to state 36
-    LESS_THAN       shift and go to state 37
-    NOTEQUAL        shift and go to state 38
-    AND             shift and go to state 39
-    OR              shift and go to state 40
-
-
-state 120
-
-    (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON . assign RPAREN LBRACE expression RBRACE
-    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
-    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
-    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
-    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
-    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
-    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
-
-    INTTYPE         shift and go to state 79
-    FLOATTYPE       shift and go to state 80
-    CHARTYPE        shift and go to state 81
-    STRINGTYPE      shift and go to state 82
-
-    assign                         shift and go to state 125
-
-state 121
-
-    (45) function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression . RBRACE
     (17) expression -> expression . ADD expression
     (18) expression -> expression . SUBTRACT expression
     (19) expression -> expression . MULTIPLY expression
@@ -3802,6 +3261,89 @@ state 121
 
 state 122
 
+    (39) while_statement -> WHILE LPAREN expression RPAREN LBRACE expression . RBRACE
+    (17) expression -> expression . ADD expression
+    (18) expression -> expression . SUBTRACT expression
+    (19) expression -> expression . MULTIPLY expression
+    (20) expression -> expression . DIVIDE expression
+    (21) expression -> expression . EXP expression
+    (22) expression -> expression . EQUALCOMP expression
+    (23) expression -> expression . GREATER_THAN_EQUAL expression
+    (24) expression -> expression . LESS_THAN_EQUAL expression
+    (25) expression -> expression . GREATER_THAN expression
+    (26) expression -> expression . LESS_THAN expression
+    (27) expression -> expression . NOTEQUAL expression
+    (29) expression -> expression . AND expression
+    (30) expression -> expression . OR expression
+
+    RBRACE          shift and go to state 127
+    ADD             shift and go to state 28
+    SUBTRACT        shift and go to state 29
+    MULTIPLY        shift and go to state 30
+    DIVIDE          shift and go to state 31
+    EXP             shift and go to state 32
+    EQUALCOMP       shift and go to state 33
+    GREATER_THAN_EQUAL shift and go to state 34
+    LESS_THAN_EQUAL shift and go to state 35
+    GREATER_THAN    shift and go to state 36
+    LESS_THAN       shift and go to state 37
+    NOTEQUAL        shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+
+
+state 123
+
+    (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON . assign RPAREN LBRACE expression RBRACE
+    (10) assign -> . INTTYPE IDENTIFIER EQUAL INT
+    (11) assign -> . INTTYPE IDENTIFIER EQUAL expression
+    (12) assign -> . FLOATTYPE IDENTIFIER EQUAL expression
+    (13) assign -> . CHARTYPE IDENTIFIER EQUAL CHAR
+    (14) assign -> . FLOATTYPE IDENTIFIER EQUAL FLOAT
+    (15) assign -> . STRINGTYPE IDENTIFIER EQUAL STRING
+
+    INTTYPE         shift and go to state 83
+    FLOATTYPE       shift and go to state 84
+    CHARTYPE        shift and go to state 85
+    STRINGTYPE      shift and go to state 86
+
+    assign                         shift and go to state 128
+
+state 124
+
+    (45) function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression . RBRACE
+    (17) expression -> expression . ADD expression
+    (18) expression -> expression . SUBTRACT expression
+    (19) expression -> expression . MULTIPLY expression
+    (20) expression -> expression . DIVIDE expression
+    (21) expression -> expression . EXP expression
+    (22) expression -> expression . EQUALCOMP expression
+    (23) expression -> expression . GREATER_THAN_EQUAL expression
+    (24) expression -> expression . LESS_THAN_EQUAL expression
+    (25) expression -> expression . GREATER_THAN expression
+    (26) expression -> expression . LESS_THAN expression
+    (27) expression -> expression . NOTEQUAL expression
+    (29) expression -> expression . AND expression
+    (30) expression -> expression . OR expression
+
+    RBRACE          shift and go to state 129
+    ADD             shift and go to state 28
+    SUBTRACT        shift and go to state 29
+    MULTIPLY        shift and go to state 30
+    DIVIDE          shift and go to state 31
+    EXP             shift and go to state 32
+    EQUALCOMP       shift and go to state 33
+    GREATER_THAN_EQUAL shift and go to state 34
+    LESS_THAN_EQUAL shift and go to state 35
+    GREATER_THAN    shift and go to state 36
+    LESS_THAN       shift and go to state 37
+    NOTEQUAL        shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+
+
+state 125
+
     (46) function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE . expression RBRACE
     (17) expression -> . expression ADD expression
     (18) expression -> . expression SUBTRACT expression
@@ -3830,9 +3372,9 @@ state 122
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 127
+    expression                     shift and go to state 130
 
-state 123
+state 126
 
     (35) if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . empty
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE LBRACE expression RBRACE empty
@@ -3840,7 +3382,7 @@ state 123
     (38) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE if_statement
     (50) empty -> .
 
-    ELSE            shift and go to state 129
+    ELSE            shift and go to state 132
     NOT             reduce using rule 50 (empty -> .)
     INT             reduce using rule 50 (empty -> .)
     FLOAT           reduce using rule 50 (empty -> .)
@@ -3851,16 +3393,16 @@ state 123
     FLOATTYPE       reduce using rule 50 (empty -> .)
     CHARTYPE        reduce using rule 50 (empty -> .)
     STRINGTYPE      reduce using rule 50 (empty -> .)
+    PRINT           reduce using rule 50 (empty -> .)
     IF              reduce using rule 50 (empty -> .)
     WHILE           reduce using rule 50 (empty -> .)
     FOR             reduce using rule 50 (empty -> .)
     VOID            reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
     $end            reduce using rule 50 (empty -> .)
 
-    empty                          shift and go to state 128
+    empty                          shift and go to state 131
 
-state 124
+state 127
 
     (39) while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .
 
@@ -3874,22 +3416,22 @@ state 124
     FLOATTYPE       reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     CHARTYPE        reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     STRINGTYPE      reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
+    PRINT           reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     IF              reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     WHILE           reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     FOR             reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     VOID            reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
-    PRINT           reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
     $end            reduce using rule 39 (while_statement -> WHILE LPAREN expression RPAREN LBRACE expression RBRACE .)
 
 
-state 125
+state 128
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign . RPAREN LBRACE expression RBRACE
 
-    RPAREN          shift and go to state 130
+    RPAREN          shift and go to state 133
 
 
-state 126
+state 129
 
     (45) function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .
 
@@ -3903,15 +3445,15 @@ state 126
     FLOATTYPE       reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     CHARTYPE        reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     STRINGTYPE      reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
+    PRINT           reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     IF              reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     WHILE           reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     FOR             reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     VOID            reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
-    PRINT           reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
     $end            reduce using rule 45 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE .)
 
 
-state 127
+state 130
 
     (46) function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression . RBRACE
     (17) expression -> expression . ADD expression
@@ -3928,7 +3470,7 @@ state 127
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RBRACE          shift and go to state 131
+    RBRACE          shift and go to state 134
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -3944,7 +3486,7 @@ state 127
     OR              shift and go to state 40
 
 
-state 128
+state 131
 
     (35) if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .
 
@@ -3958,15 +3500,15 @@ state 128
     FLOATTYPE       reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     CHARTYPE        reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     STRINGTYPE      reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
+    PRINT           reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     IF              reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     WHILE           reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     FOR             reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     VOID            reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
-    PRINT           reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
     $end            reduce using rule 35 (if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE empty .)
 
 
-state 129
+state 132
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE . LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE . if_else_statement
@@ -3976,20 +3518,20 @@ state 129
     (38) if_else_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
     (35) if_statement -> . IF LPAREN expression RPAREN LBRACE expression RBRACE empty
 
-    LBRACE          shift and go to state 133
-    IF              shift and go to state 132
+    LBRACE          shift and go to state 136
+    IF              shift and go to state 135
 
-    if_else_statement              shift and go to state 134
-    if_statement                   shift and go to state 135
+    if_else_statement              shift and go to state 137
+    if_statement                   shift and go to state 138
 
-state 130
+state 133
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN . LBRACE expression RBRACE
 
-    LBRACE          shift and go to state 136
+    LBRACE          shift and go to state 139
 
 
-state 131
+state 134
 
     (46) function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .
 
@@ -4003,25 +3545,25 @@ state 131
     FLOATTYPE       reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     CHARTYPE        reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     STRINGTYPE      reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
+    PRINT           reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     IF              reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     WHILE           reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     FOR             reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     VOID            reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
-    PRINT           reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
     $end            reduce using rule 46 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE .)
 
 
-state 132
+state 135
 
     (36) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
     (38) if_else_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement
     (35) if_statement -> IF . LPAREN expression RPAREN LBRACE expression RBRACE empty
 
-    LPAREN          shift and go to state 137
+    LPAREN          shift and go to state 140
 
 
-state 133
+state 136
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE . expression RBRACE empty
     (17) expression -> . expression ADD expression
@@ -4051,9 +3593,9 @@ state 133
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 138
+    expression                     shift and go to state 141
 
-state 134
+state 137
 
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .
 
@@ -4067,15 +3609,15 @@ state 134
     FLOATTYPE       reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     CHARTYPE        reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     STRINGTYPE      reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
+    PRINT           reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     IF              reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     WHILE           reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     FOR             reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     VOID            reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
-    PRINT           reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
     $end            reduce using rule 37 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_else_statement .)
 
 
-state 135
+state 138
 
     (38) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .
 
@@ -4089,15 +3631,15 @@ state 135
     FLOATTYPE       reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     CHARTYPE        reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     STRINGTYPE      reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
+    PRINT           reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     IF              reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     WHILE           reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     FOR             reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     VOID            reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
-    PRINT           reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
     $end            reduce using rule 38 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE if_statement .)
 
 
-state 136
+state 139
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE . expression RBRACE
     (17) expression -> . expression ADD expression
@@ -4127,9 +3669,9 @@ state 136
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 139
+    expression                     shift and go to state 142
 
-state 137
+state 140
 
     (36) if_else_statement -> IF LPAREN . expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN . expression RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -4162,9 +3704,9 @@ state 137
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 140
+    expression                     shift and go to state 143
 
-state 138
+state 141
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression . RBRACE empty
     (17) expression -> expression . ADD expression
@@ -4181,7 +3723,7 @@ state 138
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RBRACE          shift and go to state 141
+    RBRACE          shift and go to state 144
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -4197,7 +3739,7 @@ state 138
     OR              shift and go to state 40
 
 
-state 139
+state 142
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression . RBRACE
     (17) expression -> expression . ADD expression
@@ -4214,7 +3756,7 @@ state 139
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RBRACE          shift and go to state 142
+    RBRACE          shift and go to state 145
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -4230,7 +3772,7 @@ state 139
     OR              shift and go to state 40
 
 
-state 140
+state 143
 
     (36) if_else_statement -> IF LPAREN expression . RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression . RPAREN LBRACE expression RBRACE ELSE if_else_statement
@@ -4250,7 +3792,7 @@ state 140
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RPAREN          shift and go to state 143
+    RPAREN          shift and go to state 146
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -4266,7 +3808,7 @@ state 140
     OR              shift and go to state 40
 
 
-state 141
+state 144
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE . empty
     (50) empty -> .
@@ -4281,16 +3823,16 @@ state 141
     FLOATTYPE       reduce using rule 50 (empty -> .)
     CHARTYPE        reduce using rule 50 (empty -> .)
     STRINGTYPE      reduce using rule 50 (empty -> .)
+    PRINT           reduce using rule 50 (empty -> .)
     IF              reduce using rule 50 (empty -> .)
     WHILE           reduce using rule 50 (empty -> .)
     FOR             reduce using rule 50 (empty -> .)
     VOID            reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
     $end            reduce using rule 50 (empty -> .)
 
-    empty                          shift and go to state 144
+    empty                          shift and go to state 147
 
-state 142
+state 145
 
     (40) for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .
 
@@ -4304,25 +3846,25 @@ state 142
     FLOATTYPE       reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     CHARTYPE        reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     STRINGTYPE      reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
+    PRINT           reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     IF              reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     WHILE           reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     FOR             reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     VOID            reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
-    PRINT           reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
     $end            reduce using rule 40 (for_statement -> FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE expression RBRACE .)
 
 
-state 143
+state 146
 
     (36) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE if_else_statement
     (38) if_else_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE ELSE if_statement
     (35) if_statement -> IF LPAREN expression RPAREN . LBRACE expression RBRACE empty
 
-    LBRACE          shift and go to state 145
+    LBRACE          shift and go to state 148
 
 
-state 144
+state 147
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .
 
@@ -4336,15 +3878,15 @@ state 144
     FLOATTYPE       reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     CHARTYPE        reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     STRINGTYPE      reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
+    PRINT           reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     IF              reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     WHILE           reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     FOR             reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     VOID            reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
-    PRINT           reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
     $end            reduce using rule 36 (if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE ELSE LBRACE expression RBRACE empty .)
 
 
-state 145
+state 148
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE . expression RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE . expression RBRACE ELSE if_else_statement
@@ -4377,9 +3919,9 @@ state 145
     BREAK           shift and go to state 15
     IDENTIFIER      shift and go to state 16
 
-    expression                     shift and go to state 146
+    expression                     shift and go to state 149
 
-state 146
+state 149
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression . RBRACE ELSE if_else_statement
@@ -4399,7 +3941,7 @@ state 146
     (29) expression -> expression . AND expression
     (30) expression -> expression . OR expression
 
-    RBRACE          shift and go to state 147
+    RBRACE          shift and go to state 150
     ADD             shift and go to state 28
     SUBTRACT        shift and go to state 29
     MULTIPLY        shift and go to state 30
@@ -4415,7 +3957,7 @@ state 146
     OR              shift and go to state 40
 
 
-state 147
+state 150
 
     (36) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE LBRACE expression RBRACE empty
     (37) if_else_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . ELSE if_else_statement
@@ -4423,7 +3965,7 @@ state 147
     (35) if_statement -> IF LPAREN expression RPAREN LBRACE expression RBRACE . empty
     (50) empty -> .
 
-    ELSE            shift and go to state 129
+    ELSE            shift and go to state 132
     NOT             reduce using rule 50 (empty -> .)
     INT             reduce using rule 50 (empty -> .)
     FLOAT           reduce using rule 50 (empty -> .)
@@ -4434,14 +3976,14 @@ state 147
     FLOATTYPE       reduce using rule 50 (empty -> .)
     CHARTYPE        reduce using rule 50 (empty -> .)
     STRINGTYPE      reduce using rule 50 (empty -> .)
+    PRINT           reduce using rule 50 (empty -> .)
     IF              reduce using rule 50 (empty -> .)
     WHILE           reduce using rule 50 (empty -> .)
     FOR             reduce using rule 50 (empty -> .)
     VOID            reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
     $end            reduce using rule 50 (empty -> .)
 
-    empty                          shift and go to state 128
+    empty                          shift and go to state 131
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
@@ -4458,19 +4000,6 @@ WARNING: shift/reduce conflict for LESS_THAN in state 48 resolved as shift
 WARNING: shift/reduce conflict for NOTEQUAL in state 48 resolved as shift
 WARNING: shift/reduce conflict for AND in state 48 resolved as shift
 WARNING: shift/reduce conflict for OR in state 48 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 70 resolved as shift
-WARNING: shift/reduce conflict for SUBTRACT in state 70 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 70 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 70 resolved as shift
-WARNING: shift/reduce conflict for EXP in state 70 resolved as shift
-WARNING: shift/reduce conflict for EQUALCOMP in state 70 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 70 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 70 resolved as shift
-WARNING: shift/reduce conflict for GREATER_THAN in state 70 resolved as shift
-WARNING: shift/reduce conflict for LESS_THAN in state 70 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 70 resolved as shift
-WARNING: shift/reduce conflict for AND in state 70 resolved as shift
-WARNING: shift/reduce conflict for OR in state 70 resolved as shift
 WARNING: shift/reduce conflict for ADD in state 71 resolved as shift
 WARNING: shift/reduce conflict for SUBTRACT in state 71 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 71 resolved as shift
@@ -4484,7 +4013,20 @@ WARNING: shift/reduce conflict for LESS_THAN in state 71 resolved as shift
 WARNING: shift/reduce conflict for NOTEQUAL in state 71 resolved as shift
 WARNING: shift/reduce conflict for AND in state 71 resolved as shift
 WARNING: shift/reduce conflict for OR in state 71 resolved as shift
-WARNING: reduce/reduce conflict in state 91 resolved using rule (assign -> INTTYPE IDENTIFIER EQUAL INT)
-WARNING: rejected rule (expression -> INT) in state 91
-WARNING: reduce/reduce conflict in state 94 resolved using rule (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT)
-WARNING: rejected rule (expression -> FLOAT) in state 94
+WARNING: shift/reduce conflict for ADD in state 72 resolved as shift
+WARNING: shift/reduce conflict for SUBTRACT in state 72 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 72 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 72 resolved as shift
+WARNING: shift/reduce conflict for EXP in state 72 resolved as shift
+WARNING: shift/reduce conflict for EQUALCOMP in state 72 resolved as shift
+WARNING: shift/reduce conflict for GREATER_THAN_EQUAL in state 72 resolved as shift
+WARNING: shift/reduce conflict for LESS_THAN_EQUAL in state 72 resolved as shift
+WARNING: shift/reduce conflict for GREATER_THAN in state 72 resolved as shift
+WARNING: shift/reduce conflict for LESS_THAN in state 72 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 72 resolved as shift
+WARNING: shift/reduce conflict for AND in state 72 resolved as shift
+WARNING: shift/reduce conflict for OR in state 72 resolved as shift
+WARNING: reduce/reduce conflict in state 94 resolved using rule (assign -> INTTYPE IDENTIFIER EQUAL INT)
+WARNING: rejected rule (expression -> INT) in state 94
+WARNING: reduce/reduce conflict in state 97 resolved using rule (assign -> FLOATTYPE IDENTIFIER EQUAL FLOAT)
+WARNING: rejected rule (expression -> FLOAT) in state 97

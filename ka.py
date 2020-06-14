@@ -180,14 +180,14 @@ names = {}
 
 def p_ka(p):
     '''
-    ka : expression ka
-       | assign ka
+    ka : expression SEMICOLON ka
+       | assign SEMICOLON ka
+       | print SEMICOLON ka
        | if_statement ka
        | if_else_statement ka
        | while_statement ka
        | for_statement ka
        | function_statement ka
-       | print ka
        | empty
     '''
 
