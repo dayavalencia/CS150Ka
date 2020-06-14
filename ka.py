@@ -59,8 +59,6 @@ t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
 t_VOID = r'kawalan'
 t_INPUT = r'ipasok'
-t_BREAK = r'itigil'
-t_CONTINUE = r'ituloy'
 t_RETURN = r'ibalik'
 t_ADD = r'\+'
 t_SUBTRACT = r'\-'
@@ -82,6 +80,14 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
+
+def t_BREAK(t):
+    r'itigil'
+    return t
+
+def t_CONTINUE(t):
+    r'ituloy'
+    return t
 
 def t_FOR(t):
     r'parasa'
@@ -278,6 +284,14 @@ def p_int_float(p):
     '''
     expression : INT
                | FLOAT
+    '''
+
+    p[0] = p[1]
+
+def p_continue_break(p):
+    '''
+    expression : CONTINUE
+               | BREAK
     '''
 
     p[0] = p[1]
