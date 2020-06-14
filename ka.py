@@ -161,6 +161,8 @@ lexer = lex.lex()
 # resolve warnings
 # multiple expressions, assignments, statements?
 # LPAREN RPAREN if if-else? -- expressions
+# add ka to loops and if-else statement
+# define statement contents
 
 precedence = (
     ('left', 'EQUALCOMP', 'NOTEQUAL', 'GREATER_THAN_EQUAL', 'LESS_THAN_EQUAL', 'GREATER_THAN', 'LESS_THAN'),
@@ -178,6 +180,7 @@ def p_ka(p):
        | if_else_statement ka
        | while_statement ka
        | for_statement ka
+       | function_statement ka
        | print ka
        | empty
     '''
@@ -316,6 +319,37 @@ def p_for_statement(p):
     '''
 
     p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+
+def p_types(p):
+    '''
+    type_identifier : INTTYPE IDENTIFIER
+                    | CHARTYPE IDENTIFIER
+                    | FLOATTYPE IDENTIFIER
+                    | STRINGTYPE IDENTIFIER
+    '''
+
+    p[0] = p[1], p[2]
+def p_function(p):
+    '''
+    function_statement : type_identifier LPAREN function_input RPAREN LBRACE expression RBRACE
+                       | VOID IDENTIFIER LPAREN function_input RPAREN LBRACE expression RBRACE
+    '''
+
+    if len(p) == 8:
+      p[0] = p[1] + (p[2],) + p[3] + (p[4], p[5], p[6], p[7])
+    else:
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8])
+
+def p_function_input(p):
+    '''
+    function_input : type_identifier COMMA function_input
+                   | type_identifier
+    '''
+
+    if len(p) > 2:
+      p[0] = p[1] + (p[2],) + p[3]
+    else:
+      p[0] = p[1]
 
 def p_expression_var(p):
     '''
