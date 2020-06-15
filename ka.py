@@ -285,6 +285,7 @@ def p_expression_binary(p):
                | expression MULTIPLY expression
                | expression DIVIDE expression
                | expression EXP expression
+               | LPAREN expression RPAREN
     '''
 
     # if p[2] == '+':
@@ -297,8 +298,10 @@ def p_expression_binary(p):
     #     p[0] = p[1] / p[3]
     # elif p[2] == "eksp":
     #     p[0] = p[1] ** p[3]
-    
-    p[0] = (p[2], p[1], p[3])
+    if p[1] == '(':
+      p[0] = (p[1], p[2], p[3])
+    else:
+      p[0] = (p[2], p[1], p[3])
 
 def p_expression_binary_compare(p):
     '''
