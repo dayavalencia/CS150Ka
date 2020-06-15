@@ -201,9 +201,11 @@ def p_ka(p):
        | comment ka
        | empty
     '''
-
+    f = open("output.txt","w")
     if p[1] != None:
-      print(p[1])
+      print(translate(p[1]))
+    f.write(translate(p[1]))
+    f.close()
 
 def p_legal(p):
     '''
@@ -437,13 +439,78 @@ def p_empty(p):
     p[0] = None
 
 def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+    print("Syntax error at '" +  str(t.value) + "' on line: " + str(t.lexer.lineno))
 
 parser = yacc.yacc()
 
-while True: 
-    try:
-        s = input('ka> ')
-    except EOFError:
-        break
-    parser.parse(s)
+#____________TRANSLATE___________#
+def translate(p):
+    #f = open("output.txt","w")
+    #missing p_legal p_assign? p_input
+
+    if type(p) == tuple:
+        #for_if_statement_and_its_constituents
+        if len(p) == 11:
+            pstring = ''
+            if p[0] == 'kung':
+                pstring += 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else' + p[8] + translate(p[9]) + p[10]
+            if p[0] == 'parasa':
+                pstring += 'for' + p[1] + translate(p[2]) + p[3] + translate(p[4]) + p[5] + translate(p[6]) + p[7] + p[8] + translate(p[9]) + p[10]
+            return(pstring)
+        #if_else
+        elif len(p) == 9:
+            if p[0] == 'kung':
+                pstring = 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else ' + translate(p[8]) 
+                return(pstring)        
+        #void function
+        elif len(p) == 8:
+            pstring = ''
+            if p[0] == 'kawalan':
+                pstring += 'void' + translate(p[1]) + p[2] + translate(p[3]) + p[4] + p[5] + '\n' + translate(p[6]) + '\n' + p[7]
+        #while_if_function_statement
+        elif len(p) == 7:
+            pstring = ''
+            if p[0] == 'kung':
+                pstring += 'if ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            elif p[0] == 'habang':
+                pstring += 'while ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            #function with type_identifier
+            else:
+                pstring += translate(p[0]) + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            return(pstring)
+        # expressions and other stuff
+        elif len(p) == 3:
+            #eksp
+            if p[0] == 'eksp':
+                return (p[1] + '**' + p[2])
+            #function_input
+            elif p[1] == ',':
+                return (translate(p[0]) + p[1] + translate(p[2]))
+            else:
+                return (str(p[1]) + str(p[0]) + str(p[2]))
+        # return
+        elif len(p) == 2:
+            if p[0] == 'ilimbag':
+               return ('printf(' + translate(p[1]) + ')')
+            elif p[0] == 'ibalik':
+                return('return ' + translate(p[1]))
+            else:
+                return(str(p[0]) + translate(p[1]))                
+    else:
+        if(type(p) == str):
+            if p == 'ituloy':
+                p = 'continue'
+            if p == 'itigil':
+                p = 'break'
+        return str(p)
+    #return p
+
+#while True: 
+#    try:
+#        s = input('ka> ')
+#    except EOFError:
+#        break
+#    print(parser.parse(s))
+f = open("tester1.ka", "r")
+print(parser.parse(f.read()))
+f.close();
