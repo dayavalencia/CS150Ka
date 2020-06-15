@@ -38,7 +38,7 @@ tokens = [
     'OR',
     'AND',
     'PRINT',
-    # 'INPUT',
+    'INPUT',
     'IF',
     'ELSE',
     'WHILE',
@@ -57,7 +57,6 @@ t_COMMENT = r'\#.*'
 t_IDENTIFIER = r'[a-zA-Z_]\w*'
 t_CHAR = r'\'.\''
 t_STRING = r'"(.*?)"'
-# t_INPUT = r'ipasok'
 t_ADD = r'\+'
 t_SUBTRACT = r'\-'
 t_MULTIPLY = r'\*'
@@ -78,6 +77,10 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
+
+def t_INPUT(t):
+    r'ipasok'
+    return t
 
 def t_RETURN(t):
     r'ibalik'
@@ -189,7 +192,7 @@ def p_ka(p):
     ka : expression SEMICOLON ka
        | assign SEMICOLON ka
        | print SEMICOLON ka
-       | return SEMICOLON ka
+       | input SEMICOLON ka
        | if_statement ka
        | if_else_statement ka
        | while_statement ka
@@ -209,6 +212,8 @@ def p_legal(p):
     legal : expression SEMICOLON legal
        | assign SEMICOLON legal
        | print SEMICOLON legal
+       | input SEMICOLON legal
+       | return SEMICOLON legal
        | if_statement legal
        | if_else_statement legal
        | while_statement legal
@@ -250,6 +255,13 @@ def p_print(p):
   '''
   
   p[0] = (p[1], p[3])
+
+def p_input(p):
+  '''
+  input : IDENTIFIER EQUAL INPUT LPAREN RPAREN
+  '''
+
+  p[0] = (p[2], p[1], p[3], p[4], p[5])
 
 def p_return(p):
   '''
