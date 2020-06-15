@@ -198,9 +198,11 @@ def p_ka(p):
        | comment ka
        | empty
     '''
-
+    f = open("output.txt","w")
     if p[1] != None:
       print(translate(p[1]))
+    f.write(translate(p[1]))
+    f.close()
 
 def p_legal(p):
     '''
@@ -432,19 +434,22 @@ parser = yacc.yacc()
 #____________TRANSLATE___________#
 def translate(p):
     #f = open("output.txt","w")
-    #missing
-    print((1,3) + (3,4))
-    print(type((1,3) + (3,4)))
-    print(len((1,3) + (3,4)))
+    #missing p_legal
 
     if type(p) == tuple:
         #for_if_statement_and_its_constituents
         if len(p) == 11:
+            pstring = ''
             if p[0] == 'kung':
-                pstring = 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else' + p[8] + translate(p) + p[10]
-                print(pstring)
+                pstring += 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else' + p[8] + translate(p[9]) + p[10]
             if p[0] == 'parasa':
-                pstring += 'for '
+                pstring += 'for' + p[1] + translate(p[2]) + p[3] + translate(p[4]) + p[5] + translate(p[6]) + p[7] + p[8] + translate(p[9]) + p[10]
+            return(pstring)
+        #if_else
+        elif len(p) == 9:
+            if p[0] == 'kung':
+                pstring = 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else ' + translate(p[8]) 
+                return(pstring)        
         #while_if_statement
         elif len(p) == 7:
             pstring = ''
@@ -453,20 +458,33 @@ def translate(p):
             if p[0] == 'habang':
                 pstring += 'while '
             pstring += p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
-            print(pstring)
+            return(pstring)
+        # expressions and other stuff
         elif len(p) == 3:
-            if p[2] == 'eksp':
-                return (p[1] + '**' + p[3])
+            #eksp
+            if p[0] == 'eksp':
+                return (p[1] + '**' + p[2])
+            #function_input
+            elif p[1] == ',':
+                return (translate(p[0]) + p[1] + translate(p[2]))
             else:
                 return (str(p[1]) + str(p[0]) + str(p[2]))
+        # return
         elif len(p) == 2:
-            if p[1] == 'ilimbag':
-               return ('printf(' + translate(p[3]) + ')')
+            if p[0] == 'ilimbag':
+               return ('printf(' + translate(p[1]) + ')')
+            elif p[0] == 'ibalik':
+                return('return ' + translate(p[1]))
             else:
-                return(str(p[0]) + str(p[1]))                
-    elif type(p) == int:
+                return(str(p[0]) + translate(p[1]))                
+    else:
+        if(type(p) == string):
+            if p == 'ituloy':
+                p = 'continue'
+            if p == 'itigil':
+                p = 'break'
         return str(p)
-    return p
+    #return p
 
 while True: 
     try:
