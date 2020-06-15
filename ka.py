@@ -245,9 +245,16 @@ def p_assign(p):
            | CHARTYPE IDENTIFIER EQUAL CHAR
            | FLOATTYPE IDENTIFIER EQUAL FLOAT
            | STRINGTYPE IDENTIFIER EQUAL STRING
+           | INTTYPE IDENTIFIER
+           | FLOATTYPE IDENTIFIER
+           | CHARTYPE IDENTIFIER
+           | STRINGTYPE IDENTIFIER
     '''
 
-    p[0] = ('=', p[2], p[4])
+    if len(p) == 5: 
+      p[0] = ('=', p[2], p[4])
+    else:
+      p[0] = ('=', p[2], None)
 
 def p_print(p):
   '''
@@ -417,6 +424,7 @@ def p_function_input(p):
     '''
     function_input : type_identifier COMMA function_input
                    | type_identifier
+                   | empty
     '''
 
     if len(p) > 2:
@@ -513,4 +521,4 @@ def translate(p):
 #    print(parser.parse(s))
 f = open("tester1.ka", "r")
 print(parser.parse(f.read()))
-f.close();
+f.close()
