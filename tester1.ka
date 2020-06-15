@@ -9,7 +9,7 @@ bilang main() {
     bilang temp = start - ((start / 4) * 4);
     bilang leap = (start / 4) * 4;
 
-    if ( temp == 0 ) {
+    kung ( temp == 0 ) {
         ilimbag(leap);
     }
 

@@ -439,14 +439,14 @@ def p_empty(p):
     p[0] = None
 
 def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+    print("Syntax error at '" +  str(t.value) + "' on line: " + str(t.lexer.lineno))
 
 parser = yacc.yacc()
 
 #____________TRANSLATE___________#
 def translate(p):
     #f = open("output.txt","w")
-    #missing p_legal
+    #missing p_legal p_assign? p_input
 
     if type(p) == tuple:
         #for_if_statement_and_its_constituents
@@ -462,14 +462,21 @@ def translate(p):
             if p[0] == 'kung':
                 pstring = 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else ' + translate(p[8]) 
                 return(pstring)        
-        #while_if_statement
+        #void function
+        elif len(p) == 8:
+            pstring = ''
+            if p[0] == 'kawalan':
+                pstring += 'void' + translate(p[1]) + p[2] + translate(p[3]) + p[4] + p[5] + '\n' + translate(p[6]) + '\n' + p[7]
+        #while_if_function_statement
         elif len(p) == 7:
             pstring = ''
             if p[0] == 'kung':
-                pstring += 'if ' 
-            if p[0] == 'habang':
-                pstring += 'while '
-            pstring += p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+                pstring += 'if ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            elif p[0] == 'habang':
+                pstring += 'while ' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
+            #function with type_identifier
+            else:
+                pstring += translate(p[0]) + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
             return(pstring)
         # expressions and other stuff
         elif len(p) == 3:
@@ -490,7 +497,7 @@ def translate(p):
             else:
                 return(str(p[0]) + translate(p[1]))                
     else:
-        if(type(p) == string):
+        if(type(p) == str):
             if p == 'ituloy':
                 p = 'continue'
             if p == 'itigil':
@@ -498,9 +505,12 @@ def translate(p):
         return str(p)
     #return p
 
-while True: 
-    try:
-        s = input('ka> ')
-    except EOFError:
-        break
-    print(parser.parse(s))
+#while True: 
+#    try:
+#        s = input('ka> ')
+#    except EOFError:
+#        break
+#    print(parser.parse(s))
+f = open("tester1.ka", "r")
+print(parser.parse(f.read()))
+f.close();
