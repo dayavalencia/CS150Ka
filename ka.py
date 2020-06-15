@@ -193,6 +193,7 @@ def p_ka(p):
        | assign SEMICOLON ka
        | print SEMICOLON ka
        | input SEMICOLON ka
+       | return SEMICOLON legal
        | if_statement ka
        | if_else_statement ka
        | while_statement ka
@@ -218,6 +219,7 @@ def p_legal(p):
        | if_else_statement legal
        | while_statement legal
        | for_statement legal
+       | comment ka
        | empty
     '''
 
@@ -245,13 +247,24 @@ def p_assign(p):
            | CHARTYPE IDENTIFIER EQUAL CHAR
            | FLOATTYPE IDENTIFIER EQUAL FLOAT
            | STRINGTYPE IDENTIFIER EQUAL STRING
+           | INTTYPE IDENTIFIER
+           | FLOATTYPE IDENTIFIER
+           | CHARTYPE IDENTIFIER
+           | STRINGTYPE IDENTIFIER
+           | IDENTIFIER EQUAL expression
     '''
 
-    p[0] = ('=', p[2], p[4])
+    # IDENTIFIER EQUAL expression -- reassignment?
+
+    if len(p) == 5: 
+      p[0] = ('=', p[2], p[4])
+    else:
+      p[0] = ('=', p[2], None)
 
 def p_print(p):
   '''
   print : PRINT LPAREN expression RPAREN
+        | PRINT LPAREN STRING RPAREN
   '''
   
   p[0] = (p[1], p[3])
@@ -266,6 +279,7 @@ def p_input(p):
 def p_return(p):
   '''
   return : RETURN expression
+         | RETURN INT
          | RETURN IDENTIFIER
   '''
   
@@ -278,6 +292,7 @@ def p_expression_binary(p):
                | expression MULTIPLY expression
                | expression DIVIDE expression
                | expression EXP expression
+               | LPAREN expression RPAREN
     '''
 
     # if p[2] == '+':
@@ -290,8 +305,10 @@ def p_expression_binary(p):
     #     p[0] = p[1] / p[3]
     # elif p[2] == "eksp":
     #     p[0] = p[1] ** p[3]
-    
-    p[0] = (p[2], p[1], p[3])
+    if p[1] == '(':
+      p[0] = (p[1], p[2], p[3])
+    else:
+      p[0] = (p[2], p[1], p[3])
 
 def p_expression_binary_compare(p):
     '''
@@ -402,7 +419,7 @@ def p_types(p):
 
     p[0] = p[1], p[2]
 
-def p_function(p):
+def p_function_statement(p):
     '''
     function_statement : type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE
                        | VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE
@@ -417,10 +434,34 @@ def p_function_input(p):
     '''
     function_input : type_identifier COMMA function_input
                    | type_identifier
+                   | empty
     '''
 
     if len(p) > 2:
       p[0] = (p[1],) + (p[2],) + p[3]
+    else:
+      p[0] = (p[1],)
+
+def p_function_call(p):
+    '''
+    expression : IDENTIFIER LPAREN function_call_input RPAREN
+    '''
+
+    p[0] = (p[1], p[2]) + p[3] + (p[4],)
+
+def p_function__call_input(p):
+    '''
+    function_call_input : IDENTIFIER COMMA IDENTIFIER
+                        | IDENTIFIER COMMA expression
+                        | expression COMMA IDENTIFIER
+                        | expression COMMA expression
+                        | IDENTIFIER
+                        | expression
+                        | empty
+    '''
+
+    if len(p) > 2:
+      p[0] = (p[1], p[2], p[3])
     else:
       p[0] = (p[1],)
 
@@ -511,6 +552,6 @@ def translate(p):
 #    except EOFError:
 #        break
 #    print(parser.parse(s))
-f = open("tester1.ka", "r")
+f = open("tester3.ka", "r")
 print(parser.parse(f.read()))
-f.close();
+f.close()

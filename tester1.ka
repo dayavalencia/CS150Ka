@@ -1,20 +1,21 @@
 # PRINTS ALL LEAP YEARS WITHIN USER SPECIFIED RANGE
 bilang main() {
-    bilang start;   # start year holder
-    bilang end; # end year holder
+    bilang start;   
+    bilang end; 
     ilimbag("Enter start year:");
     start = ipasok();   # asks for user input for start
     ilimbag("Enter end year:");
     end = ipasok(); # asks for user input for end
 
-    bilang temp = start - ((start / 4) * 4); # check if starting year is a leap year
-    bilang leap = (start / 4) * 4;  # computes the first leap year
+    bilang temp = start - ((start / 4) * 4); 
+    # check if starting year is a leap year
+    bilang leap = (start / 4) * 4;  
 
     kung ( temp == 0 ) {
         ilimbag(leap);
     }
 
-    leap = leap + 4;    # computes the next leap year
+    leap = leap + 4; 
 
     # print every four years until less than or equal to end range
     habang ( leap <= end) {
