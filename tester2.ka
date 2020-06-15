@@ -1,0 +1,30 @@
+# PRIME NUMBER CHECKER
+# modfunc:
+#   takes in int num1 and int num2 and returns num1 % num2
+bilang modfunc(bilang num1, bilang num2) {
+    ibalik (num1 - ( (num1 / num2) * num2));
+}
+
+bilang main() {
+    bilang num;     # holder of input
+    bilang flag = 0;    # count of factors of num
+    bilang ctr;     # counter for iteration
+    bilang half;    # holds half of num for checking of factors
+    ilimbag("Enter the number:");   
+    num = ipasok(); # get input from user
+    half = num / 2;
+
+    parasa( ctr = 2; ctr <= half; ctr = ctr + 1 ) {
+        bilang remainder = modfunc(num, ctr); # check if factor
+        kung ( remainder == 0 ) {
+            ilimbag("Not prime\n");
+            itigil;
+        }
+    }
+
+    kung ( flag == 0 ) {
+        ilimbag("Prime\n");
+    }
+    ibalik 0;
+}
+

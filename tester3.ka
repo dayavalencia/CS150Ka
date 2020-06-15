@@ -1,0 +1,29 @@
+# PRIME NUMBER CHECKER BUT WITH ERRORS
+
+bilang modfunc(bilang num1, bilang num2) {
+    ibalik (num1 - ( (num1 / num2) * num2)) # ERROR: no semicolon
+}
+
+bilang main() {
+    bilang num;
+    bilang flag = 0;
+    bilang 1ctr;    # ERROR: invalid identifier
+    bilang half;
+    ilimbag("Enter the number:");   
+    num = ipasok();
+    half = num / 2;
+
+    parasa( ctr = 2; ctr <= half; ctr = ctr + 1 ) {
+        bilang remainder = modfunc(num, ctr);
+        kung ( remainder == 0 ) {
+            ilimbag("Not prime\n");
+            itigil;
+        # ERROR: Missing bracket for if statement
+    }
+
+    kung ( flag == 0 ) {
+        ilimbag("Prime\n");
+    }
+    ibalik 0;
+}
+
