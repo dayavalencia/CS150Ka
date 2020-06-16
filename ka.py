@@ -273,7 +273,7 @@ def p_assign(p):
 
 def p_print(p):
   '''
-  print : PRINT LPAREN expression RPAREN
+  print : PRINT LPAREN IDENTIFIER RPAREN
         | PRINT LPAREN STRING RPAREN
   '''
   
@@ -550,7 +550,7 @@ def translate(p):
         elif len(p) == 3:
             #eksp
             if p[0] == 'eksp':
-                return (p[1] + '**' + p[2])
+                return ('pow(' + translate(p[1]) + ',' + translate(p[2]) + ')')
             #function_input
             elif p[1] == ',':
                 return (translate(p[0]) + p[1] + translate(p[2]))
@@ -568,14 +568,18 @@ def translate(p):
         elif len(p) == 2:
             if p[0] == 'ilimbag':
                if (type(p[1]) == tuple):
-                if(variables[p[1][1]] == 'int'):
-                    return('printf("%d", ' +translate(p[1]) + ')')
-                if(variables[p[1][1]] == 'float'):
-                    return('printf("%f", ' +translate(p[1]) + ')')
-                if(variables[p[1][1]] == 'char'):
-                    return('printf("%c", ' +translate(p[1]) + ')')
-                if(variables[p[1][1]] == 'hanay'):
-                    return('printf("%s", &' +translate(p[1]) + ')') 
+                    try:
+                        print(variables[p[1][1]])
+                        if(variables[p[1][1]] == 'int'):
+                            return('printf("%d", ' +translate(p[1]) + ')')
+                        if(variables[p[1][1]] == 'float'):
+                            return('printf("%f", ' +translate(p[1]) + ')')
+                        if(variables[p[1][1]] == 'char'):
+                            return('printf("%c", ' +translate(p[1]) + ')')
+                        if(variables[p[1][1]] == 'hanay'):
+                            return('printf("%s", &' +translate(p[1]) + ')') 
+                    except KeyError:
+                        return ('printf(' + translate(p[1]) + ')')
                return ('printf(' + translate(p[1]) + ')')
             elif p[0] == 'ibalik':
                 return('return ' + translate(p[1]))
@@ -631,7 +635,7 @@ f.close()
 
 fc = open('output.c', 'w').close()
 fw = open("output.c","a")
-fw.write('#include<stdio.h>\n #include<math.h>\n')
+fw.write('#include<stdio.h>\n#include<math.h>\n')
 for line in reversed(toWrite):
     fw.write(line)
 fw.close()

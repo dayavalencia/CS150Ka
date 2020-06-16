@@ -38,7 +38,7 @@ Rule 32    assign -> FLOATTYPE IDENTIFIER
 Rule 33    assign -> CHARTYPE IDENTIFIER
 Rule 34    assign -> STRINGTYPE IDENTIFIER
 Rule 35    assign -> IDENTIFIER EQUAL expression
-Rule 36    print -> PRINT LPAREN expression RPAREN
+Rule 36    print -> PRINT LPAREN IDENTIFIER RPAREN
 Rule 37    print -> PRINT LPAREN STRING RPAREN
 Rule 38    input -> IDENTIFIER EQUAL INPUT LPAREN RPAREN
 Rule 39    return -> RETURN expression
@@ -109,7 +109,7 @@ FLOATTYPE            : 27 29 32 69
 FOR                  : 66
 GREATER_THAN         : 51
 GREATER_THAN_EQUAL   : 49
-IDENTIFIER           : 25 26 27 28 29 30 31 32 33 34 35 38 41 67 68 69 70 72 76 77 77 78 79 81 84
+IDENTIFIER           : 25 26 27 28 29 30 31 32 33 34 35 36 38 41 67 68 69 70 72 76 77 77 78 79 81 84
 IF                   : 61 62 63 64
 INPUT                : 38
 INT                  : 25 40 57
@@ -139,7 +139,7 @@ Nonterminals, with rules where they appear
 assign               : 2 14 66 66
 comment              : 11 22
 empty                : 12 23 75 83
-expression           : 1 13 26 27 35 36 39 42 42 43 43 44 44 45 45 46 46 47 48 48 49 49 50 50 51 51 52 52 53 53 54 55 55 56 56 61 62 63 64 65 66 78 79 80 80 82
+expression           : 1 13 26 27 35 39 42 42 43 43 44 44 45 45 46 46 47 48 48 49 49 50 50 51 51 52 52 53 53 54 55 55 56 56 61 62 63 64 65 66 78 79 80 80 82
 for_statement        : 9 21
 function_call_input  : 76
 function_input       : 71 72 73
@@ -203,7 +203,7 @@ state 0
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -373,7 +373,7 @@ state 7
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -476,7 +476,7 @@ state 8
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -579,7 +579,7 @@ state 9
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -682,7 +682,7 @@ state 10
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -785,7 +785,7 @@ state 11
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -888,7 +888,7 @@ state 12
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -1174,7 +1174,7 @@ state 24
 
 state 25
 
-    (36) print -> PRINT . LPAREN expression RPAREN
+    (36) print -> PRINT . LPAREN IDENTIFIER RPAREN
     (37) print -> PRINT . LPAREN STRING RPAREN
 
     LPAREN          shift and go to state 66
@@ -1328,7 +1328,7 @@ state 33
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -1886,7 +1886,7 @@ state 47
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -1989,7 +1989,7 @@ state 48
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -2092,7 +2092,7 @@ state 49
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -2194,7 +2194,7 @@ state 50
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -2533,40 +2533,12 @@ state 65
 
 state 66
 
-    (36) print -> PRINT LPAREN . expression RPAREN
+    (36) print -> PRINT LPAREN . IDENTIFIER RPAREN
     (37) print -> PRINT LPAREN . STRING RPAREN
-    (42) expression -> . expression ADD expression
-    (43) expression -> . expression SUBTRACT expression
-    (44) expression -> . expression MULTIPLY expression
-    (45) expression -> . expression DIVIDE expression
-    (46) expression -> . expression EXP expression
-    (47) expression -> . LPAREN expression RPAREN
-    (48) expression -> . expression EQUALCOMP expression
-    (49) expression -> . expression GREATER_THAN_EQUAL expression
-    (50) expression -> . expression LESS_THAN_EQUAL expression
-    (51) expression -> . expression GREATER_THAN expression
-    (52) expression -> . expression LESS_THAN expression
-    (53) expression -> . expression NOTEQUAL expression
-    (54) expression -> . NOT expression
-    (55) expression -> . expression AND expression
-    (56) expression -> . expression OR expression
-    (57) expression -> . INT
-    (58) expression -> . FLOAT
-    (59) expression -> . CONTINUE
-    (60) expression -> . BREAK
-    (76) expression -> . IDENTIFIER LPAREN function_call_input RPAREN
-    (84) expression -> . IDENTIFIER
 
+    IDENTIFIER      shift and go to state 119
     STRING          shift and go to state 120
-    LPAREN          shift and go to state 14
-    NOT             shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CONTINUE        shift and go to state 18
-    BREAK           shift and go to state 19
-    IDENTIFIER      shift and go to state 58
 
-    expression                     shift and go to state 119
 
 state 67
 
@@ -3581,7 +3553,7 @@ state 98
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -3675,7 +3647,7 @@ state 99
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -3769,7 +3741,7 @@ state 100
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -3863,7 +3835,7 @@ state 101
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -3957,7 +3929,7 @@ state 102
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -4279,35 +4251,9 @@ state 118
 
 state 119
 
-    (36) print -> PRINT LPAREN expression . RPAREN
-    (42) expression -> expression . ADD expression
-    (43) expression -> expression . SUBTRACT expression
-    (44) expression -> expression . MULTIPLY expression
-    (45) expression -> expression . DIVIDE expression
-    (46) expression -> expression . EXP expression
-    (48) expression -> expression . EQUALCOMP expression
-    (49) expression -> expression . GREATER_THAN_EQUAL expression
-    (50) expression -> expression . LESS_THAN_EQUAL expression
-    (51) expression -> expression . GREATER_THAN expression
-    (52) expression -> expression . LESS_THAN expression
-    (53) expression -> expression . NOTEQUAL expression
-    (55) expression -> expression . AND expression
-    (56) expression -> expression . OR expression
+    (36) print -> PRINT LPAREN IDENTIFIER . RPAREN
 
     RPAREN          shift and go to state 157
-    ADD             shift and go to state 34
-    SUBTRACT        shift and go to state 35
-    MULTIPLY        shift and go to state 36
-    DIVIDE          shift and go to state 37
-    EXP             shift and go to state 38
-    EQUALCOMP       shift and go to state 39
-    GREATER_THAN_EQUAL shift and go to state 40
-    LESS_THAN_EQUAL shift and go to state 41
-    GREATER_THAN    shift and go to state 42
-    LESS_THAN       shift and go to state 43
-    NOTEQUAL        shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
 
 
 state 120
@@ -4519,7 +4465,7 @@ state 133
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -4613,7 +4559,7 @@ state 134
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -4707,7 +4653,7 @@ state 135
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -4801,7 +4747,7 @@ state 136
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -4895,7 +4841,7 @@ state 137
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -5266,9 +5212,9 @@ state 156
 
 state 157
 
-    (36) print -> PRINT LPAREN expression RPAREN .
+    (36) print -> PRINT LPAREN IDENTIFIER RPAREN .
 
-    SEMICOLON       reduce using rule 36 (print -> PRINT LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 36 (print -> PRINT LPAREN IDENTIFIER RPAREN .)
 
 
 state 158
@@ -5647,7 +5593,7 @@ state 180
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -5740,7 +5686,7 @@ state 181
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -5873,7 +5819,7 @@ state 184
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -6020,7 +5966,7 @@ state 190
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -6266,7 +6212,7 @@ state 200
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -6411,7 +6357,7 @@ state 203
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression
@@ -6657,7 +6603,7 @@ state 211
     (33) assign -> . CHARTYPE IDENTIFIER
     (34) assign -> . STRINGTYPE IDENTIFIER
     (35) assign -> . IDENTIFIER EQUAL expression
-    (36) print -> . PRINT LPAREN expression RPAREN
+    (36) print -> . PRINT LPAREN IDENTIFIER RPAREN
     (37) print -> . PRINT LPAREN STRING RPAREN
     (38) input -> . IDENTIFIER EQUAL INPUT LPAREN RPAREN
     (39) return -> . RETURN expression

@@ -1,0 +1,8 @@
+bilang main(){
+    bilang num; 
+    num = ipasok();
+    bilang num2;
+    num2 = ipasok();
+    bilang res = num eksp num2;
+    ilimbag(res);
+}
