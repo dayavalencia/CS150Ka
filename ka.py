@@ -571,21 +571,19 @@ def translate(p):
         # return
         elif len(p) == 2:
             if p[0] == 'ilimbag':
-               if (type(p[1]) == tuple):
-                    try:
-                        print(variables[p[1][1]])
-                        if(variables[p[1][1]] == 'int'):
-                            return('printf("%d", ' +translate(p[1]) + ')')
-                        if(variables[p[1][1]] == 'float'):
-                            return('printf("%f", ' +translate(p[1]) + ')')
-                        if(variables[p[1][1]] == 'char'):
-                            return('printf("%c", ' +translate(p[1]) + ')')
-                        if(variables[p[1][1]] == 'hanay'):
-                            return('printf("%s", &' +translate(p[1]) + ')') 
-                    except KeyError:
-                        print("Missing identifier '" + p[1][1] + "'")
-                        return ('printf(' + translate(p[1]) + ')')
-               return ('printf(' + translate(p[1]) + ')')
+                try:
+                    if(variables[p[1]] == 'int'):
+                        return('printf("%d", ' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'float'):
+                        return('printf("%f", ' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'char'):
+                        return('printf("%c", ' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'hanay'):
+                        return('printf("%s", &' +translate(p[1]) + ')') 
+                except KeyError:
+                    #print("Missing identifier '" + p[1] + "'")
+                    return ('printf(' + translate(p[1]) + ')')
+                return ('printf(' + translate(p[1]) + ')')
             elif p[0] == 'ibalik':
                 return('return ' + translate(p[1]))
             elif p[0] == 'var':
