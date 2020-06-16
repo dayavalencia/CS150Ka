@@ -544,7 +544,7 @@ def translate(p):
                     if(variables[p[1]] == 'hanay'):
                         return('scanf("%s", ' +translate(p[1]) + ')')
                 except KeyError:
-                    print("Missing identifier '" + p[1]"'")
+                    print("Missing identifier '" + p[1] + "'")
                     return(translate(p[1]) + '=' + translate(p[2]) + '()')
             return(translate(p[1]) + '=' + translate(p[2]) + '()')
         elif len(p) == 4:
@@ -583,7 +583,7 @@ def translate(p):
                         if(variables[p[1][1]] == 'hanay'):
                             return('printf("%s", &' +translate(p[1]) + ')') 
                     except KeyError:
-                        print("Missing identifier '" + p[1][1]"'")
+                        print("Missing identifier '" + p[1][1] + "'")
                         return ('printf(' + translate(p[1]) + ')')
                return ('printf(' + translate(p[1]) + ')')
             elif p[0] == 'ibalik':
