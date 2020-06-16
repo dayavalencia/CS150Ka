@@ -115,7 +115,7 @@ def t_INTTYPE(t):
     return t
 
 def t_FLOATTYPE(t):
-    r'bilang'
+    r'lutang'
     return t
 
 def t_CHARTYPE(t):
@@ -186,6 +186,7 @@ precedence = (
   )
 
 names = {}
+toWrite = []
 
 def p_ka(p):
     '''
@@ -202,11 +203,18 @@ def p_ka(p):
        | comment ka
        | empty
     '''
-    f = open("output.txt","w")
+    #f = open("output.txt","a")
     if p[1] != None:
-      print(translate(p[1]))
-    f.write(translate(p[1]))
-    f.close()
+        if p[1] != 'None':
+            if(len(p)==4):
+                #print(translate(p[1]))
+                #print((p[1]))
+                toWrite.append(translate(p[1])+';')
+                #f.write(translate(p[1])+'\n')
+            else:
+                #print((p[1]))
+                toWrite.append(translate(p[1]))
+    #f.close()
 
 def p_legal(p):
     '''
@@ -219,18 +227,18 @@ def p_legal(p):
        | if_else_statement legal
        | while_statement legal
        | for_statement legal
-       | comment ka
+       | comment legal
        | empty
     '''
 
     if len(p) == 4 and p[3] != None:
-      p[0] = (p[1],) + p[3]
+      p[0] = (p[1], p[2] ,p[3])
     elif len(p) == 4 and p[3] == None:
-      p[0] = (p[1],)
+      p[0] = (p[1], p[2])
     elif len(p) == 3 and p[2] != None:
-      p[0] = (p[1],) + p[2]
+      p[0] = (p[1], p[2])
     elif len(p) == 3 and p[2] == None:
-      p[0] = (p[1],)
+      p[0] = (p[1])
 
 def p_comment(p):
     '''
@@ -257,9 +265,11 @@ def p_assign(p):
     # IDENTIFIER EQUAL expression -- reassignment?
 
     if len(p) == 5: 
-      p[0] = ('=', p[2], p[4])
+      p[0] = ('=', (p[1], p[2]), p[4])
+    elif len(p) == 4:
+        p[0] = ('=', p[1], p[3])
     else:
-      p[0] = ('=', p[2], None)
+      p[0] = (p[1], p[2])
 
 def p_print(p):
   '''
@@ -376,7 +386,7 @@ def p_expression_if(p):
     if_statement : IF LPAREN expression RPAREN LBRACE legal RBRACE
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7],)
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 
 def p_expression_if_else(p):
     '''
@@ -391,23 +401,23 @@ def p_expression_if_else(p):
     #   p[0] = p[10]
 
     if len(p) == 12:
-      p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7], p[8], p[9]) + p[10] + (p[11],)
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
     else:
-      p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] +(p[7], p[8]) + p[9]
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9])
 
 def p_while_statement(p):
     '''
     while_statement : WHILE LPAREN expression RPAREN LBRACE legal RBRACE
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5]) + p[6] + (p[7],)
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 
 def p_for_statement(p):
     '''
     for_statement : FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE legal RBRACE
     '''
 
-    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]) + p[10] + (p[11],)
+    p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11])
 
 def p_types(p):
     '''
@@ -417,7 +427,7 @@ def p_types(p):
                     | STRINGTYPE IDENTIFIER
     '''
 
-    p[0] = p[1], p[2]
+    p[0] = (p[1], p[2])
 
 def p_function_statement(p):
     '''
@@ -426,9 +436,9 @@ def p_function_statement(p):
     '''
 
     if len(p) == 8:
-      p[0] = p[1] + (p[2],) + p[3] + (p[4], p[5]) + p[6] + (p[7],)
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7])
     else:
-      p[0] = (p[1], p[2], p[3]) + p[4] + (p[5], p[6]) + p[7] + (p[8],)
+      p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8])
 
 def p_function_input(p):
     '''
@@ -438,16 +448,16 @@ def p_function_input(p):
     '''
 
     if len(p) > 2:
-      p[0] = (p[1],) + (p[2],) + p[3]
+      p[0] = (p[1], p[2], p[3])
     else:
-      p[0] = (p[1],)
+      p[0] = p[1]
 
 def p_function_call(p):
     '''
     expression : IDENTIFIER LPAREN function_call_input RPAREN
     '''
 
-    p[0] = (p[1], p[2]) + p[3] + (p[4],)
+    p[0] = (p[1], p[2], p[3], p[4])
 
 def p_function__call_input(p):
     '''
@@ -483,6 +493,7 @@ def p_error(t):
     print("Syntax error at '" +  str(t.value) + "' on line: " + str(t.lexer.lineno))
 
 parser = yacc.yacc()
+variables = {}
 
 #____________TRANSLATE___________#
 def translate(p):
@@ -490,13 +501,14 @@ def translate(p):
     #missing p_legal p_assign? p_input
 
     if type(p) == tuple:
+        #print(len(p))
         #for_if_statement_and_its_constituents
         if len(p) == 11:
             pstring = ''
             if p[0] == 'kung':
                 pstring += 'if' + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6] + 'else' + p[8] + translate(p[9]) + p[10]
             if p[0] == 'parasa':
-                pstring += 'for' + p[1] + translate(p[2]) + p[3] + translate(p[4]) + p[5] + translate(p[6]) + p[7] + p[8] + translate(p[9]) + p[10]
+                pstring += 'for' + p[1] + translate(p[2]) + p[3] + translate(p[4]) + p[5] + translate(p[6]) + p[7] + p[8] + '\n' + translate(p[9]) + p[10]
             return(pstring)
         #if_else
         elif len(p) == 9:
@@ -519,6 +531,21 @@ def translate(p):
             else:
                 pstring += translate(p[0]) + p[1] + translate(p[2]) + p[3] + p[4] + '\n' + translate(p[5]) + '\n' + p[6]
             return(pstring)
+        #input
+        elif len(p) == 5:
+            if(p[2] == 'ipasok'):
+                if(variables[p[1]] == 'int'):
+                    return('scanf("%d", &' +translate(p[1]) + ')')
+                if(variables[p[1]] == 'float'):
+                    return('scanf("%f", &' +translate(p[1]) + ')')
+                if(variables[p[1]] == 'char'):
+                    return('scanf("%c", &' +translate(p[1]) + ')')
+                if(variables[p[1]] == 'hanay'):
+                    return('scanf("%s", ' +translate(p[1]) + ')')
+            return(translate(p[1]) + '=' + translate(p[2]) + '()')
+        elif len(p) == 4:
+            if(p[1] == '('):
+                return (translate(p[0]) + p[1] + translate(p[2]) + p[3])
         # expressions and other stuff
         elif len(p) == 3:
             #eksp
@@ -527,24 +554,69 @@ def translate(p):
             #function_input
             elif p[1] == ',':
                 return (translate(p[0]) + p[1] + translate(p[2]))
+            elif p[0] == 'var':
+                return (translate(p[1]) + str(p[0]) + str(p[2]))
+            elif p[0] == '(':
+                return ('(' + translate(p[1]) + ')')
+            elif p[0] == '=':
+                return (translate(p[1]) + p[0] + translate(p[2]))
+            elif p[1] == ';':
+                return (translate(p[0]) + ';\n'+ translate(p[2]))
             else:
-                return (str(p[1]) + str(p[0]) + str(p[2]))
+                return (translate(p[1]) + translate(p[0]) + translate(p[2]))
         # return
         elif len(p) == 2:
             if p[0] == 'ilimbag':
+               if (type(p[1]) == tuple):
+                if(variables[p[1][1]] == 'int'):
+                    return('printf("%d", ' +translate(p[1]) + ')')
+                if(variables[p[1][1]] == 'float'):
+                    return('printf("%f", ' +translate(p[1]) + ')')
+                if(variables[p[1][1]] == 'char'):
+                    return('printf("%c", ' +translate(p[1]) + ')')
+                if(variables[p[1][1]] == 'hanay'):
+                    return('printf("%s", &' +translate(p[1]) + ')') 
                return ('printf(' + translate(p[1]) + ')')
             elif p[0] == 'ibalik':
                 return('return ' + translate(p[1]))
+            elif p[0] == 'var':
+                return (str(p[1])) 
+            elif p[0] == 'bilang':
+                variables[p[1]] = 'int'
+                return ('int ' + str(p[1]))
+            elif p[0] == 'lutang':
+                variables[p[1]] = 'float'
+                return ('float ' + str(p[1]))
+            elif p[0] == 'titik':
+                variables[p[1]] = 'char'
+                return ('char ' + str(p[1]))
+            elif p[0] == 'hanay':
+                variables[p[1]] = 'char[] '
+                return ('char ' + str(p[1]) + '[]')
+            elif p[1] == ';':
+                return (translate(p[0]) + ';')
+            #legal
             else:
-                return(str(p[0]) + translate(p[1]))                
+                return(translate(p[0]) + translate(p[1]))
+        else:
+            return str(p)
     else:
         if(type(p) == str):
             if p == 'ituloy':
                 p = 'continue'
             if p == 'itigil':
                 p = 'break'
+            if p == 'None':
+                p = ''
+            if p[0] == '#':
+                p = '//' + p[1:] + '\n'
+        if(type(p) == None):
+            p = ''
+        if p == None:
+            p = ''
         return str(p)
-    #return p
+
+    return str(p)
 
 #while True: 
 #    try:
@@ -552,6 +624,16 @@ def translate(p):
 #    except EOFError:
 #        break
 #    print(parser.parse(s))
-f = open("tester3.ka", "r")
-print(parser.parse(f.read()))
+s = input('.ka filename> ')
+f = open(s, "r")
+(parser.parse(f.read()))
 f.close()
+
+fc = open('output.c', 'w').close()
+fw = open("output.c","a")
+fw.write('#include<stdio.h>\n #include<math.h>\n')
+for line in reversed(toWrite):
+    fw.write(line)
+fw.close()
+
+print(s + " translated in output.c")

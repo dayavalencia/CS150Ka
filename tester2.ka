@@ -18,6 +18,7 @@ bilang main() {
         bilang remainder = modfunc(num, ctr); # check if factor
         kung ( remainder == 0 ) {
             ilimbag("Not prime\n");
+	    flag = 1;
             itigil;
         }
     }

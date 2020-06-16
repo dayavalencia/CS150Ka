@@ -24,7 +24,7 @@ Rule 18    legal -> if_statement legal
 Rule 19    legal -> if_else_statement legal
 Rule 20    legal -> while_statement legal
 Rule 21    legal -> for_statement legal
-Rule 22    legal -> comment ka
+Rule 22    legal -> comment legal
 Rule 23    legal -> empty
 Rule 24    comment -> COMMENT
 Rule 25    assign -> INTTYPE IDENTIFIER EQUAL INT
@@ -147,8 +147,8 @@ function_statement   : 10
 if_else_statement    : 7 19 63
 if_statement         : 6 18 64
 input                : 4 16
-ka                   : 1 2 3 4 6 7 8 9 10 11 22 0
-legal                : 5 13 14 15 16 17 18 19 20 21 61 62 62 63 64 65 66 71 72
+ka                   : 1 2 3 4 6 7 8 9 10 11 0
+legal                : 5 13 14 15 16 17 18 19 20 21 22 61 62 62 63 64 65 66 71 72
 print                : 3 15
 return               : 5 17
 type_identifier      : 71 73 74
@@ -413,7 +413,6 @@ state 7
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     if_statement                   shift and go to state 7
     ka                             shift and go to state 51
@@ -517,7 +516,6 @@ state 8
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     if_else_statement              shift and go to state 8
     ka                             shift and go to state 52
@@ -621,7 +619,6 @@ state 9
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     while_statement                shift and go to state 9
     ka                             shift and go to state 53
@@ -725,7 +722,6 @@ state 10
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     for_statement                  shift and go to state 10
     ka                             shift and go to state 54
@@ -829,7 +825,6 @@ state 11
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     function_statement             shift and go to state 11
     ka                             shift and go to state 55
@@ -933,7 +928,6 @@ state 12
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     comment                        shift and go to state 12
     ka                             shift and go to state 56
@@ -955,7 +949,6 @@ state 13
     (12) ka -> empty .
 
     $end            reduce using rule 12 (ka -> empty .)
-    RBRACE          reduce using rule 12 (ka -> empty .)
 
 
 state 14
@@ -1375,7 +1368,6 @@ state 33
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     expression                     shift and go to state 2
     ka                             shift and go to state 75
@@ -1934,7 +1926,6 @@ state 47
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     assign                         shift and go to state 3
     ka                             shift and go to state 89
@@ -2038,7 +2029,6 @@ state 48
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     print                          shift and go to state 4
     ka                             shift and go to state 90
@@ -2142,7 +2132,6 @@ state 49
     VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     input                          shift and go to state 5
     ka                             shift and go to state 91
@@ -2171,7 +2160,7 @@ state 50
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -2238,7 +2227,6 @@ state 50
     FOR             shift and go to state 29
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
-    RBRACE          reduce using rule 85 (empty -> .)
 
     return                         shift and go to state 92
     legal                          shift and go to state 93
@@ -2258,7 +2246,6 @@ state 51
     (6) ka -> if_statement ka .
 
     $end            reduce using rule 6 (ka -> if_statement ka .)
-    RBRACE          reduce using rule 6 (ka -> if_statement ka .)
 
 
 state 52
@@ -2266,7 +2253,6 @@ state 52
     (7) ka -> if_else_statement ka .
 
     $end            reduce using rule 7 (ka -> if_else_statement ka .)
-    RBRACE          reduce using rule 7 (ka -> if_else_statement ka .)
 
 
 state 53
@@ -2274,7 +2260,6 @@ state 53
     (8) ka -> while_statement ka .
 
     $end            reduce using rule 8 (ka -> while_statement ka .)
-    RBRACE          reduce using rule 8 (ka -> while_statement ka .)
 
 
 state 54
@@ -2282,7 +2267,6 @@ state 54
     (9) ka -> for_statement ka .
 
     $end            reduce using rule 9 (ka -> for_statement ka .)
-    RBRACE          reduce using rule 9 (ka -> for_statement ka .)
 
 
 state 55
@@ -2290,7 +2274,6 @@ state 55
     (10) ka -> function_statement ka .
 
     $end            reduce using rule 10 (ka -> function_statement ka .)
-    RBRACE          reduce using rule 10 (ka -> function_statement ka .)
 
 
 state 56
@@ -2298,7 +2281,6 @@ state 56
     (11) ka -> comment ka .
 
     $end            reduce using rule 11 (ka -> comment ka .)
-    RBRACE          reduce using rule 11 (ka -> comment ka .)
 
 
 state 57
@@ -2799,7 +2781,6 @@ state 75
     (1) ka -> expression SEMICOLON ka .
 
     $end            reduce using rule 1 (ka -> expression SEMICOLON ka .)
-    RBRACE          reduce using rule 1 (ka -> expression SEMICOLON ka .)
 
 
 state 76
@@ -3470,7 +3451,6 @@ state 89
     (2) ka -> assign SEMICOLON ka .
 
     $end            reduce using rule 2 (ka -> assign SEMICOLON ka .)
-    RBRACE          reduce using rule 2 (ka -> assign SEMICOLON ka .)
 
 
 state 90
@@ -3478,7 +3458,6 @@ state 90
     (3) ka -> print SEMICOLON ka .
 
     $end            reduce using rule 3 (ka -> print SEMICOLON ka .)
-    RBRACE          reduce using rule 3 (ka -> print SEMICOLON ka .)
 
 
 state 91
@@ -3486,7 +3465,6 @@ state 91
     (4) ka -> input SEMICOLON ka .
 
     $end            reduce using rule 4 (ka -> input SEMICOLON ka .)
-    RBRACE          reduce using rule 4 (ka -> input SEMICOLON ka .)
 
 
 state 92
@@ -3501,7 +3479,6 @@ state 93
     (5) ka -> return SEMICOLON legal .
 
     $end            reduce using rule 5 (ka -> return SEMICOLON legal .)
-    RBRACE          reduce using rule 5 (ka -> return SEMICOLON legal .)
 
 
 state 94
@@ -3570,7 +3547,7 @@ state 98
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -3664,7 +3641,7 @@ state 99
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -3758,7 +3735,7 @@ state 100
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -3852,7 +3829,7 @@ state 101
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -3936,19 +3913,18 @@ state 101
 
 state 102
 
-    (22) legal -> comment . ka
-    (1) ka -> . expression SEMICOLON ka
-    (2) ka -> . assign SEMICOLON ka
-    (3) ka -> . print SEMICOLON ka
-    (4) ka -> . input SEMICOLON ka
-    (5) ka -> . return SEMICOLON legal
-    (6) ka -> . if_statement ka
-    (7) ka -> . if_else_statement ka
-    (8) ka -> . while_statement ka
-    (9) ka -> . for_statement ka
-    (10) ka -> . function_statement ka
-    (11) ka -> . comment ka
-    (12) ka -> . empty
+    (22) legal -> comment . legal
+    (13) legal -> . expression SEMICOLON legal
+    (14) legal -> . assign SEMICOLON legal
+    (15) legal -> . print SEMICOLON legal
+    (16) legal -> . input SEMICOLON legal
+    (17) legal -> . return SEMICOLON legal
+    (18) legal -> . if_statement legal
+    (19) legal -> . if_else_statement legal
+    (20) legal -> . while_statement legal
+    (21) legal -> . for_statement legal
+    (22) legal -> . comment legal
+    (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
     (44) expression -> . expression MULTIPLY expression
@@ -3993,14 +3969,8 @@ state 102
     (64) if_else_statement -> . IF LPAREN expression RPAREN LBRACE legal RBRACE ELSE if_statement
     (65) while_statement -> . WHILE LPAREN expression RPAREN LBRACE legal RBRACE
     (66) for_statement -> . FOR LPAREN assign SEMICOLON expression SEMICOLON assign RPAREN LBRACE legal RBRACE
-    (71) function_statement -> . type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE
-    (72) function_statement -> . VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE
     (24) comment -> . COMMENT
     (85) empty -> .
-    (67) type_identifier -> . INTTYPE IDENTIFIER
-    (68) type_identifier -> . CHARTYPE IDENTIFIER
-    (69) type_identifier -> . FLOATTYPE IDENTIFIER
-    (70) type_identifier -> . STRINGTYPE IDENTIFIER
 
     LPAREN          shift and go to state 14
     NOT             shift and go to state 15
@@ -4009,34 +3979,31 @@ state 102
     CONTINUE        shift and go to state 18
     BREAK           shift and go to state 19
     IDENTIFIER      shift and go to state 20
-    INTTYPE         shift and go to state 21
-    FLOATTYPE       shift and go to state 22
-    CHARTYPE        shift and go to state 23
-    STRINGTYPE      shift and go to state 24
+    INTTYPE         shift and go to state 104
+    FLOATTYPE       shift and go to state 105
+    CHARTYPE        shift and go to state 106
+    STRINGTYPE      shift and go to state 107
     PRINT           shift and go to state 25
     RETURN          shift and go to state 26
     IF              shift and go to state 27
     WHILE           shift and go to state 28
     FOR             shift and go to state 29
-    VOID            shift and go to state 31
     COMMENT         shift and go to state 32
     $end            reduce using rule 85 (empty -> .)
     RBRACE          reduce using rule 85 (empty -> .)
 
-    comment                        shift and go to state 12
-    ka                             shift and go to state 142
-    expression                     shift and go to state 2
-    assign                         shift and go to state 3
-    print                          shift and go to state 4
-    input                          shift and go to state 5
-    return                         shift and go to state 6
-    if_statement                   shift and go to state 7
-    if_else_statement              shift and go to state 8
-    while_statement                shift and go to state 9
-    for_statement                  shift and go to state 10
-    function_statement             shift and go to state 11
-    empty                          shift and go to state 13
-    type_identifier                shift and go to state 30
+    comment                        shift and go to state 102
+    legal                          shift and go to state 142
+    expression                     shift and go to state 94
+    assign                         shift and go to state 95
+    print                          shift and go to state 96
+    input                          shift and go to state 97
+    return                         shift and go to state 92
+    if_statement                   shift and go to state 98
+    if_else_statement              shift and go to state 99
+    while_statement                shift and go to state 100
+    for_statement                  shift and go to state 101
+    empty                          shift and go to state 103
 
 state 103
 
@@ -4518,7 +4485,7 @@ state 133
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -4612,7 +4579,7 @@ state 134
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -4706,7 +4673,7 @@ state 135
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -4800,7 +4767,7 @@ state 136
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -4894,7 +4861,7 @@ state 137
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -5010,10 +4977,10 @@ state 141
 
 state 142
 
-    (22) legal -> comment ka .
+    (22) legal -> comment legal .
 
-    $end            reduce using rule 22 (legal -> comment ka .)
-    RBRACE          reduce using rule 22 (legal -> comment ka .)
+    $end            reduce using rule 22 (legal -> comment legal .)
+    RBRACE          reduce using rule 22 (legal -> comment legal .)
 
 
 state 143
@@ -5646,7 +5613,7 @@ state 180
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -5739,7 +5706,7 @@ state 181
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -5872,7 +5839,7 @@ state 184
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -6019,7 +5986,7 @@ state 190
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -6186,7 +6153,6 @@ state 194
     VOID            reduce using rule 71 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE .)
     COMMENT         reduce using rule 71 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE .)
     $end            reduce using rule 71 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE .)
-    RBRACE          reduce using rule 71 (function_statement -> type_identifier LPAREN function_input RPAREN LBRACE legal RBRACE .)
 
 
 state 195
@@ -6242,7 +6208,6 @@ state 198
     VOID            reduce using rule 72 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE .)
     COMMENT         reduce using rule 72 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE .)
     $end            reduce using rule 72 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE .)
-    RBRACE          reduce using rule 72 (function_statement -> VOID IDENTIFIER LPAREN function_input RPAREN LBRACE legal RBRACE .)
 
 
 state 199
@@ -6267,7 +6232,7 @@ state 200
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -6412,7 +6377,7 @@ state 203
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
@@ -6658,7 +6623,7 @@ state 211
     (19) legal -> . if_else_statement legal
     (20) legal -> . while_statement legal
     (21) legal -> . for_statement legal
-    (22) legal -> . comment ka
+    (22) legal -> . comment legal
     (23) legal -> . empty
     (42) expression -> . expression ADD expression
     (43) expression -> . expression SUBTRACT expression
