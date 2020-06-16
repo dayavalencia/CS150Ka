@@ -534,14 +534,18 @@ def translate(p):
         #input
         elif len(p) == 5:
             if(p[2] == 'ipasok'):
-                if(variables[p[1]] == 'int'):
-                    return('scanf("%d", &' +translate(p[1]) + ')')
-                if(variables[p[1]] == 'float'):
-                    return('scanf("%f", &' +translate(p[1]) + ')')
-                if(variables[p[1]] == 'char'):
-                    return('scanf("%c", &' +translate(p[1]) + ')')
-                if(variables[p[1]] == 'hanay'):
-                    return('scanf("%s", ' +translate(p[1]) + ')')
+                try:
+                    if(variables[p[1]] == 'int'):
+                        return('scanf("%d", &' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'float'):
+                        return('scanf("%f", &' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'char'):
+                        return('scanf("%c", &' +translate(p[1]) + ')')
+                    if(variables[p[1]] == 'hanay'):
+                        return('scanf("%s", ' +translate(p[1]) + ')')
+                except KeyError:
+                    print("Missing identifier '" + p[1]"'")
+                    return(translate(p[1]) + '=' + translate(p[2]) + '()')
             return(translate(p[1]) + '=' + translate(p[2]) + '()')
         elif len(p) == 4:
             if(p[1] == '('):
@@ -579,6 +583,7 @@ def translate(p):
                         if(variables[p[1][1]] == 'hanay'):
                             return('printf("%s", &' +translate(p[1]) + ')') 
                     except KeyError:
+                        print("Missing identifier '" + p[1][1]"'")
                         return ('printf(' + translate(p[1]) + ')')
                return ('printf(' + translate(p[1]) + ')')
             elif p[0] == 'ibalik':
